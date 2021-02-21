@@ -1,0 +1,9 @@
+query AllArticles {
+  articles {
+    id
+    slug
+    publishedAt
+    title
+    description
+  }
+}# Write your query or mutation here

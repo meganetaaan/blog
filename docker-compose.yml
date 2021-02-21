@@ -1,0 +1,46 @@
+version: '3'
+services:
+  backend:
+    image: strapi/strapi
+    environment:
+      DATABASE_CLIENT: mongo
+      DATABASE_NAME: strapi
+      DATABASE_HOST: db
+      DATABASE_PORT: 27017
+      DATABASE_USERNAME: strapi
+      DATABASE_PASSWORD: strapi
+    volumes:
+      - ./backend:/srv/app
+    ports:
+      - '1337:1337'
+    depends_on:
+      - db
+    command: npm run develop
+    networks:
+      - app-network
+  db:
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: strapi
+      MONGO_INITDB_ROOT_USERNAME: strapi
+      MONGO_INITDB_ROOT_PASSWORD: strapi
+    volumes:
+      - ./data:/data/db
+    networks:
+      - app-network
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - ./frontend/:/code
+    ports:
+      - "3000:3000"
+    command: npm run develop
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
