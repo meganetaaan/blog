@@ -4,8 +4,8 @@ import Navigation from "../elements/navigation";
 
 const BasicLayout: FC<unknown> = ({ children }) => (
   <Flex direction="column" w="full" >
-    <Navigation w="full" h="20" />
-    <Box flexGrow={1}>
+    <Navigation w="full" />
+    <Box p={4} flexGrow={1}>
       {children}
     </Box>
   </Flex>

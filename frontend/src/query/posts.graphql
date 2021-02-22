@@ -5,5 +5,8 @@ query AllArticles {
     publishedAt
     title
     description
+    image {
+      url
+    }
   }
 }# Write your query or mutation here

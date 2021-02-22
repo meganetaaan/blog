@@ -1,18 +1,21 @@
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, Container, SimpleGrid, VStack } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
+import ArticleCard from "./article-card";
 
 interface Props {
-  articles: Pick<Article, 'id' | 'slug' | 'publishedAt' | 'title' | 'description'>[]
+  articles: Pick<Article, 'id' | 'slug' | 'publishedAt' | 'title' | 'description' | 'image'>[]
 }
 const ArticleList: FC<Props> = ({ articles }) => (
-  <VStack>
-    {articles.map(a => (
-      <Box key={a.id}>
-        {a.title}, {a.description}
-      </Box>
-    ))}
-  </VStack>
+  <Container maxW="6xl">
+    <SimpleGrid columns={[1, 2, 3]} gridGap={4}>
+      {articles.map(a => (
+        <Box key={a.id}>
+          <ArticleCard slug={a.slug} title={a.title} description={a.description} imageUrl={a.image?.url} />
+        </Box>
+      ))}
+    </SimpleGrid>
+  </Container>
 )
 
 export default ArticleList

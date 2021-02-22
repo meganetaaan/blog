@@ -1513,6 +1513,10 @@ export type AllArticlesQuery = (
   & { articles?: Maybe<Array<Maybe<(
     { __typename?: 'Article' }
     & Pick<Article, 'id' | 'slug' | 'publishedAt' | 'title' | 'description'>
+    & { image?: Maybe<(
+      { __typename?: 'UploadFile' }
+      & Pick<UploadFile, 'url'>
+    )> }
   )>>> }
 );
 
@@ -1525,6 +1529,9 @@ export const AllArticlesDocument = gql`
     publishedAt
     title
     description
+    image {
+      url
+    }
   }
 }
     `;
