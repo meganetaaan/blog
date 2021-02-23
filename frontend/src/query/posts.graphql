@@ -8,5 +8,9 @@ query AllArticles {
     image {
       url
     }
+    tags {
+      name
+      slug
+    }
   }
-}# Write your query or mutation here
+}

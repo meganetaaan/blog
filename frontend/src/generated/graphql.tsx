@@ -91,6 +91,15 @@ export type Article = {
   category?: Maybe<Category>;
   image?: Maybe<UploadFile>;
   author?: Maybe<Writer>;
+  tags?: Maybe<Array<Maybe<Tag>>>;
+};
+
+
+export type ArticleTagsArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
 };
 
 export type ArticleConnection = {
@@ -204,6 +213,7 @@ export type ArticleInput = {
   category?: Maybe<Scalars['ID']>;
   image?: Maybe<Scalars['ID']>;
   author?: Maybe<Scalars['ID']>;
+  tags?: Maybe<Array<Maybe<Scalars['ID']>>>;
   created_by?: Maybe<Scalars['ID']>;
   updated_by?: Maybe<Scalars['ID']>;
 };
@@ -218,6 +228,7 @@ export type EditArticleInput = {
   category?: Maybe<Scalars['ID']>;
   image?: Maybe<Scalars['ID']>;
   author?: Maybe<Scalars['ID']>;
+  tags?: Maybe<Array<Maybe<Scalars['ID']>>>;
   created_by?: Maybe<Scalars['ID']>;
   updated_by?: Maybe<Scalars['ID']>;
 };
@@ -372,12 +383,14 @@ export type Global = {
   favicon?: Maybe<UploadFile>;
   siteName: Scalars['String'];
   defaultSeo?: Maybe<ComponentSharedSeo>;
+  copyrightNotice?: Maybe<Scalars['String']>;
 };
 
 export type GlobalInput = {
   favicon?: Maybe<Scalars['ID']>;
   siteName: Scalars['String'];
   defaultSeo: ComponentSharedSeoInput;
+  copyrightNotice?: Maybe<Scalars['String']>;
   created_by?: Maybe<Scalars['ID']>;
   updated_by?: Maybe<Scalars['ID']>;
 };
@@ -386,6 +399,7 @@ export type EditGlobalInput = {
   favicon?: Maybe<Scalars['ID']>;
   siteName?: Maybe<Scalars['String']>;
   defaultSeo?: Maybe<EditComponentSharedSeoInput>;
+  copyrightNotice?: Maybe<Scalars['String']>;
   created_by?: Maybe<Scalars['ID']>;
   updated_by?: Maybe<Scalars['ID']>;
 };
@@ -439,6 +453,109 @@ export type UpdateHomepagePayload = {
 export type DeleteHomepagePayload = {
   __typename?: 'deleteHomepagePayload';
   homepage?: Maybe<Homepage>;
+};
+
+export type Tag = {
+  __typename?: 'Tag';
+  id: Scalars['ID'];
+  created_at: Scalars['DateTime'];
+  updated_at: Scalars['DateTime'];
+  name?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
+export type TagConnection = {
+  __typename?: 'TagConnection';
+  values?: Maybe<Array<Maybe<Tag>>>;
+  groupBy?: Maybe<TagGroupBy>;
+  aggregate?: Maybe<TagAggregator>;
+};
+
+export type TagAggregator = {
+  __typename?: 'TagAggregator';
+  count?: Maybe<Scalars['Int']>;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type TagGroupBy = {
+  __typename?: 'TagGroupBy';
+  id?: Maybe<Array<Maybe<TagConnectionId>>>;
+  created_at?: Maybe<Array<Maybe<TagConnectionCreated_At>>>;
+  updated_at?: Maybe<Array<Maybe<TagConnectionUpdated_At>>>;
+  name?: Maybe<Array<Maybe<TagConnectionName>>>;
+  slug?: Maybe<Array<Maybe<TagConnectionSlug>>>;
+};
+
+export type TagConnectionId = {
+  __typename?: 'TagConnectionId';
+  key?: Maybe<Scalars['ID']>;
+  connection?: Maybe<TagConnection>;
+};
+
+export type TagConnectionCreated_At = {
+  __typename?: 'TagConnectionCreated_at';
+  key?: Maybe<Scalars['DateTime']>;
+  connection?: Maybe<TagConnection>;
+};
+
+export type TagConnectionUpdated_At = {
+  __typename?: 'TagConnectionUpdated_at';
+  key?: Maybe<Scalars['DateTime']>;
+  connection?: Maybe<TagConnection>;
+};
+
+export type TagConnectionName = {
+  __typename?: 'TagConnectionName';
+  key?: Maybe<Scalars['String']>;
+  connection?: Maybe<TagConnection>;
+};
+
+export type TagConnectionSlug = {
+  __typename?: 'TagConnectionSlug';
+  key?: Maybe<Scalars['String']>;
+  connection?: Maybe<TagConnection>;
+};
+
+export type TagInput = {
+  name?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  created_by?: Maybe<Scalars['ID']>;
+  updated_by?: Maybe<Scalars['ID']>;
+};
+
+export type EditTagInput = {
+  name?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  created_by?: Maybe<Scalars['ID']>;
+  updated_by?: Maybe<Scalars['ID']>;
+};
+
+export type CreateTagInput = {
+  data?: Maybe<TagInput>;
+};
+
+export type CreateTagPayload = {
+  __typename?: 'createTagPayload';
+  tag?: Maybe<Tag>;
+};
+
+export type UpdateTagInput = {
+  where?: Maybe<InputId>;
+  data?: Maybe<EditTagInput>;
+};
+
+export type UpdateTagPayload = {
+  __typename?: 'updateTagPayload';
+  tag?: Maybe<Tag>;
+};
+
+export type DeleteTagInput = {
+  where?: Maybe<InputId>;
+};
+
+export type DeleteTagPayload = {
+  __typename?: 'deleteTagPayload';
+  tag?: Maybe<Tag>;
 };
 
 export type Writer = {
@@ -1127,7 +1244,7 @@ export type EditComponentSharedSeoInput = {
   shareImage?: Maybe<Scalars['ID']>;
 };
 
-export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Article | ArticleConnection | ArticleAggregator | ArticleGroupBy | ArticleConnectionId | ArticleConnectionCreated_At | ArticleConnectionUpdated_At | ArticleConnectionTitle | ArticleConnectionDescription | ArticleConnectionContent | ArticleConnectionPublishedAt | ArticleConnectionStatus | ArticleConnectionSlug | ArticleConnectionCategory | ArticleConnectionImage | ArticleConnectionAuthor | CreateArticlePayload | UpdateArticlePayload | DeleteArticlePayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionSlug | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Global | UpdateGlobalPayload | DeleteGlobalPayload | Homepage | UpdateHomepagePayload | DeleteHomepagePayload | Writer | WriterConnection | WriterAggregator | WriterGroupBy | WriterConnectionId | WriterConnectionCreated_At | WriterConnectionUpdated_At | WriterConnectionName | WriterConnectionPicture | WriterConnectionEmail | CreateWriterPayload | UpdateWriterPayload | DeleteWriterPayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | DeleteFilePayload | ComponentSectionsHero | ComponentSharedSeo;
+export type Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Article | ArticleConnection | ArticleAggregator | ArticleGroupBy | ArticleConnectionId | ArticleConnectionCreated_At | ArticleConnectionUpdated_At | ArticleConnectionTitle | ArticleConnectionDescription | ArticleConnectionContent | ArticleConnectionPublishedAt | ArticleConnectionStatus | ArticleConnectionSlug | ArticleConnectionCategory | ArticleConnectionImage | ArticleConnectionAuthor | CreateArticlePayload | UpdateArticlePayload | DeleteArticlePayload | Category | CategoryConnection | CategoryAggregator | CategoryGroupBy | CategoryConnectionId | CategoryConnectionCreated_At | CategoryConnectionUpdated_At | CategoryConnectionName | CategoryConnectionSlug | CreateCategoryPayload | UpdateCategoryPayload | DeleteCategoryPayload | Global | UpdateGlobalPayload | DeleteGlobalPayload | Homepage | UpdateHomepagePayload | DeleteHomepagePayload | Tag | TagConnection | TagAggregator | TagGroupBy | TagConnectionId | TagConnectionCreated_At | TagConnectionUpdated_At | TagConnectionName | TagConnectionSlug | CreateTagPayload | UpdateTagPayload | DeleteTagPayload | Writer | WriterConnection | WriterAggregator | WriterGroupBy | WriterConnectionId | WriterConnectionCreated_At | WriterConnectionUpdated_At | WriterConnectionName | WriterConnectionPicture | WriterConnectionEmail | CreateWriterPayload | UpdateWriterPayload | DeleteWriterPayload | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | CreateRolePayload | UpdateRolePayload | DeleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionCreated_At | UsersPermissionsUserConnectionUpdated_At | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | CreateUserPayload | UpdateUserPayload | DeleteUserPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnectionCreated_At | UploadFileConnectionUpdated_At | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_Metadata | DeleteFilePayload | ComponentSectionsHero | ComponentSharedSeo;
 
 export type InputId = {
   id: Scalars['ID'];
@@ -1156,6 +1273,9 @@ export type Query = {
   categoriesConnection?: Maybe<CategoryConnection>;
   global?: Maybe<Global>;
   homepage?: Maybe<Homepage>;
+  tag?: Maybe<Tag>;
+  tags?: Maybe<Array<Maybe<Tag>>>;
+  tagsConnection?: Maybe<TagConnection>;
   writer?: Maybe<Writer>;
   writers?: Maybe<Array<Maybe<Writer>>>;
   writersConnection?: Maybe<WriterConnection>;
@@ -1225,6 +1345,29 @@ export type QueryGlobalArgs = {
 
 export type QueryHomepageArgs = {
   publicationState?: Maybe<PublicationState>;
+};
+
+
+export type QueryTagArgs = {
+  id: Scalars['ID'];
+  publicationState?: Maybe<PublicationState>;
+};
+
+
+export type QueryTagsArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
+  publicationState?: Maybe<PublicationState>;
+};
+
+
+export type QueryTagsConnectionArgs = {
+  sort?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  start?: Maybe<Scalars['Int']>;
+  where?: Maybe<Scalars['JSON']>;
 };
 
 
@@ -1325,6 +1468,9 @@ export type Mutation = {
   deleteGlobal?: Maybe<DeleteGlobalPayload>;
   updateHomepage?: Maybe<UpdateHomepagePayload>;
   deleteHomepage?: Maybe<DeleteHomepagePayload>;
+  createTag?: Maybe<CreateTagPayload>;
+  updateTag?: Maybe<UpdateTagPayload>;
+  deleteTag?: Maybe<DeleteTagPayload>;
   createWriter?: Maybe<CreateWriterPayload>;
   updateWriter?: Maybe<UpdateWriterPayload>;
   deleteWriter?: Maybe<DeleteWriterPayload>;
@@ -1390,6 +1536,21 @@ export type MutationUpdateGlobalArgs = {
 
 export type MutationUpdateHomepageArgs = {
   input?: Maybe<UpdateHomepageInput>;
+};
+
+
+export type MutationCreateTagArgs = {
+  input?: Maybe<CreateTagInput>;
+};
+
+
+export type MutationUpdateTagArgs = {
+  input?: Maybe<UpdateTagInput>;
+};
+
+
+export type MutationDeleteTagArgs = {
+  input?: Maybe<DeleteTagInput>;
 };
 
 
@@ -1505,6 +1666,17 @@ export enum CacheControlScope {
   Private = 'PRIVATE'
 }
 
+export type GlobalQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GlobalQuery = (
+  { __typename?: 'Query' }
+  & { global?: Maybe<(
+    { __typename?: 'Global' }
+    & Pick<Global, 'copyrightNotice' | 'siteName'>
+  )> }
+);
+
 export type AllArticlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1516,11 +1688,47 @@ export type AllArticlesQuery = (
     & { image?: Maybe<(
       { __typename?: 'UploadFile' }
       & Pick<UploadFile, 'url'>
-    )> }
+    )>, tags?: Maybe<Array<Maybe<(
+      { __typename?: 'Tag' }
+      & Pick<Tag, 'name' | 'slug'>
+    )>>> }
   )>>> }
 );
 
 
+export const GlobalDocument = gql`
+    query Global {
+  global {
+    copyrightNotice
+    siteName
+  }
+}
+    `;
+
+/**
+ * __useGlobalQuery__
+ *
+ * To run a query within a React component, call `useGlobalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGlobalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGlobalQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGlobalQuery(baseOptions?: Apollo.QueryHookOptions<GlobalQuery, GlobalQueryVariables>) {
+        return Apollo.useQuery<GlobalQuery, GlobalQueryVariables>(GlobalDocument, baseOptions);
+      }
+export function useGlobalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GlobalQuery, GlobalQueryVariables>) {
+          return Apollo.useLazyQuery<GlobalQuery, GlobalQueryVariables>(GlobalDocument, baseOptions);
+        }
+export type GlobalQueryHookResult = ReturnType<typeof useGlobalQuery>;
+export type GlobalLazyQueryHookResult = ReturnType<typeof useGlobalLazyQuery>;
+export type GlobalQueryResult = Apollo.QueryResult<GlobalQuery, GlobalQueryVariables>;
 export const AllArticlesDocument = gql`
     query AllArticles {
   articles {
@@ -1531,6 +1739,10 @@ export const AllArticlesDocument = gql`
     description
     image {
       url
+    }
+    tags {
+      name
+      slug
     }
   }
 }
