@@ -1,0 +1,6 @@
+query Global {
+  global {
+    copyrightNotice
+    siteName
+  }
+}

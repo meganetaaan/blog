@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import BasicLayout from "../components/layouts/basic-layout";
 import Articles from "../components/elements/articles";
-import { AllArticlesDocument, AllArticlesQueryResult, Article, useAllArticlesQuery } from "../src/generated/graphql";
+import { AllArticlesDocument, AllArticlesQueryResult, Article, GlobalDocument, useAllArticlesQuery } from "../src/generated/graphql";
 import { initializeApollo } from "../src/lib/apolloClient";
 
 export default function Home() {
@@ -28,6 +28,9 @@ export async function getStaticProps() {
   await apolloClient.query({
     query: AllArticlesDocument,
   })
+  // await apolloClient.query({
+  //   query: GlobalDocument,
+  // })
 
   return {
     props: {

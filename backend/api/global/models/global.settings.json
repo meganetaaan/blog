@@ -2,11 +2,13 @@
   "kind": "singleType",
   "collectionName": "globals",
   "info": {
-    "name": "Global"
+    "name": "Global",
+    "description": ""
   },
   "options": {
     "increments": true,
-    "timestamps": true
+    "timestamps": true,
+    "draftAndPublish": false
   },
   "attributes": {
     "favicon": {
@@ -29,6 +31,9 @@
       "repeatable": false,
       "component": "shared.seo",
       "required": true
+    },
+    "copyrightNotice": {
+      "type": "richtext"
     }
   }
 }
