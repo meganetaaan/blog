@@ -1,4 +1,4 @@
-import { Box, Container, SimpleGrid, VStack } from "@chakra-ui/react";
+import { Box, Container, SimpleGrid, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
 import ArticleCard from "./article-card";
@@ -6,11 +6,27 @@ import ArticleCard from "./article-card";
 interface Props {
   articles: Pick<Article, "id" | "slug" | "publishedAt" | "title" | "description" | "image" | "tags">[];
 }
-const ArticleList: FC<Props> = ({ articles }) => (
-  <Container maxW="6xl">
-    <SimpleGrid columns={[1, null, 3]} gridGap={4}>
+const ArticleList: FC<Props> = ({ articles }) => {
+  const bp = useBreakpointValue({
+    base: 1,
+    md: 3
+  });
+  return (
+  <Container maxW="6xl" px={[0, null, 6]}>
+    <Box
+      gridGap={0}
+      style={{
+        columnCount: bp,
+      }}
+    >
       {articles.map((a) => (
-        <Box key={a.id}>
+        <Box
+          key={a.id}
+          p={2}
+          style={{
+            breakInside: "avoid-column"
+          }}
+        >
           <ArticleCard
             slug={a.slug}
             title={a.title}
@@ -21,8 +37,9 @@ const ArticleList: FC<Props> = ({ articles }) => (
           />
         </Box>
       ))}
-    </SimpleGrid>
+    </Box>
+    {/* </SimpleGrid> */}
   </Container>
-);
+)};
 
 export default ArticleList;

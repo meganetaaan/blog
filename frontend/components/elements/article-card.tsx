@@ -26,7 +26,7 @@ interface ArticleCardProps
 }
 const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, imageUrl }: ArticleCardProps) => {
   return (
-    <Link href={slug}>
+    <Link href={`/articles/${slug}`}>
       <Box
         as="article"
         transitionProperty="all"
@@ -36,6 +36,7 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, ima
         borderWidth="1px"
         overflow="hidden"
         rounded="md"
+        bg="white"
         _hover={{
           cursor: "pointer",
           boxShadow: "base",

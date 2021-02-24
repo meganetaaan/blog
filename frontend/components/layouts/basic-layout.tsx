@@ -3,9 +3,9 @@ import { FC } from "react";
 import Navigation from "../elements/navigation";
 
 const BasicLayout: FC<unknown> = ({ children }) => (
-  <Flex direction="column" w="full" >
+  <Flex direction="column" w="full" h="full">
     <Navigation w="full" />
-    <Box p={4} flexGrow={1}>
+    <Box p={2} flex={1}>
       {children}
     </Box>
   </Flex>
