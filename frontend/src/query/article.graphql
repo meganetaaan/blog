@@ -1,0 +1,32 @@
+query AllArticles {
+  articles {
+    id
+    slug
+    publishedAt
+    title
+    description
+    image {
+      url
+    }
+    tags {
+      name
+      slug
+    }
+  }
+}
+
+query findArticleBySlug($slug: String!) {
+  articles (where: {slug: $slug}) {
+    id
+    title
+    publishedAt
+    content
+    image {
+      url
+    }
+    tags {
+      name
+      slug
+    }
+  }
+}

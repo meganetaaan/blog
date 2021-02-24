@@ -4,7 +4,6 @@ import { BiBeer } from "react-icons/bi"
 
 const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
   const bp = useBreakpointValue({ base: "base", sm: "sm" });
-  console.log(bp)
   return (
     <Flex zIndex="1" shadow="sm" position="sticky" top="0" p={4} w="100%" bg={'#ffffffdd'} sx={{
       backdropFilter: "blur(10px)"

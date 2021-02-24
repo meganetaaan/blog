@@ -10,7 +10,6 @@ let apolloClient: ApolloClient<NormalizedCacheObject>;
 const DEFAULT_GRAPHQL_ENDPOINT_URI = 'http://localhost:1337/graphql'
 
 function createApolloClient() {
-  console.log(process.env)
   const uri = process.env.GRAPHQL_ENDPOINT_URI || process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_URI || DEFAULT_GRAPHQL_ENDPOINT_URI
 
   return new ApolloClient({

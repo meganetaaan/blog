@@ -1666,17 +1666,6 @@ export enum CacheControlScope {
   Private = 'PRIVATE'
 }
 
-export type GlobalQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GlobalQuery = (
-  { __typename?: 'Query' }
-  & { global?: Maybe<(
-    { __typename?: 'Global' }
-    & Pick<Global, 'copyrightNotice' | 'siteName'>
-  )> }
-);
-
 export type AllArticlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1695,40 +1684,38 @@ export type AllArticlesQuery = (
   )>>> }
 );
 
+export type FindArticleBySlugQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
 
-export const GlobalDocument = gql`
-    query Global {
-  global {
-    copyrightNotice
-    siteName
-  }
-}
-    `;
 
-/**
- * __useGlobalQuery__
- *
- * To run a query within a React component, call `useGlobalQuery` and pass it any options that fit your needs.
- * When your component renders, `useGlobalQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGlobalQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGlobalQuery(baseOptions?: Apollo.QueryHookOptions<GlobalQuery, GlobalQueryVariables>) {
-        return Apollo.useQuery<GlobalQuery, GlobalQueryVariables>(GlobalDocument, baseOptions);
-      }
-export function useGlobalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GlobalQuery, GlobalQueryVariables>) {
-          return Apollo.useLazyQuery<GlobalQuery, GlobalQueryVariables>(GlobalDocument, baseOptions);
-        }
-export type GlobalQueryHookResult = ReturnType<typeof useGlobalQuery>;
-export type GlobalLazyQueryHookResult = ReturnType<typeof useGlobalLazyQuery>;
-export type GlobalQueryResult = Apollo.QueryResult<GlobalQuery, GlobalQueryVariables>;
+export type FindArticleBySlugQuery = (
+  { __typename?: 'Query' }
+  & { articles?: Maybe<Array<Maybe<(
+    { __typename?: 'Article' }
+    & Pick<Article, 'id' | 'title' | 'publishedAt' | 'content'>
+    & { image?: Maybe<(
+      { __typename?: 'UploadFile' }
+      & Pick<UploadFile, 'url'>
+    )>, tags?: Maybe<Array<Maybe<(
+      { __typename?: 'Tag' }
+      & Pick<Tag, 'name' | 'slug'>
+    )>>> }
+  )>>> }
+);
+
+export type GlobalQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GlobalQuery = (
+  { __typename?: 'Query' }
+  & { global?: Maybe<(
+    { __typename?: 'Global' }
+    & Pick<Global, 'copyrightNotice' | 'siteName'>
+  )> }
+);
+
+
 export const AllArticlesDocument = gql`
     query AllArticles {
   articles {
@@ -1772,3 +1759,79 @@ export function useAllArticlesLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type AllArticlesQueryHookResult = ReturnType<typeof useAllArticlesQuery>;
 export type AllArticlesLazyQueryHookResult = ReturnType<typeof useAllArticlesLazyQuery>;
 export type AllArticlesQueryResult = Apollo.QueryResult<AllArticlesQuery, AllArticlesQueryVariables>;
+export const FindArticleBySlugDocument = gql`
+    query findArticleBySlug($slug: String!) {
+  articles(where: {slug: $slug}) {
+    id
+    title
+    publishedAt
+    content
+    image {
+      url
+    }
+    tags {
+      name
+      slug
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindArticleBySlugQuery__
+ *
+ * To run a query within a React component, call `useFindArticleBySlugQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindArticleBySlugQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindArticleBySlugQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useFindArticleBySlugQuery(baseOptions: Apollo.QueryHookOptions<FindArticleBySlugQuery, FindArticleBySlugQueryVariables>) {
+        return Apollo.useQuery<FindArticleBySlugQuery, FindArticleBySlugQueryVariables>(FindArticleBySlugDocument, baseOptions);
+      }
+export function useFindArticleBySlugLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindArticleBySlugQuery, FindArticleBySlugQueryVariables>) {
+          return Apollo.useLazyQuery<FindArticleBySlugQuery, FindArticleBySlugQueryVariables>(FindArticleBySlugDocument, baseOptions);
+        }
+export type FindArticleBySlugQueryHookResult = ReturnType<typeof useFindArticleBySlugQuery>;
+export type FindArticleBySlugLazyQueryHookResult = ReturnType<typeof useFindArticleBySlugLazyQuery>;
+export type FindArticleBySlugQueryResult = Apollo.QueryResult<FindArticleBySlugQuery, FindArticleBySlugQueryVariables>;
+export const GlobalDocument = gql`
+    query Global {
+  global {
+    copyrightNotice
+    siteName
+  }
+}
+    `;
+
+/**
+ * __useGlobalQuery__
+ *
+ * To run a query within a React component, call `useGlobalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGlobalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGlobalQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGlobalQuery(baseOptions?: Apollo.QueryHookOptions<GlobalQuery, GlobalQueryVariables>) {
+        return Apollo.useQuery<GlobalQuery, GlobalQueryVariables>(GlobalDocument, baseOptions);
+      }
+export function useGlobalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GlobalQuery, GlobalQueryVariables>) {
+          return Apollo.useLazyQuery<GlobalQuery, GlobalQueryVariables>(GlobalDocument, baseOptions);
+        }
+export type GlobalQueryHookResult = ReturnType<typeof useGlobalQuery>;
+export type GlobalLazyQueryHookResult = ReturnType<typeof useGlobalLazyQuery>;
+export type GlobalQueryResult = Apollo.QueryResult<GlobalQuery, GlobalQueryVariables>;
