@@ -25,7 +25,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: strapi
       MONGO_INITDB_ROOT_PASSWORD: strapi
     volumes:
-      - ./data:/data/db
+      - strapidata-mongo:/data/db
     networks:
       - app-network
   frontend:
@@ -44,3 +44,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  strapidata-mongo:
