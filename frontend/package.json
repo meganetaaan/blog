@@ -16,6 +16,7 @@
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "apollo-link-error": "^1.1.13",
+    "chakra-ui-markdown-renderer": "^1.1.0",
     "deepmerge": "^4.2.2",
     "framer-motion": "^3.2.2-rc.1",
     "graphql": "^15.5.0",
@@ -24,7 +25,8 @@
     "react": "17.0.1",
     "react-apollo": "^3.1.5",
     "react-dom": "17.0.1",
-    "react-icons": "^4.2.0"
+    "react-icons": "^4.2.0",
+    "react-markdown": "^5.0.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.20.1",

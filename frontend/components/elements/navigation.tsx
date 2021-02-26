@@ -10,8 +10,9 @@ import {
   Circle,
   Box,
   Container,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
+import Link from "next/link"
 import React, { FC } from "react";
 import { BiBeer } from "react-icons/bi";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
@@ -41,21 +42,51 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
       ref={ref}
       {...props}
     >
-      <Container maxW="6xl" px={[0, null, 8]}>
+      <Container maxW="5xl" px={[0, null, 4]}>
         <Flex align="center">
-          <Heading as="h1" fontSize="2xl">
-            ししかわ商店
-          </Heading>
+          <Link href="/">
+            <Heading
+              as="h1"
+              fontSize="2xl"
+              style={{
+                cursor: "pointer"
+              }}
+            >
+              ししかわ商店
+            </Heading>
+          </Link>
           <Spacer></Spacer>
           <ButtonGroup alignItems="center">
-            <IconButton as="a" href="https://www.facebook.com/meganetaaan" target="_blank" aria-label="facebook" colorScheme="facebook" isRound icon={<FaFacebook/>}></IconButton>
-            <IconButton as="a" href="https://twitter.com/meganetaaan" target="_blank" aria-label="twitter" colorScheme="twitter" isRound icon={<FaTwitter/>}></IconButton>
+            <IconButton
+              as="a"
+              href="https://www.facebook.com/meganetaaan"
+              target="_blank"
+              aria-label="facebook"
+              colorScheme="blackAlpha"
+              isRound
+              icon={<FaFacebook />}
+            ></IconButton>
+            <IconButton
+              as="a"
+              href="https://twitter.com/meganetaaan"
+              target="_blank"
+              aria-label="twitter"
+              colorScheme="blackAlpha"
+              isRound
+              icon={<FaTwitter />}
+            ></IconButton>
             {bp !== "base" ? (
               <Button {...sponsorLinkProps} leftIcon={<BiBeer></BiBeer>} size="sm" colorScheme="teal">
                 Be a Sponsor
               </Button>
             ) : (
-              <IconButton {...sponsorLinkProps} aria-label="be a sponsor" colorScheme="teal" isRound icon={<BiBeer/>}></IconButton>
+              <IconButton
+                {...sponsorLinkProps}
+                aria-label="be a sponsor"
+                colorScheme="teal"
+                isRound
+                icon={<BiBeer />}
+              ></IconButton>
             )}
           </ButtonGroup>
         </Flex>

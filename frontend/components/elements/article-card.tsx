@@ -12,6 +12,8 @@ import {
   Stack,
   Tag,
   Text,
+  useBreakpoint,
+  useBreakpointValue,
   VStack
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -25,6 +27,12 @@ interface ArticleCardProps
   imageUrl?: string;
 }
 const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, imageUrl }: ArticleCardProps) => {
+  const hoverStyle = useBreakpointValue({
+    md: {
+      boxShadow: "base",
+      transform: "translateY(-2px) scale(1.02)"
+    }
+  });
   return (
     <Link href={`/articles/${slug}`}>
       <Box
@@ -34,17 +42,17 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, ima
         transitionDuration="100ms"
         shadow="sm"
         borderWidth="1px"
+        borderColor="gray.100"
         overflow="hidden"
         rounded="md"
         bg="white"
-        _hover={{
-          cursor: "pointer",
-          boxShadow: "base",
-          transform: "translateY(-2px) scale(1.02)"
+        style={{
+          cursor: "pointer"
         }}
+        _hover={hoverStyle}
       >
         <Stack direction={["row", null, "column"]}>
-          <VStack p={4} align="left">
+          <VStack flex="1" p={4} align="left">
             <Heading color="gray.800" fontSize="xl" fontWeight="bold">
               {title}
             </Heading>
@@ -61,10 +69,9 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, ima
               {description}
             </Text>
           </VStack>
-          <Spacer></Spacer>
-          <AspectRatio minW={20} w={["25%", null, "full"]} ratio={[1, null, 16 / 9]}>
-            <Image w="full" objectFit="cover" src={getStrapiMedia(imageUrl) ?? ""} />
-          </AspectRatio>
+          <Box w={[3 / 10, null, "full"]}>
+            <Image w="full" h="full" objectFit="cover" src={getStrapiMedia(imageUrl) ?? ""} />
+          </Box>
         </Stack>
       </Box>
     </Link>

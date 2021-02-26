@@ -12,7 +12,7 @@ const ArticleList: FC<Props> = ({ articles }) => {
     md: 3
   });
   return (
-  <Container maxW="6xl" px={[0, null, 6]}>
+  <Container maxW="5xl" px={[0, null, 2]}>
     <Box
       gridGap={0}
       style={{
@@ -22,7 +22,7 @@ const ArticleList: FC<Props> = ({ articles }) => {
       {articles.map((a) => (
         <Box
           key={a.id}
-          p={2}
+          p={[1, null, 2]}
           style={{
             breakInside: "avoid-column"
           }}

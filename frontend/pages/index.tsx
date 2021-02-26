@@ -1,4 +1,5 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Fade } from "@chakra-ui/react";
+import React from "react";
 import Articles from "../components/elements/articles";
 import BasicLayout from "../components/layouts/basic-layout";
 import { AllArticlesDocument, Article, useAllArticlesQuery } from "../src/generated/graphql";

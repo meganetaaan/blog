@@ -1,16 +1,33 @@
-import { gql } from "@apollo/client";
-import { Box } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  ButtonGroup,
+  Container,
+  HStack,
+  IconButton,
+  Image,
+  VStack,
+  Divider,
+  Spacer,
+  Icon,
+} from "@chakra-ui/react";
 import { GetStaticPropsContext } from "next";
-import Articles from "../../components/elements/articles";
+import React from "react";
+import { GiShare } from "react-icons/gi";
+import { FaFacebook, FaTwitter } from "react-icons/fa";
+import ReactMarkdown from "react-markdown/with-html";
 import BasicLayout from "../../components/layouts/basic-layout";
 import {
   AllArticlesDocument,
   AllArticlesQuery,
   Article,
   FindArticleBySlugDocument,
+  GlobalDocument,
   useFindArticleBySlugQuery
 } from "../../src/generated/graphql";
 import { initializeApollo } from "../../src/lib/apolloClient";
+import { getStrapiMedia } from "../../src/lib/media";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 interface ArticlePageProperty {
   slug: string;
@@ -22,11 +39,65 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
   } else if (error) {
     return <Box>{error}</Box>;
   }
+  const article = data?.articles != null ? data.articles[0] : null;
+  if (article == null) {
+    return <Box>Not found</Box>;
+  }
+  const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
   return (
     <BasicLayout>
-      <Box>
-        {JSON.stringify(data)}
-      </Box>
+      <Container maxW="5xl">
+        <HStack align="start" spacing={4}>
+          <VStack position="sticky" top="90px">
+            <Icon as={GiShare} fontSize="lg" color="gray.400"></Icon>
+            <IconButton
+              as="a"
+              href="https://www.facebook.com/meganetaaan"
+              target="_blank"
+              aria-label="facebook"
+              colorScheme="facebook"
+              isRound
+              icon={<FaFacebook />}
+            ></IconButton>
+            <IconButton
+              as="a"
+              href="https://twitter.com/meganetaaan"
+              target="_blank"
+              aria-label="twitter"
+              colorScheme="twitter"
+              isRound
+              icon={<FaTwitter />}
+            ></IconButton>
+            <Spacer></Spacer>
+          </VStack>
+          <Box
+            as="article"
+            rounded="md"
+            bg="white"
+            shadow="md"
+            borderWidth="1"
+            borderColor="gray.100"
+            overflow="hidden"
+          >
+            <VStack w="full">
+              {coverUrl != null && (
+                <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>
+              )}
+              <VStack w="full" color="gray.800" px={4} spacing={2} align="left">
+                <Text px={4} as="h1" fontSize="4xl" fontWeight="bold">
+                  {article.title}
+                </Text>
+                <Divider></Divider>
+                <Box p={4} mb={4}>
+                  <ReactMarkdown renderers={ChakraUIRenderer()} escapeHtml={false}>
+                    {article.content}
+                  </ReactMarkdown>
+                </Box>
+              </VStack>
+            </VStack>
+          </Box>
+        </HStack>
+      </Container>
     </BasicLayout>
   );
 }
@@ -48,34 +119,20 @@ export async function getStaticPaths() {
   return { paths, fallback: true };
 }
 
-const query = gql`
-  query findArticleBySlug {
-    articles(where: { slug: "the-internet-s-own-boy" }) {
-      id
-      title
-      publishedAt
-      content
-      image {
-        url
-      }
-      tags {
-        name
-        slug
-      }
-    }
-  }
-`;
-
 export async function getStaticProps({ params }: GetStaticPropsContext) {
   const slugs = params?.slug;
   const slug = slugs != null && slugs.length > 0 ? slugs[0] : "";
   const apolloClient = initializeApollo();
 
-  console.log(`requesting: ${slugs}`);
-  await apolloClient.query({
-    query: FindArticleBySlugDocument,
-    variables: { slug }
-  });
+  await Promise.all([
+    apolloClient.query({
+      query: FindArticleBySlugDocument,
+      variables: { slug }
+    }),
+    apolloClient.query({
+      query: GlobalDocument
+    })
+  ]);
 
   // const cache = apolloClient.cache.extract();
   // console.log(cache)
