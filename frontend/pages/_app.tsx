@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />;
+        <Component {...pageProps} />
       </ChakraProvider>
     </ApolloProvider>
   );
