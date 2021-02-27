@@ -1,21 +1,4 @@
-import {
-  AspectRatio,
-  Box,
-  BoxProps,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  LinkBox,
-  LinkOverlay,
-  Spacer,
-  Stack,
-  Tag,
-  Text,
-  useBreakpoint,
-  useBreakpointValue,
-  VStack
-} from "@chakra-ui/react";
+import { Box, BoxProps, Heading, HStack, Image, Stack, Tag, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
@@ -70,7 +53,7 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, ima
             </Text>
           </VStack>
           <Box w={[3 / 10, null, "full"]}>
-            <Image w="full" h="full" objectFit="cover" src={getStrapiMedia(imageUrl) ?? ""} />
+            <Image w="full" h="full" maxH={300} objectFit="cover" src={getStrapiMedia(imageUrl) ?? ""} />
           </Box>
         </Stack>
       </Box>

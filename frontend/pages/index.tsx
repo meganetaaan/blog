@@ -1,4 +1,4 @@
-import { Box, Fade } from "@chakra-ui/react";
+import { Box, Center, CircularProgress, Fade } from "@chakra-ui/react";
 import React from "react";
 import Articles from "../components/elements/articles";
 import BasicLayout from "../components/layouts/basic-layout";
@@ -7,15 +7,20 @@ import { initializeApollo } from "../src/lib/apolloClient";
 
 export default function Home() {
   const { data, loading, error } = useAllArticlesQuery();
+  let Content;
   if (loading) {
-    return <Box>Loading...</Box>;
+    Content = <Center>
+      <CircularProgress></CircularProgress>
+    </Center>;
   } else if (error) {
-    return <Box>{error}</Box>;
+    Content = <Box>{error}</Box>;
+  } else {
+    Content = <Articles articles={(data ? data.articles : []) as Article[]}></Articles>
   }
   return (
     <BasicLayout>
       <Box>
-        <Articles articles={(data ? data.articles : []) as Article[]}></Articles>
+        {Content}
       </Box>
     </BasicLayout>
   );

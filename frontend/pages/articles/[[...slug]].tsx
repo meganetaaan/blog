@@ -1,41 +1,35 @@
-import {
-  Box,
-  Text,
-  ButtonGroup,
-  Container,
-  HStack,
-  IconButton,
-  Image,
-  VStack,
-  Divider,
-  Spacer,
-  Icon,
-} from "@chakra-ui/react";
+import { Box, Center, CircularProgress, Container, Divider, HStack, Icon, IconButton, Image, Spacer, Tag, Text, VStack } from "@chakra-ui/react";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import { GetStaticPropsContext } from "next";
 import React from "react";
-import { GiShare } from "react-icons/gi";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
+import { GiShare } from "react-icons/gi";
 import ReactMarkdown from "react-markdown/with-html";
+import { FacebookShareButton, HatenaIcon, HatenaShareButton, TwitterShareButton } from "react-share";
+import Markdown from "../../components/elements/markdown";
 import BasicLayout from "../../components/layouts/basic-layout";
 import {
   AllArticlesDocument,
   AllArticlesQuery,
-  Article,
   FindArticleBySlugDocument,
   GlobalDocument,
   useFindArticleBySlugQuery
 } from "../../src/generated/graphql";
 import { initializeApollo } from "../../src/lib/apolloClient";
 import { getStrapiMedia } from "../../src/lib/media";
-import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 interface ArticlePageProperty {
   slug: string;
 }
 export default function ArticlePage({ slug }: ArticlePageProperty) {
   const { data, loading, error } = useFindArticleBySlugQuery({ variables: { slug } });
+  const currentUrl = globalThis.window != null && window?.location.href
   if (loading) {
-    return <Box>Loading...</Box>;
+    return (
+      <Center>
+        <CircularProgress></CircularProgress>
+      </Center>
+    );
   } else if (error) {
     return <Box>{error}</Box>;
   }
@@ -44,30 +38,22 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
     return <Box>Not found</Box>;
   }
   const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
+  console.log(article.publishedAt)
   return (
     <BasicLayout>
-      <Container maxW="5xl">
+      <Container maxW="5xl" p={[0, null, 4]}>
         <HStack align="start" spacing={4}>
           <VStack position="sticky" top="90px">
             <Icon as={GiShare} fontSize="lg" color="gray.400"></Icon>
-            <IconButton
-              as="a"
-              href="https://www.facebook.com/meganetaaan"
-              target="_blank"
-              aria-label="facebook"
-              colorScheme="facebook"
-              isRound
-              icon={<FaFacebook />}
-            ></IconButton>
-            <IconButton
-              as="a"
-              href="https://twitter.com/meganetaaan"
-              target="_blank"
-              aria-label="twitter"
-              colorScheme="twitter"
-              isRound
-              icon={<FaTwitter />}
-            ></IconButton>
+            <TwitterShareButton url={currentUrl}>
+              <IconButton aria-label="twitter" colorScheme="twitter" isRound icon={<FaTwitter />}></IconButton>
+            </TwitterShareButton>
+            <HatenaShareButton url={currentUrl}>
+              <IconButton fontSize="sm" overflow="hidden" aria-label="hatena-bookmark" isRound icon={<HatenaIcon size={40} round={true}/>}></IconButton>
+            </HatenaShareButton>
+            <FacebookShareButton url={currentUrl}>
+              <IconButton aria-label="facebook" colorScheme="facebook" isRound icon={<FaFacebook />}></IconButton>
+            </FacebookShareButton>
             <Spacer></Spacer>
           </VStack>
           <Box
@@ -80,18 +66,24 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
             overflow="hidden"
           >
             <VStack w="full">
-              {coverUrl != null && (
-                <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>
-              )}
+              {coverUrl != null && <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>}
               <VStack w="full" color="gray.800" px={4} spacing={2} align="left">
-                <Text px={4} as="h1" fontSize="4xl" fontWeight="bold">
-                  {article.title}
-                </Text>
+                <VStack align="left" px={4} mb={2}>
+                  <Text as="p" fontSize="md" color="gray.600">
+                    {new Date(Date.parse(article.publishedAt)).toDateString()}
+                  </Text>
+                  <Text as="h1" fontSize="4xl" fontWeight="bold">
+                    {article.title}
+                  </Text>
+                  <HStack>
+                    {article.tags?.map((t) => (
+                      <Tag>{t?.name}</Tag>
+                    ))}
+                  </HStack>
+                </VStack>
                 <Divider></Divider>
                 <Box p={4} mb={4}>
-                  <ReactMarkdown renderers={ChakraUIRenderer()} escapeHtml={false}>
-                    {article.content}
-                  </ReactMarkdown>
+                  <Markdown content={article.content}></Markdown>
                 </Box>
               </VStack>
             </VStack>
