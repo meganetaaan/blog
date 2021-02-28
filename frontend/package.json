@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "develop": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "generate-query": "graphql-codegen --config codegen.yml"
   },
@@ -15,6 +15,7 @@
     "@chakra-ui/react": "^1.1.6",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
+    "@n8tb1t/use-scroll-position": "^2.0.3",
     "apollo-link-error": "^1.1.13",
     "chakra-ui-markdown-renderer": "^1.1.0",
     "deepmerge": "^4.2.2",

@@ -25,7 +25,7 @@ function createApolloClient() {
       );
     if (networkError) console.log(`[Network error]: ${networkError}`);
   });
-  const link = ApolloLink.from([errorLink, httpLink]);
+  const link = ApolloLink.from([errorLink as any, httpLink]);
 
   return new ApolloClient({
     ssrMode: typeof window === "undefined",

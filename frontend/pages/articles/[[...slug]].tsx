@@ -1,12 +1,25 @@
-import { Box, Center, CircularProgress, Container, Divider, HStack, Icon, IconButton, Image, Spacer, Tag, Text, VStack } from "@chakra-ui/react";
-import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import {
+  Box,
+  Center,
+  CircularProgress,
+  Container,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  SlideFade,
+  Spacer,
+  Tag,
+  Text,
+  useBreakpointValue,
+  VStack
+} from "@chakra-ui/react";
 import { GetStaticPropsContext } from "next";
-import React from "react";
-import { FaFacebook, FaTwitter } from "react-icons/fa";
+import Link from "next/link";
+import React, { useState } from "react";
 import { GiShare } from "react-icons/gi";
-import ReactMarkdown from "react-markdown/with-html";
-import { FacebookShareButton, HatenaIcon, HatenaShareButton, TwitterShareButton } from "react-share";
 import Markdown from "../../components/elements/markdown";
+import ShareButtons from "../../components/elements/share-buttons";
 import BasicLayout from "../../components/layouts/basic-layout";
 import {
   AllArticlesDocument,
@@ -22,8 +35,13 @@ interface ArticlePageProperty {
   slug: string;
 }
 export default function ArticlePage({ slug }: ArticlePageProperty) {
+  const [isSharePopupShown, setIsSharePopupShown] = useState(false);
   const { data, loading, error } = useFindArticleBySlugQuery({ variables: { slug } });
-  const currentUrl = globalThis.window != null && window?.location.href
+  const currentUrl = globalThis.window != null ? window?.location.href : ""
+  const isLarge = useBreakpointValue({
+    base: false,
+    lg: true
+  })
   if (loading) {
     return (
       <Center>
@@ -38,57 +56,76 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
     return <Box>Not found</Box>;
   }
   const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
-  console.log(article.publishedAt)
   return (
     <BasicLayout>
-      <Container maxW="5xl" p={[0, null, 4]}>
+      <Container maxW="5xl" px={[0, null, 4]} py={0}>
         <HStack align="start" spacing={4}>
-          <VStack position="sticky" top="90px">
-            <Icon as={GiShare} fontSize="lg" color="gray.400"></Icon>
-            <TwitterShareButton url={currentUrl}>
-              <IconButton aria-label="twitter" colorScheme="twitter" isRound icon={<FaTwitter />}></IconButton>
-            </TwitterShareButton>
-            <HatenaShareButton url={currentUrl}>
-              <IconButton fontSize="sm" overflow="hidden" aria-label="hatena-bookmark" isRound icon={<HatenaIcon size={40} round={true}/>}></IconButton>
-            </HatenaShareButton>
-            <FacebookShareButton url={currentUrl}>
-              <IconButton aria-label="facebook" colorScheme="facebook" isRound icon={<FaFacebook />}></IconButton>
-            </FacebookShareButton>
-            <Spacer></Spacer>
-          </VStack>
+          {isLarge && !isSharePopupShown && (
+            <VStack position="sticky" top="92px">
+              <Icon as={GiShare} fontSize="lg" color="gray.400"></Icon>
+              <ShareButtons url={currentUrl}></ShareButtons>
+              <Spacer></Spacer>
+            </VStack>
+          )}
+
           <Box
             as="article"
-            rounded="md"
             bg="white"
-            shadow="md"
+            rounded={[0, "md"]}
+            shadow={[0, "base"]}
             borderWidth="1"
             borderColor="gray.100"
             overflow="hidden"
           >
             <VStack w="full">
-              {coverUrl != null && <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>}
-              <VStack w="full" color="gray.800" px={4} spacing={2} align="left">
-                <VStack align="left" px={4} mb={2}>
-                  <Text as="p" fontSize="md" color="gray.600">
+              <VStack w="full" color="gray.800" spacing={2} align="left">
+                <VStack align="left" px={[4, null, 6]} py={2}>
+                  <Text as="p" fontSize={["sm", null, "md"]} color="gray.600">
                     {new Date(Date.parse(article.publishedAt)).toDateString()}
                   </Text>
-                  <Text as="h1" fontSize="4xl" fontWeight="bold">
-                    {article.title}
-                  </Text>
+                  <Link href={`/articles/${slug}`}>
+                    <Text as="h1" fontSize={["2xl", null, "4xl"]} fontWeight="bold" cursor="pointer">
+                      {article.title}
+                    </Text>
+                  </Link>
                   <HStack>
                     {article.tags?.map((t) => (
-                      <Tag>{t?.name}</Tag>
+                      <Tag key={t?.slug}>{t?.name}</Tag>
                     ))}
                   </HStack>
                 </VStack>
-                <Divider></Divider>
-                <Box p={4} mb={4}>
+                {coverUrl != null && (
+                  <Box borderColor="gray.100" borderWidth={1}>
+                    <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>
+                  </Box>
+                )}
+                <Box px={6} mb={4}>
                   <Markdown content={article.content}></Markdown>
                 </Box>
               </VStack>
             </VStack>
           </Box>
         </HStack>
+        {!isLarge && (
+          <VStack position="fixed" bottom={4} right={2}>
+            <SlideFade in={isSharePopupShown}>
+              <VStack>
+                <ShareButtons url={currentUrl}></ShareButtons>
+              </VStack>
+            </SlideFade>
+            <IconButton
+              shadow="base"
+              aria-label="share"
+              isRound
+              colorScheme="blackAlpha"
+              onClick={() => {
+                setIsSharePopupShown(!isSharePopupShown);
+              }}
+            >
+              <Icon as={GiShare} fontSize="lg"></Icon>
+            </IconButton>
+          </VStack>
+        )}
       </Container>
     </BasicLayout>
   );
@@ -108,7 +145,7 @@ export async function getStaticPaths() {
       params: { slug: slugArray }
     };
   });
-  return { paths, fallback: true };
+  return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
@@ -126,8 +163,6 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     })
   ]);
 
-  // const cache = apolloClient.cache.extract();
-  // console.log(cache)
   return {
     props: {
       initialApolloState: apolloClient.cache.extract(),

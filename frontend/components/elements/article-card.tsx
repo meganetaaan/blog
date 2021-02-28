@@ -9,33 +9,32 @@ interface ArticleCardProps
     Omit<BoxProps, "title"> {
   imageUrl?: string;
 }
-const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, imageUrl }: ArticleCardProps) => {
+const ArticleCard: FC<ArticleCardProps> = ({ slug, title, publishedAt, description, tags, imageUrl }: ArticleCardProps) => {
   const hoverStyle = useBreakpointValue({
     md: {
-      boxShadow: "base",
-      transform: "translateY(-2px) scale(1.02)"
+      transform: "scale(1.2)",
     }
   });
   return (
     <Link href={`/articles/${slug}`}>
       <Box
         as="article"
-        transitionProperty="all"
-        transition="ease-in"
-        transitionDuration="100ms"
         shadow="sm"
         borderWidth="1px"
         borderColor="gray.100"
         overflow="hidden"
         rounded="md"
+        role="group"
         bg="white"
         style={{
           cursor: "pointer"
         }}
-        _hover={hoverStyle}
       >
         <Stack direction={["row", null, "column"]}>
           <VStack flex="1" p={4} align="left">
+            <Text color="gray.600" fontSize="sm" isTruncated noOfLines={3}>
+              {new Date(Date.parse(publishedAt)).toDateString()}
+            </Text>
             <Heading color="gray.800" fontSize="xl" fontWeight="bold">
               {title}
             </Heading>
@@ -48,12 +47,22 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, description, tags, ima
                 ))}
               </HStack>
             )}
-            <Text color="gray.800" isTruncated noOfLines={3}>
+            <Text color="gray.600" fontSize="sm" isTruncated noOfLines={3}>
               {description}
             </Text>
           </VStack>
-          <Box w={[3 / 10, null, "full"]}>
-            <Image w="full" h="full" maxH={300} objectFit="cover" src={getStrapiMedia(imageUrl) ?? ""} />
+          <Box w={[3 / 10, null, "full"]} overflow="hidden">
+            <Image
+              w="full"
+              h="full"
+              maxH={300}
+              transitionProperty="all"
+              transition="ease-out"
+              transitionDuration="800ms"
+              _groupHover={hoverStyle}
+              objectFit="cover"
+              src={getStrapiMedia(imageUrl) ?? ""}
+            />
           </Box>
         </Stack>
       </Box>

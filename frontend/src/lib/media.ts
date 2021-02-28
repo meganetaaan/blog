@@ -1,6 +1,6 @@
-export function getStrapiMedia(url: string | null | undefined): string | null {
+export function getStrapiMedia(url: string | null | undefined): string {
   if (url == null) {
-    return null;
+    return "";
   }
 
   // Return the full URL if the media is hosted on an external provider
