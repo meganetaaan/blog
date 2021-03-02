@@ -38,9 +38,23 @@ services:
     ports:
       - "3000:3000"
       - "8080:8080"
-    command: npm run develop
+    depends_on:
+      - backend
+    # command: npm run develop
+    command: npx http-server -p 8080 ./out
     networks:
       - app-network
+  reverse_proxy:
+    image: nginx
+    volumes:
+      - ./reverse-proxy/:/etc/nginx/
+    ports:
+      - 80:80
+    networks:
+      - app-network
+    depends_on:
+      - backend
+      - frontend
 
 networks:
   app-network:
