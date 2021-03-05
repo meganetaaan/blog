@@ -2,7 +2,7 @@
   "name": "backend",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "shishikawa shoten blog",
   "scripts": {
     "develop": "node --inspect=127.0.0.1:9229 ./node_modules/strapi/bin/strapi.js develop",
     "start": "strapi start",
@@ -11,22 +11,20 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "mime-types": "^2.1.27",
     "strapi": "3.5.0",
     "strapi-admin": "3.5.0",
-    "strapi-utils": "3.5.0",
-    "strapi-plugin-content-type-builder": "3.5.0",
-    "strapi-plugin-content-manager": "3.5.0",
-    "strapi-plugin-users-permissions": "3.5.0",
-    "strapi-plugin-email": "3.5.0",
-    "strapi-plugin-upload": "3.5.0",
     "strapi-connector-mongoose": "3.4.6",
+    "strapi-plugin-content-manager": "3.5.0",
+    "strapi-plugin-content-type-builder": "3.5.0",
+    "strapi-plugin-email": "3.5.0",
     "strapi-plugin-graphql": "3.4.6",
-    "strapi-connector-bookshelf": "3.5.0",
-    "knex": "<0.20.0",
-    "mime-types": "^2.1.27"
+    "strapi-plugin-upload": "3.5.0",
+    "strapi-plugin-users-permissions": "3.5.0",
+    "strapi-utils": "3.5.0"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Shinya Ishikawa"
   },
   "strapi": {
     "uuid": "9fcbd441-2397-423e-a41e-02b5c39f184f",
