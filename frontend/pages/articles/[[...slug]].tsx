@@ -28,7 +28,7 @@ import {
   GlobalDocument,
   useFindArticleBySlugQuery
 } from "../../src/generated/graphql";
-import { initializeApollo } from "../../src/lib/apolloClient";
+import { addApolloState, initializeApollo } from "../../src/lib/apolloClient";
 import { getStrapiMedia } from "../../src/lib/media";
 
 interface ArticlePageProperty {
@@ -163,10 +163,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     })
   ]);
 
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-      slug
-    }
-  };
+  return addApolloState(apolloClient, {
+    props: { slug }
+  })
 }

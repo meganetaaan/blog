@@ -3,7 +3,7 @@ import React from "react";
 import Articles from "../components/elements/articles";
 import BasicLayout from "../components/layouts/basic-layout";
 import { AllArticlesDocument, Article, useAllArticlesQuery } from "../src/generated/graphql";
-import { initializeApollo } from "../src/lib/apolloClient";
+import { addApolloState, initializeApollo } from "../src/lib/apolloClient";
 
 export default function Home() {
   const { data, loading, error } = useAllArticlesQuery();
@@ -36,9 +36,8 @@ export async function getStaticProps() {
   //   query: GlobalDocument,
   // })
 
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract()
-    }
-  };
+  return addApolloState(apolloClient, {
+    props: {},
+    revalidate: 60 * 60
+  });
 }
