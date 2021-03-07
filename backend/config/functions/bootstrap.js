@@ -1,5 +1,6 @@
 "use strict";
 
+/*
 const fs = require("fs");
 const path = require("path");
 const mime = require("mime-types");
@@ -154,18 +155,19 @@ async function importSeedData() {
   await importArticles();
   await importGlobal();
 }
+*/
 
 module.exports = async () => {
-  const shouldImportSeedData = await isFirstRun();
+  // const shouldImportSeedData = await isFirstRun();
 
-  if (shouldImportSeedData) {
-    try {
-      console.log('Setting up your starter...');
-      await importSeedData();
-      console.log('Ready to go');
-    } catch (error) {
-      console.log('Could not import seed data');
-      console.error(error);
-    }
-  }
+  // if (shouldImportSeedData) {
+  //   try {
+  //     console.log('Setting up your starter...');
+  //     await importSeedData();
+  //     console.log('Ready to go');
+  //   } catch (error) {
+  //     console.log('Could not import seed data');
+  //     console.error(error);
+  //   }
+  // }
 };

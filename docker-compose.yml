@@ -1,7 +1,11 @@
 version: '3'
 services:
   backend:
-    image: strapi/strapi
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: dev
+    # image: strapi/strapi
     environment:
       DATABASE_CLIENT: mongo
       DATABASE_NAME: strapi
@@ -11,6 +15,7 @@ services:
       DATABASE_PASSWORD: strapi
     volumes:
       - ./backend:/srv/app
+      - /srv/app/node_modules
     ports:
       - '1337:1337'
     depends_on:
@@ -35,13 +40,14 @@ services:
       target: dev
     volumes:
       - ./frontend/:/code
+      - /code/node_modules
     ports:
       - "3000:3000"
       - "8080:8080"
     depends_on:
       - backend
-    # command: npm run develop
-    command: npx http-server -p 8080 ./out
+    command: npm run develop
+    # command: npx http-server -p 8080 ./out
     networks:
       - app-network
   reverse_proxy:
