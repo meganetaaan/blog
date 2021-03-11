@@ -28,12 +28,25 @@ const sponsorLinkProps: Partial<ButtonProps> & { href: string; target: string } 
   target: "_blank"
 };
 
+const CircleButton = (<Button id="hoge" {...sponsorLinkProps} leftIcon={<BiBeer></BiBeer>} size="sm" colorScheme="teal">
+  Be a Sponsor
+</Button>)
+const LabelButton = (
+  <IconButton id="hoge"
+    {...sponsorLinkProps}
+    aria-label="be a sponsor"
+    colorScheme="teal"
+    isRound
+    icon={<BiBeer />}
+  ></IconButton>
+)
+
 const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
   const { isLoading } = useRouterStatus();
   const [navigationShadow, setNavigationShadow] = useState<BoxProps["shadow"]>("base");
   const [scrolledY, setScrolledY] = useState(0);
   const [isNavigationShown, setNavigationShown] = useState(true);
-  const bp = useBreakpointValue({ base: "base", sm: "sm" });
+  const BeerButton = useBreakpointValue({ base: LabelButton, sm: CircleButton });
   useScrollPosition(({ prevPos, currPos }) => {
     setNavigationShadow(currPos.y < -0 ? "md" : "sm")
     if (currPos.y > -90) {
@@ -107,19 +120,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
                   isRound
                   icon={<FaGithubAlt />}
                 ></IconButton>
-                {bp !== "base" ? (
-                  <Button {...sponsorLinkProps} leftIcon={<BiBeer></BiBeer>} size="sm" colorScheme="teal">
-                    Be a Sponsor
-                  </Button>
-                ) : (
-                  <IconButton
-                    {...sponsorLinkProps}
-                    aria-label="be a sponsor"
-                    colorScheme="teal"
-                    isRound
-                    icon={<BiBeer />}
-                  ></IconButton>
-                )}
+                {BeerButton}
               </ButtonGroup>
             </Flex>
           </Container>
