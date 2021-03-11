@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   backend:
     build:
@@ -43,7 +43,7 @@ services:
       - /code/node_modules
     ports:
       - "3000:3000"
-      - "8080:8080"
+        # - "8080:8080"
     depends_on:
       - backend
     command: npm run develop
@@ -54,6 +54,7 @@ services:
     image: nginx
     volumes:
       - ./reverse-proxy/:/etc/nginx/
+      - ./frontend/out:/usr/share/nginx/html
     ports:
       - 80:80
     networks:
