@@ -61,7 +61,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
     <BasicLayout>
       <Container maxW="5xl" px={[0, null, 4]} py={0}>
         <HStack align="start" spacing={4}>
-          {isLarge && !isSharePopupShown && (
+          {isLarge && (
             <VStack position="sticky" top="92px">
               <Icon as={GiShare} fontSize="lg" color="gray.400"></Icon>
               <ShareButtons url={currentUrl}></ShareButtons>
@@ -107,13 +107,14 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
           </Box>
         </HStack>
         {!isLarge && (
-          <VStack position="fixed" bottom={4} right={2}>
+          <VStack position="fixed" bottom={6} right={4}>
             <SlideFade in={isSharePopupShown}>
               <VStack>
-                <ShareButtons url={currentUrl}></ShareButtons>
+                <ShareButtons size="lg" url={currentUrl}></ShareButtons>
               </VStack>
             </SlideFade>
             <IconButton
+              size="lg"
               shadow="base"
               aria-label="share"
               isRound
