@@ -3,6 +3,7 @@ import {
   Center,
   CircularProgress,
   Container,
+  Heading,
   HStack,
   Icon,
   IconButton,
@@ -71,6 +72,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
           <Box
             as="article"
             bg="white"
+            flexGrow={1}
             rounded={[0, "md"]}
             shadow={[0, "base"]}
             borderWidth="1"
@@ -79,14 +81,14 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
           >
             <VStack w="full">
               <VStack w="full" color="gray.800" spacing={2} align="left">
-                <VStack align="left" px={[4, null, 6]} py={2}>
+                <VStack align="left" px={[4, null, 6]} py={[2, null, 4]}>
                   <Text as="p" fontSize={["sm", null, "md"]} color="gray.600">
                     {new Date(Date.parse(article.publishedAt)).toDateString()}
                   </Text>
                   <Link href={`/articles/${slug}`}>
-                    <Text as="h1" fontSize={["2xl", null, "4xl"]} fontWeight="bold" cursor="pointer">
+                    <Heading as="h1" fontSize={["3xl", null, "5xl"]} fontWeight="bold" cursor="pointer">
                       {article.title}
-                    </Text>
+                    </Heading>
                   </Link>
                   <HStack>
                     {article.tags?.map((t) => (
@@ -99,9 +101,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
                     <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>
                   </Box>
                 )}
-                <Box px={6} mb={4}>
-                  <Markdown content={article.content}></Markdown>
-                </Box>
+                <Markdown px={[4, null, 6]} py={[2, null, 4]} content={article.content}></Markdown>
               </VStack>
             </VStack>
           </Box>

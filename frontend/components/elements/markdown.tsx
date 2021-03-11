@@ -1,5 +1,5 @@
 import { LinkIcon } from "@chakra-ui/icons";
-import { Box, BoxProps, Heading, HStack, Link, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, BoxProps, Heading, HStack, Image, Link, Text, useBreakpointValue } from "@chakra-ui/react";
 import ChakraUIRenderer, { defaults } from "chakra-ui-markdown-renderer";
 import React from "react";
 import ReactMarkdown from "react-markdown";
@@ -37,6 +37,9 @@ const newTheme = {
   link: (props: any) => (
     <Link color="teal.500" target="_blank" {...props}></Link>
   ),
+  img: (props: any) => (
+    <Image py={4} {...props}></Image>
+  ),
   heading: (props: any) => {
     const offset = useBreakpointValue({
       base: 0,
@@ -59,7 +62,7 @@ const newTheme = {
               id={firstChildText}
               my={4}
               as={`h${level}` as "h1"}
-              size={sizes[Number(`${lv - 1}`)]}
+              size={sizes[Number(`${lv}`)]}
               {...getCoreProps(props)}
             >
               {children}
@@ -77,9 +80,12 @@ const newTheme = {
     );
   }
 };
+
+const theme = ChakraUIRenderer(newTheme)
+theme.image = theme.img
 const Markdown = ({ content, ...props }: MarkdownProps) => (
   <Box {...props} color="gray.800">
-    <ReactMarkdown renderers={ChakraUIRenderer(newTheme)} escapeHtml={false}>
+    <ReactMarkdown renderers={theme} escapeHtml={false}>
       {content}
     </ReactMarkdown>
   </Box>
