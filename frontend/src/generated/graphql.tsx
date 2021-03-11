@@ -1732,7 +1732,7 @@ export type AllArticlesQuery = (
     & Pick<Article, 'id' | 'slug' | 'publishedAt' | 'title' | 'description'>
     & { image?: Maybe<(
       { __typename?: 'UploadFile' }
-      & Pick<UploadFile, 'url' | 'formats'>
+      & Pick<UploadFile, 'url' | 'alternativeText' | 'formats'>
     )>, tags?: Maybe<Array<Maybe<(
       { __typename?: 'Tag' }
       & Pick<Tag, 'name' | 'slug'>
@@ -1752,7 +1752,7 @@ export type FindArticleBySlugQuery = (
     & Pick<Article, 'id' | 'title' | 'publishedAt' | 'content'>
     & { image?: Maybe<(
       { __typename?: 'UploadFile' }
-      & Pick<UploadFile, 'url'>
+      & Pick<UploadFile, 'url' | 'height' | 'width' | 'alternativeText' | 'formats'>
     )>, tags?: Maybe<Array<Maybe<(
       { __typename?: 'Tag' }
       & Pick<Tag, 'name' | 'slug'>
@@ -1782,6 +1782,7 @@ export const AllArticlesDocument = gql`
     description
     image {
       url
+      alternativeText
       formats
     }
     tags {
@@ -1825,6 +1826,10 @@ export const FindArticleBySlugDocument = gql`
     content
     image {
       url
+      height
+      width
+      alternativeText
+      formats
     }
     tags {
       name

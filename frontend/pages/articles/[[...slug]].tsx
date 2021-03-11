@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   Center,
   CircularProgress,
@@ -7,7 +8,6 @@ import {
   HStack,
   Icon,
   IconButton,
-  Image,
   SlideFade,
   Spacer,
   Tag,
@@ -20,17 +20,18 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { GiShare } from "react-icons/gi";
 import Markdown from "../../components/elements/markdown";
+import ProgressiveImage from "../../components/elements/progressive-image";
 import ShareButtons from "../../components/elements/share-buttons";
 import BasicLayout from "../../components/layouts/basic-layout";
 import {
   AllArticlesDocument,
   AllArticlesQuery,
+  Article,
   FindArticleBySlugDocument,
   GlobalDocument,
   useFindArticleBySlugQuery
 } from "../../src/generated/graphql";
 import { addApolloState, initializeApollo } from "../../src/lib/apolloClient";
-import { getStrapiMedia } from "../../src/lib/media";
 
 interface ArticlePageProperty {
   slug: string;
@@ -56,7 +57,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
   if (article == null) {
     return <Box>Not found</Box>;
   }
-  const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
+  // const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
   return (
     <BasicLayout>
       <Container maxW="5xl" px={[0, null, 4]} py={0}>
@@ -96,10 +97,10 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
                     ))}
                   </HStack>
                 </VStack>
-                {coverUrl != null && (
-                  <Box borderColor="gray.100" borderWidth={1}>
-                    <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>
-                  </Box>
+                {article.image && (
+                  <AspectRatio w="full" ratio={(article.image?.width || 0) / (article.image?.height || 1)} overflow="hidden">
+                    <ProgressiveImage w="full" height="auto" image={article.image as Article["image"]}></ProgressiveImage>
+                  </AspectRatio>
                 )}
                 <Markdown px={[4, null, 6]} py={[2, null, 4]} content={article.content}></Markdown>
               </VStack>

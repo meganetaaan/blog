@@ -1,4 +1,4 @@
-import { Box, Container, SimpleGrid, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
+import { Box, Container, useBreakpointValue } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
 import ArticleCard from "./article-card";
@@ -16,37 +16,39 @@ const ArticleList: FC<Props> = ({ articles }) => {
     md: "small"
   }) || "small"
   return (
-  <Container maxW="5xl" px={[0, null, 2]}>
-    <Box
-      gridGap={0}
-      style={{
-        columnCount: bp,
-      }}
-    >
-      {articles.map((a) => {
-        const formats = a.image != null ? a.image.formats : {}
-        const url = formats[thumbnailSize]?.url || a.image?.url
-        return (
-        <Box
-          key={a.id}
-          p={[1, null, 2]}
-          style={{
-            breakInside: "avoid-column"
-          }}
-        >
-          <ArticleCard
-            slug={a.slug}
-            title={a.title}
-            description={a.description}
-            tags={a.tags}
-            imageUrl={url}
-            publishedAt={a.publishedAt}
-          />
-        </Box>
-      )})}
-    </Box>
-    {/* </SimpleGrid> */}
-  </Container>
-)};
+    <Container maxW="5xl" px={[0, null, 2]}>
+      <Box
+        gridGap={0}
+        style={{
+          columnCount: bp,
+        }}
+      >
+        {articles.map((a) => {
+          const formats = a.image != null ? a.image.formats : {}
+          const url = formats[thumbnailSize]?.url || a.image?.url
+          return (
+            <Box
+              key={a.id}
+              p={[1, null, 2]}
+              style={{
+                breakInside: "avoid-column"
+              }}
+            >
+              <ArticleCard
+                slug={a.slug}
+                title={a.title}
+                description={a.description}
+                tags={a.tags}
+                imageUrl={url}
+                publishedAt={a.publishedAt}
+              />
+            </Box>
+          )
+        })}
+      </Box>
+      {/* </SimpleGrid> */}
+    </Container>
+  )
+};
 
 export default ArticleList;
