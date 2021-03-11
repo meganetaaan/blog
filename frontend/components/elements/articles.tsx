@@ -11,6 +11,10 @@ const ArticleList: FC<Props> = ({ articles }) => {
     base: 1,
     md: 3
   });
+  const thumbnailSize = useBreakpointValue({
+    base: "thumbnail",
+    md: "small"
+  }) || "small"
   return (
   <Container maxW="5xl" px={[0, null, 2]}>
     <Box
@@ -19,7 +23,10 @@ const ArticleList: FC<Props> = ({ articles }) => {
         columnCount: bp,
       }}
     >
-      {articles.map((a) => (
+      {articles.map((a) => {
+        const formats = a.image != null ? a.image.formats : {}
+        const url = formats[thumbnailSize]?.url || a.image?.url
+        return (
         <Box
           key={a.id}
           p={[1, null, 2]}
@@ -32,11 +39,11 @@ const ArticleList: FC<Props> = ({ articles }) => {
             title={a.title}
             description={a.description}
             tags={a.tags}
-            imageUrl={a.image?.url}
+            imageUrl={url}
             publishedAt={a.publishedAt}
           />
         </Box>
-      ))}
+      )})}
     </Box>
     {/* </SimpleGrid> */}
   </Container>

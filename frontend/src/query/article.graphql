@@ -7,6 +7,7 @@ query AllArticles {
     description
     image {
       url
+      formats
     }
     tags {
       name
