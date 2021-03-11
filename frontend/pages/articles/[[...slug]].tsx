@@ -1,12 +1,13 @@
 import {
+  AspectRatio,
   Box,
   Center,
   CircularProgress,
   Container,
+  Heading,
   HStack,
   Icon,
   IconButton,
-  Image,
   SlideFade,
   Spacer,
   Tag,
@@ -19,17 +20,18 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { GiShare } from "react-icons/gi";
 import Markdown from "../../components/elements/markdown";
+import ProgressiveImage from "../../components/elements/progressive-image";
 import ShareButtons from "../../components/elements/share-buttons";
 import BasicLayout from "../../components/layouts/basic-layout";
 import {
   AllArticlesDocument,
   AllArticlesQuery,
+  Article,
   FindArticleBySlugDocument,
   GlobalDocument,
   useFindArticleBySlugQuery
 } from "../../src/generated/graphql";
 import { addApolloState, initializeApollo } from "../../src/lib/apolloClient";
-import { getStrapiMedia } from "../../src/lib/media";
 
 interface ArticlePageProperty {
   slug: string;
@@ -55,12 +57,12 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
   if (article == null) {
     return <Box>Not found</Box>;
   }
-  const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
+  // const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
   return (
     <BasicLayout>
       <Container maxW="5xl" px={[0, null, 4]} py={0}>
         <HStack align="start" spacing={4}>
-          {isLarge && !isSharePopupShown && (
+          {isLarge && (
             <VStack position="sticky" top="92px">
               <Icon as={GiShare} fontSize="lg" color="gray.400"></Icon>
               <ShareButtons url={currentUrl}></ShareButtons>
@@ -71,6 +73,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
           <Box
             as="article"
             bg="white"
+            flexGrow={1}
             rounded={[0, "md"]}
             shadow={[0, "base"]}
             borderWidth="1"
@@ -79,14 +82,14 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
           >
             <VStack w="full">
               <VStack w="full" color="gray.800" spacing={2} align="left">
-                <VStack align="left" px={[4, null, 6]} py={2}>
+                <VStack align="left" px={[4, null, 6]} py={[2, null, 4]}>
                   <Text as="p" fontSize={["sm", null, "md"]} color="gray.600">
                     {new Date(Date.parse(article.publishedAt)).toDateString()}
                   </Text>
                   <Link href={`/articles/${slug}`}>
-                    <Text as="h1" fontSize={["2xl", null, "4xl"]} fontWeight="bold" cursor="pointer">
+                    <Heading as="h1" fontSize={["3xl", null, "5xl"]} fontWeight="bold" cursor="pointer">
                       {article.title}
-                    </Text>
+                    </Heading>
                   </Link>
                   <HStack>
                     {article.tags?.map((t) => (
@@ -94,26 +97,25 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
                     ))}
                   </HStack>
                 </VStack>
-                {coverUrl != null && (
-                  <Box borderColor="gray.100" borderWidth={1}>
-                    <Image w="full" maxH="50vh" objectFit="cover" src={coverUrl}></Image>
-                  </Box>
+                {article.image && (
+                  <AspectRatio w="full" ratio={(article.image?.width || 0) / (article.image?.height || 1)} overflow="hidden">
+                    <ProgressiveImage w="full" height="auto" image={article.image as Article["image"]}></ProgressiveImage>
+                  </AspectRatio>
                 )}
-                <Box px={6} mb={4}>
-                  <Markdown content={article.content}></Markdown>
-                </Box>
+                <Markdown px={[4, null, 6]} py={[2, null, 4]} content={article.content}></Markdown>
               </VStack>
             </VStack>
           </Box>
         </HStack>
         {!isLarge && (
-          <VStack position="fixed" bottom={4} right={2}>
+          <VStack position="fixed" bottom={6} right={4}>
             <SlideFade in={isSharePopupShown}>
               <VStack>
-                <ShareButtons url={currentUrl}></ShareButtons>
+                <ShareButtons size="lg" url={currentUrl}></ShareButtons>
               </VStack>
             </SlideFade>
             <IconButton
+              size="lg"
               shadow="base"
               aria-label="share"
               isRound

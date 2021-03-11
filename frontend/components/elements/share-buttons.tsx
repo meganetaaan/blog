@@ -5,14 +5,16 @@ import { TwitterShareButton, HatenaShareButton, HatenaIcon, FacebookShareButton 
 
 interface ShareButtonsProps {
   url: string;
+  size?: IconButtonProps["size"]
   shadow?: IconButtonProps["shadow"];
 }
 
-const ShareButtons: FC<ShareButtonsProps> = ({ url, shadow = "base" }) => {
+const ShareButtons: FC<ShareButtonsProps> = ({ url, size = "lg", shadow = "base" }) => {
   return (
     <Fragment>
       <TwitterShareButton url={url}>
         <IconButton
+          size={size}
           as="div"
           aria-label="twitter"
           colorScheme="twitter"
@@ -23,17 +25,19 @@ const ShareButtons: FC<ShareButtonsProps> = ({ url, shadow = "base" }) => {
       </TwitterShareButton>
       <HatenaShareButton url={url}>
         <IconButton
+          size={size}
           as="div"
           fontSize="sm"
           overflow="hidden"
           aria-label="hatena-bookmark"
           shadow={shadow}
           isRound
-          icon={<HatenaIcon size={40} round={true} />}
+          icon={<HatenaIcon size={50} round={true} />}
         ></IconButton>
       </HatenaShareButton>
       <FacebookShareButton url={url}>
         <IconButton
+          size={size}
           as="div"
           aria-label="facebook"
           colorScheme="facebook"

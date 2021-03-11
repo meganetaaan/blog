@@ -7,6 +7,8 @@ query AllArticles {
     description
     image {
       url
+      alternativeText
+      formats
     }
     tags {
       name
@@ -23,6 +25,10 @@ query findArticleBySlug($slug: String!) {
     content
     image {
       url
+      height
+      width
+      alternativeText
+      formats
     }
     tags {
       name
