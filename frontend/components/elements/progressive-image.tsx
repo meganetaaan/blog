@@ -17,7 +17,7 @@ const ProgressiveImage: FC<ProgressiveImageProps> = ({ image, ...props }) => {
         img.onload = () => {
             setLoaded(true)
         }
-    })
+    }, [])
 
     return <Fragment>
         <ChakraImage alt={image?.alternativeText || ""} objectFit="cover" w="full" h="full" src={getStrapiMedia(thumb.url)} style={{ filter: "blur(4px)"}}></ChakraImage>
