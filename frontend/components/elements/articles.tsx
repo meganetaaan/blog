@@ -14,7 +14,7 @@ const ArticleList: FC<Props> = ({ articles }) => {
   const thumbnailSize = useBreakpointValue({
     base: "thumbnail",
     md: "small"
-  }) || "small"
+  })
   return (
     <Container maxW="5xl" px={[0, null, 2]}>
       <Box
@@ -25,7 +25,10 @@ const ArticleList: FC<Props> = ({ articles }) => {
       >
         {articles.map((a) => {
           const formats = a.image != null ? a.image.formats : {}
-          const url = formats[thumbnailSize]?.url || a.image?.url
+          if (thumbnailSize == null) {
+            return
+          }
+          const url = thumbnailSize == null ? "" : formats[thumbnailSize]?.url || a.image?.url
           return (
             <Box
               key={a.id}
