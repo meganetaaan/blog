@@ -10,6 +10,7 @@ interface ArticleCardProps
   imageUrl?: string;
 }
 const ArticleCard: FC<ArticleCardProps> = ({ slug, title, publishedAt, description, tags, imageUrl }: ArticleCardProps) => {
+  const src = getStrapiMedia(imageUrl) ?? ""
   const hoverStyle = useBreakpointValue({
     md: {
       transform: "scale(1.2)",
@@ -61,7 +62,7 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, publishedAt, descripti
               transitionDuration="800ms"
               _groupHover={hoverStyle}
               objectFit="cover"
-              src={getStrapiMedia(imageUrl) ?? ""}
+              src={src}
             />
           </Box>
         </Stack>
