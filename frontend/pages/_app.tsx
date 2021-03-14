@@ -1,9 +1,9 @@
-import "../styles/globals.css";
-import { ChakraProvider, extendTheme, Progress } from "@chakra-ui/react";
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../src/lib/apolloClient";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import React from "react";
+import { useApollo } from "../src/lib/apolloClient";
+import "../styles/globals.css";
 
 const colors = {
   brand: {

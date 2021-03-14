@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React, { FC } from "react";
 import Footer from "../elements/footer";
 import Navigation from "../elements/navigation";

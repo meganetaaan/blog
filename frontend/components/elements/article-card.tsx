@@ -42,7 +42,7 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, publishedAt, descripti
             {tags != null && tags.length > 0 && (
               <HStack w="full">
                 {tags?.map((m) => (
-                  <Tag key={m?.id} as="a" href="#" size="sm">
+                  <Tag key={m?.slug} as="a" href="#" size="sm">
                     {m?.name}
                   </Tag>
                 ))}
