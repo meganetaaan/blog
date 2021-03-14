@@ -98,7 +98,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
                   </HStack>
                 </VStack>
                 {article.image && (
-                  <AspectRatio w="full" ratio={(article.image?.width || 0) / (article.image?.height || 1)} overflow="hidden">
+                  <AspectRatio maxH="60vh" w="full" ratio={(article.image?.width || 0) / (article.image?.height || 1)} overflow="hidden">
                     <ProgressiveImage w="full" height="auto" image={article.image as Article["image"]}></ProgressiveImage>
                   </AspectRatio>
                 )}

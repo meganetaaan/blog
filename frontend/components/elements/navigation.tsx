@@ -7,7 +7,6 @@ import {
   forwardRef,
   BoxProps,
   useBreakpointValue,
-  Circle,
   Box,
   Container,
   IconButton,
@@ -17,9 +16,9 @@ import {
 } from "@chakra-ui/react";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import Link from "next/link"
-import React, { FC, Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { BiBeer } from "react-icons/bi";
-import { FaGithubAlt, FaFacebook, FaTwitter } from "react-icons/fa";
+import { FaGithubAlt } from "react-icons/fa";
 import useRouterStatus from "../../src/lib/useRouterStatus";
 
 const sponsorLinkProps: Partial<ButtonProps> & { href: string; target: string } = {

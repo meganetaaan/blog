@@ -31,7 +31,7 @@ const ArticleList: FC<Props> = ({ articles }) => {
           const url = thumbnailSize == null ? "" : formats[thumbnailSize]?.url || a.image?.url
           return (
             <Box
-              key={a.id}
+              key={a.slug}
               p={[1, null, 2]}
               style={{
                 breakInside: "avoid-column"

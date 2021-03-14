@@ -1,8 +1,8 @@
-import { Box, Center, CircularProgress, Fade } from "@chakra-ui/react";
+import { Box, Center, CircularProgress } from "@chakra-ui/react";
 import React from "react";
 import Articles from "../components/elements/articles";
 import BasicLayout from "../components/layouts/basic-layout";
-import { AllArticlesDocument, Article, useAllArticlesQuery } from "../src/generated/graphql";
+import { AllArticlesDocument, Article, GlobalDocument, useAllArticlesQuery } from "../src/generated/graphql";
 import { addApolloState, initializeApollo } from "../src/lib/apolloClient";
 
 export default function Home() {
@@ -29,12 +29,15 @@ export default function Home() {
 export async function getStaticProps() {
   const apolloClient = initializeApollo();
 
-  await apolloClient.query({
-    query: AllArticlesDocument
-  });
-  // await apolloClient.query({
-  //   query: GlobalDocument,
-  // })
+  await Promise.all([
+    apolloClient.query({
+      query: AllArticlesDocument,
+    }),
+    apolloClient.query({
+      query: GlobalDocument
+    })
+  ]);
+
 
   return addApolloState(apolloClient, {
     props: {},
