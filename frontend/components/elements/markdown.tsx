@@ -3,6 +3,7 @@ import { Box, BoxProps, Heading, HStack, Image, Link, Text, useBreakpointValue }
 import ChakraUIRenderer, { defaults } from "chakra-ui-markdown-renderer";
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 
 interface MarkdownProps extends BoxProps {
   content: string;
@@ -40,6 +41,9 @@ const newTheme = {
   img: (props: any) => (
     <Image py={4} {...props}></Image>
   ),
+  code: ({language, value}: any) => (
+    <SyntaxHighlighter /*style={dark}*/ showLineNumbers={true} language={language} children={value}></SyntaxHighlighter>
+  ),
   heading: (props: any) => {
     const offset = useBreakpointValue({
       base: 0,
@@ -47,7 +51,7 @@ const newTheme = {
     }) ?? 0;
     let firstChildText = ""
     let node = props.node
-    while(node.children != null) {
+    while (node.children != null) {
       firstChildText = node.children[0].value
       node = node.children[0]
     }
@@ -89,6 +93,6 @@ const Markdown = ({ content, ...props }: MarkdownProps) => (
       {content}
     </ReactMarkdown>
   </Box>
-);
+)
 
 export default Markdown;

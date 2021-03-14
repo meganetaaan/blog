@@ -16,6 +16,7 @@
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "@n8tb1t/use-scroll-position": "^2.0.3",
+    "@types/react-syntax-highlighter": "^13.5.0",
     "apollo-link-error": "^1.1.13",
     "chakra-ui-markdown-renderer": "^1.1.0",
     "deepmerge": "^4.2.2",
@@ -29,7 +30,8 @@
     "react-dom": "17.0.1",
     "react-icons": "^4.2.0",
     "react-markdown": "^5.0.3",
-    "react-share": "^4.3.1"
+    "react-share": "^4.3.1",
+    "react-syntax-highlighter": "^15.4.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.20.1",
