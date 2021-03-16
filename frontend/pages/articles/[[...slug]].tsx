@@ -57,7 +57,6 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
   if (article == null) {
     return <Box>Not found</Box>;
   }
-  // const coverUrl = getStrapiMedia(article.image != null ? article.image.url : "/not-found");
   return (
     <BasicLayout>
       <Container maxW="5xl" px={[0, null, 4]} py={0}>

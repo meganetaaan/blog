@@ -49,7 +49,6 @@ const ArticleList: FC<Props> = ({ articles }) => {
           )
         })}
       </Box>
-      {/* </SimpleGrid> */}
     </Container>
   )
 };

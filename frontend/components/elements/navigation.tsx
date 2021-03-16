@@ -59,13 +59,6 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
         setNavigationShown(true)
       }
     }
-    /*
-    if (currPos.y > -200) {
-      setNavigationShown(true);
-    } else {
-      setNavigationShown(currPos.y > prevPos.y);
-    }
-    */
   });
   return (
     <Fragment>
@@ -82,6 +75,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
           top="0"
           p={4}
           w="100%"
+          h={20}
           bg={"#ffffffcc"}
           sx={{
             backdropFilter: "blur(4px)"
@@ -108,19 +102,20 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
                 </Heading>
               </Link>
               <Spacer></Spacer>
-              <ButtonGroup alignItems="center">
-                <IconButton
-                  as="a"
-                  href="https://github.com/meganetaaan"
-                  target="_blank"
-                  aria-label="github"
-                  colorScheme="blackAlpha"
-                  fontSize="lg"
-                  isRound
-                  icon={<FaGithubAlt />}
-                ></IconButton>
-                {BeerButton}
-              </ButtonGroup>
+                <ButtonGroup alignItems="center">
+                  <IconButton
+                    as="a"
+                    display={BeerButton != null ? "inherit" : "hidden"}
+                    href="https://github.com/meganetaaan"
+                    target="_blank"
+                    aria-label="github"
+                    colorScheme="blackAlpha"
+                    fontSize="lg"
+                    isRound
+                    icon={<FaGithubAlt />}
+                  ></IconButton>
+                  {BeerButton}
+                </ButtonGroup>
             </Flex>
           </Container>
         </Box>
