@@ -33,7 +33,7 @@
       "required": true
     },
     "copyrightNotice": {
-      "type": "richtext"
+      "type": "text"
     }
   }
 }

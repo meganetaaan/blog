@@ -1,4 +1,4 @@
-import { Box, BoxProps, Container, forwardRef, HStack } from "@chakra-ui/react";
+import { Box, Text, BoxProps, Container, forwardRef, HStack } from "@chakra-ui/react";
 import React from "react";
 import { useGlobalQuery } from "../../src/generated/graphql";
 import Markdown from "./markdown";
@@ -9,9 +9,7 @@ const Footer = forwardRef<BoxProps, "div">((props, ref) => {
     <Box bg="gray.200" {...props} p={4}>
       <Container maxW="5xl" px={[0, null, 4]} pt={2}>
         <HStack>
-          {!loading && (
-            <Markdown content={data?.global?.copyrightNotice || ""}></Markdown>
-          )}
+          <Text>{data?.global?.copyrightNotice}</Text>
         </HStack>
       </Container>
     </Box>
