@@ -2,18 +2,25 @@ import { Box, BoxProps, Heading, HStack, Image, Stack, Tag, Text, useBreakpointV
 import Link from "next/link";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
-import { getStrapiMedia } from "../../src/lib/media";
+import { formatDate, getStrapiMedia } from "../../src/lib/util";
 
 interface ArticleCardProps
   extends Pick<Article, "slug" | "publishedAt" | "title" | "description" | "tags">,
     Omit<BoxProps, "title"> {
   imageUrl?: string;
 }
-const ArticleCard: FC<ArticleCardProps> = ({ slug, title, publishedAt, description, tags, imageUrl }: ArticleCardProps) => {
-  const src = getStrapiMedia(imageUrl) ?? ""
+const ArticleCard: FC<ArticleCardProps> = ({
+  slug,
+  title,
+  publishedAt,
+  description,
+  tags,
+  imageUrl
+}: ArticleCardProps) => {
+  const src = getStrapiMedia(imageUrl) ?? "";
   const hoverStyle = useBreakpointValue({
     md: {
-      transform: "scale(1.2)",
+      transform: "scale(1.2)"
     }
   });
   return (
@@ -32,9 +39,9 @@ const ArticleCard: FC<ArticleCardProps> = ({ slug, title, publishedAt, descripti
         }}
       >
         <Stack direction={["row", null, "column"]}>
-          <VStack flex="1" p={4} align="left">
+          <VStack flex="1" p={4} pb={[4, null, 0]} align="left">
             <Text color="gray.600" fontSize="sm" isTruncated noOfLines={3}>
-              {new Date(Date.parse(publishedAt)).toDateString()}
+              {formatDate(publishedAt)}
             </Text>
             <Heading color="gray.800" fontSize="xl" fontWeight="bold">
               {title}

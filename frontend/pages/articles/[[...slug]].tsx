@@ -32,6 +32,7 @@ import {
   useFindArticleBySlugQuery
 } from "../../src/generated/graphql";
 import { addApolloState, initializeApollo } from "../../src/lib/apolloClient";
+import { formatDate } from "../../src/lib/util";
 
 interface ArticlePageProperty {
   slug: string;
@@ -83,7 +84,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
               <VStack w="full" color="gray.800" spacing={2} align="left">
                 <VStack align="left" px={[4, null, 6]} py={[2, null, 4]}>
                   <Text as="p" fontSize={["sm", null, "md"]} color="gray.600">
-                    {new Date(Date.parse(article.publishedAt)).toDateString()}
+                    {formatDate(article.publishedAt)}
                   </Text>
                   <Link href={`/articles/${slug}`}>
                     <Heading as="h1" fontSize={["3xl", null, "5xl"]} fontWeight="bold" cursor="pointer">

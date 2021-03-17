@@ -2,7 +2,7 @@ import { BoxProps } from "@chakra-ui/layout"
 import { Fade, Image as ChakraImage } from "@chakra-ui/react"
 import React, { FC, Fragment, useEffect, useState } from "react"
 import { Article } from "../../src/generated/graphql"
-import { getStrapiMedia } from "../../src/lib/media"
+import { getStrapiMedia } from "../../src/lib/util"
 
 interface ProgressiveImageProps extends BoxProps {
     image: Article["image"]

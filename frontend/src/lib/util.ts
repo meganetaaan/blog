@@ -14,3 +14,8 @@ export function getStrapiMedia(url: string | null | undefined, isClientSide = fa
   // Otherwise prepend the URL path with the Strapi URL
   return `${process.env.STRAPI_API_URL || process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://backend:1337'}${url}`;
 }
+
+export function formatDate(dateStr: string): string {
+  const date = new Date(Date.parse(dateStr));
+  return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`
+}
