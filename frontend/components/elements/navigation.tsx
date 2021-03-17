@@ -1,51 +1,28 @@
 import {
-  Flex,
-  Heading,
-  Spacer,
-  ButtonGroup,
-  Button,
-  forwardRef,
-  BoxProps,
-  useBreakpointValue,
   Box,
+  BoxProps,
+  ButtonGroup,
   Container,
+  Flex,
+  forwardRef,
+  Heading,
   IconButton,
   Progress,
   Slide,
-  ButtonProps
+  Spacer
 } from "@chakra-ui/react";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
-import Link from "next/link"
+import Link from "next/link";
 import React, { Fragment, useState } from "react";
 import { BiBeer } from "react-icons/bi";
 import { FaGithubAlt } from "react-icons/fa";
 import useRouterStatus from "../../src/lib/useRouterStatus";
-
-const sponsorLinkProps: Partial<ButtonProps> & { href: string; target: string } = {
-  as: "a",
-  href: "https://github.com/sponsors/meganetaaan",
-  target: "_blank"
-};
-
-const CircleButton = (<Button id="hoge" {...sponsorLinkProps} leftIcon={<BiBeer></BiBeer>} size="sm" colorScheme="teal">
-  Be a Sponsor
-</Button>)
-const LabelButton = (
-  <IconButton id="hoge"
-    {...sponsorLinkProps}
-    aria-label="be a sponsor"
-    colorScheme="teal"
-    isRound
-    icon={<BiBeer />}
-  ></IconButton>
-)
 
 const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
   const { isLoading } = useRouterStatus();
   const [navigationShadow, setNavigationShadow] = useState<BoxProps["shadow"]>("base");
   const [scrolledY, setScrolledY] = useState(0);
   const [isNavigationShown, setNavigationShown] = useState(true);
-  const BeerButton = useBreakpointValue({ base: LabelButton, sm: CircleButton });
   useScrollPosition(({ prevPos, currPos }) => {
     setNavigationShadow(currPos.y < -0 ? "md" : "sm")
     if (currPos.y > -90) {
@@ -85,7 +62,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
           ref={ref}
           {...props}
         >
-          <Container maxW="5xl" px={[0, null, 4]} boxSizing="border-box">
+          <Container maxW={["5xl", null, "full"]} px={[0, null, 4]} boxSizing="border-box">
             <Flex align="center">
               <Link href="/">
                 <Heading
@@ -102,20 +79,27 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
                 </Heading>
               </Link>
               <Spacer></Spacer>
-                <ButtonGroup alignItems="center">
-                  <IconButton
-                    as="a"
-                    display={BeerButton != null ? "inherit" : "hidden"}
-                    href="https://github.com/meganetaaan"
-                    target="_blank"
-                    aria-label="github"
-                    colorScheme="blackAlpha"
-                    fontSize="lg"
-                    isRound
-                    icon={<FaGithubAlt />}
-                  ></IconButton>
-                  {BeerButton}
-                </ButtonGroup>
+              <ButtonGroup alignItems="center">
+                <IconButton
+                  as="a"
+                  href="https://github.com/meganetaaan"
+                  target="_blank"
+                  aria-label="github"
+                  colorScheme="blackAlpha"
+                  fontSize="lg"
+                  isRound
+                  icon={<FaGithubAlt />}
+                ></IconButton>
+                <IconButton
+                  as="a"
+                  href="https://github.com/sponsors/meganetaaan"
+                  target="_blank"
+                  aria-label="be a sponsor"
+                  colorScheme="teal"
+                  isRound
+                  icon={<BiBeer />}
+                ></IconButton>
+              </ButtonGroup>
             </Flex>
           </Container>
         </Box>
