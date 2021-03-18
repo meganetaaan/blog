@@ -13,10 +13,15 @@ const ProgressiveImage: FC<ProgressiveImageProps> = ({ image, ...props }) => {
     const thumb = image?.formats?.thumbnail
     const large = image?.formats?.large || image
     const formats = image?.formats
-    const srcSet = sizes.map(size => {
-        const img = formats[size] ?? image
-        return `${getStrapiMedia(img?.url, true)} ${img.width}w`
-    }).join(',')
+    let srcSet;
+    if (formats != null) {
+      srcSet = sizes
+        .map((size) => {
+          const img = formats[size] ?? image;
+          return `${getStrapiMedia(img?.url, true)} ${img.width}w`;
+        })
+        .join(",");
+    }
 
     useEffect(() => {
         const img = new Image();

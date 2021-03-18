@@ -11,10 +11,6 @@ const ArticleList: FC<Props> = ({ articles }) => {
     base: 1,
     md: 3
   });
-  const thumbnailSize = useBreakpointValue({
-    base: "thumbnail",
-    md: "small"
-  })
   return (
     <Container maxW="5xl" px={[0, null, 2]}>
       <Box
@@ -25,10 +21,7 @@ const ArticleList: FC<Props> = ({ articles }) => {
       >
         {articles.map((a) => {
           const formats = a.image != null ? a.image.formats : {}
-          if (thumbnailSize == null) {
-            return
-          }
-          const url = thumbnailSize == null ? "" : formats[thumbnailSize]?.url || a.image?.url
+          const thumbnail = formats?.small || a.image
           return (
             <Box
               key={a.slug}
@@ -42,7 +35,7 @@ const ArticleList: FC<Props> = ({ articles }) => {
                 title={a.title}
                 description={a.description}
                 tags={a.tags}
-                imageUrl={url}
+                imageUrl={thumbnail?.url}
                 publishedAt={a.publishedAt}
               />
             </Box>

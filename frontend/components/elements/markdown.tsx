@@ -5,6 +5,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismAsync as SyntaxHighlighter } from 'react-syntax-highlighter'
 import defaultVscDarkPlus from 'react-syntax-highlighter/dist/cjs/styles/prism/vsc-dark-plus';
+import { getStrapiMedia } from "../../src/lib/util";
 
 interface MarkdownProps extends BoxProps {
   content: string;
@@ -17,13 +18,9 @@ function getCoreProps(props: any) {
 const newTheme = {
   ...defaults,
   paragraph: (props: any) => {
-    const fontSize = useBreakpointValue({
-      base: "sm",
-      lg: "lg"
-    })
     const { children } = props;
     return (
-      <Text fontSize={fontSize} as="p">
+      <Text fontSize={["sm", null, "md"]} as="p">
         {children}
       </Text>
     );
@@ -39,8 +36,8 @@ const newTheme = {
   link: (props: any) => (
     <Link color="teal.500" target="_blank" {...props}></Link>
   ),
-  img: (props: any) => (
-    <Image py={4} {...props}></Image>
+  img: ({src, ...props}: any) => (
+    <Image py={4} src={getStrapiMedia(src)} {...props}></Image>
   ),
   code: ({ language, value }: any) => (
     <SyntaxHighlighter style={defaultVscDarkPlus} showLineNumbers={true} language={language} children={value}></SyntaxHighlighter>
