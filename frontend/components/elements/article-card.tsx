@@ -1,4 +1,4 @@
-import { Box, BoxProps, Heading, HStack, Image, Stack, Tag, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
+import { Box, BoxProps, Heading, HStack, Image, Stack, Tag, Text, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
@@ -18,6 +18,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
   imageUrl
 }: ArticleCardProps) => {
   const src = getStrapiMedia(imageUrl) ?? "";
+
   const hoverStyle = useBreakpointValue({
     md: {
       transform: "scale(1.2)"

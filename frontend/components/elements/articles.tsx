@@ -1,4 +1,4 @@
-import { Box, Container, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Container, Skeleton, useBreakpointValue } from "@chakra-ui/react";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
 import ArticleCard from "./article-card";
@@ -11,6 +11,9 @@ const ArticleList: FC<Props> = ({ articles }) => {
     base: 1,
     md: 3
   });
+  if (bp == null) {
+    return <Box></Box>
+  }
   return (
     <Container maxW="5xl" px={[0, null, 2]}>
       <Box

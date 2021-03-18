@@ -21,6 +21,7 @@ import React, { useState } from "react";
 import { GiShare } from "react-icons/gi";
 import Markdown from "../../components/elements/markdown";
 import ProgressiveImage from "../../components/elements/progressive-image";
+import Seo from "../../components/elements/seo";
 import ShareButtons from "../../components/elements/share-buttons";
 import BasicLayout from "../../components/layouts/basic-layout";
 import {
@@ -28,8 +29,10 @@ import {
   AllArticlesQuery,
   Article,
   FindArticleBySlugDocument,
+  Global,
   GlobalDocument,
-  useFindArticleBySlugQuery
+  useFindArticleBySlugQuery,
+  useGlobalQuery
 } from "../../src/generated/graphql";
 import { addApolloState, initializeApollo } from "../../src/lib/apolloClient";
 import { formatDate } from "../../src/lib/util";
@@ -40,12 +43,13 @@ interface ArticlePageProperty {
 export default function ArticlePage({ slug }: ArticlePageProperty) {
   const [isSharePopupShown, setIsSharePopupShown] = useState(false);
   const { data, loading, error } = useFindArticleBySlugQuery({ variables: { slug } });
+  const { data: globalData, loading: globalDataLoading } = useGlobalQuery();
   const currentUrl = globalThis.window != null ? window?.location.href : ""
   const isLarge = useBreakpointValue({
     base: false,
     lg: true
   })
-  if (loading) {
+  if (loading || globalDataLoading) {
     return (
       <Center>
         <CircularProgress></CircularProgress>
@@ -60,6 +64,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
   }
   return (
     <BasicLayout>
+      <Seo globalData={globalData?.global as Global} article={article as Article}></Seo>
       <Container maxW="5xl" px={[0, null, 4]} py={0}>
         <HStack align="start" spacing={4}>
           {isLarge && (
@@ -98,8 +103,17 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
                   </HStack>
                 </VStack>
                 {article.image && (
-                  <AspectRatio maxH="60vh" w="full" ratio={(article.image?.width || 0) / (article.image?.height || 1)} overflow="hidden">
-                    <ProgressiveImage w="full" height="auto" image={article.image as Article["image"]}></ProgressiveImage>
+                  <AspectRatio
+                    maxH="60vh"
+                    w="full"
+                    ratio={(article.image?.width || 0) / (article.image?.height || 1)}
+                    overflow="hidden"
+                  >
+                    <ProgressiveImage
+                      w="full"
+                      height="auto"
+                      image={article.image as Article["image"]}
+                    ></ProgressiveImage>
                   </AspectRatio>
                 )}
                 <Markdown px={[4, null, 6]} py={[2, null, 4]} content={article.content}></Markdown>
