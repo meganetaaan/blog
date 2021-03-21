@@ -1,6 +1,6 @@
 import { BoxProps } from "@chakra-ui/layout"
-import { Box, Fade, Image as ChakraImage } from "@chakra-ui/react"
-import React, { FC, Fragment, useEffect, useState } from "react"
+import { Box, Image as ChakraImage } from "@chakra-ui/react"
+import React, { FC, useEffect, useState } from "react"
 import { Article } from "../../src/generated/graphql"
 import { getStrapiMedia } from "../../src/lib/util"
 
