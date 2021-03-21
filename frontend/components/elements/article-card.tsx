@@ -40,7 +40,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
         }}
       >
         <Flex w="full" direction={["row", null, "column"]}>
-          <VStack flexShrink={1} flexGrow={1} p={4} pb={[4, null, 0]} align="left">
+          <VStack maxW="66.666%" flexShrink={1} flexGrow={1} p={4} pb={[4, null, 0]} align="left">
             <Text color="gray.600" fontSize="sm" isTruncated noOfLines={3}>
               {formatDate(publishedAt)}
             </Text>
@@ -61,7 +61,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
             </Text>
           </VStack>
           <Spacer></Spacer>
-          <Box flexShrink={0} flexGrow={0} w={[1/3, null, "full"]} overflow="hidden">
+          <Box flexShrink={0} flexGrow={0} w={["33.333%", null, "full"]} overflow="hidden">
             <Image
               w="full"
               h="full"
