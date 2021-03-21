@@ -1,5 +1,5 @@
 import { BoxProps } from "@chakra-ui/layout"
-import { Fade, Image as ChakraImage } from "@chakra-ui/react"
+import { Box, Fade, Image as ChakraImage } from "@chakra-ui/react"
 import React, { FC, Fragment, useEffect, useState } from "react"
 import { Article } from "../../src/generated/graphql"
 import { getStrapiMedia } from "../../src/lib/util"
@@ -31,12 +31,35 @@ const ProgressiveImage: FC<ProgressiveImageProps> = ({ image, ...props }) => {
         }
     }, [])
 
-    return <Fragment>
-        <ChakraImage width={image?.width || undefined} height={image?.height || undefined} objectFit="cover" w="full" h="full" src={getStrapiMedia(thumb?.url, true)} style={{ filter: "blur(4px)" }}></ChakraImage>
-        <Fade in={isLoaded}>
-            <ChakraImage as="img" srcSet={srcSet} width={image?.width || undefined} height={image?.height || undefined} objectFit="cover" w="full" h="full" src={getStrapiMedia(large?.url)}></ChakraImage>
-        </Fade>
-    </Fragment>
+    return (
+      <Box overflow="hidden" {...props}>
+        <ChakraImage
+          width={image?.width || undefined}
+          height={image?.height || undefined}
+          objectFit="cover"
+          w="full"
+          h="full"
+          as="img"
+          src={getStrapiMedia(thumb?.url, true)}
+          style={{ filter: "blur(4px)" }}
+        ></ChakraImage>
+        <ChakraImage
+          position="absolute"
+          top={0}
+          left={0}
+          opacity={isLoaded ? 1 : 0}
+          transition="opacity 300ms ease-out"
+          width={image?.width || undefined}
+          height={image?.height || undefined}
+          objectFit="cover"
+          as="img"
+          w="full"
+          h="full"
+          srcSet={srcSet}
+          src={getStrapiMedia(large?.url)}
+        ></ChakraImage>
+      </Box>
+    );
 }
 
 export default ProgressiveImage
