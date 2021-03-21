@@ -1,4 +1,4 @@
-import { Box, BoxProps, Heading, HStack, Image, Stack, Tag, Text, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, Heading, HStack, Image, Spacer, Stack, Tag, Text, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
@@ -39,8 +39,8 @@ const ArticleCard: FC<ArticleCardProps> = ({
           cursor: "pointer"
         }}
       >
-        <Stack direction={["row", null, "column"]}>
-          <VStack flex="1" p={4} pb={[4, null, 0]} align="left">
+        <Flex w="full" direction={["row", null, "column"]}>
+          <VStack flexShrink={1} flexGrow={1} p={4} pb={[4, null, 0]} align="left">
             <Text color="gray.600" fontSize="sm" isTruncated noOfLines={3}>
               {formatDate(publishedAt)}
             </Text>
@@ -60,11 +60,12 @@ const ArticleCard: FC<ArticleCardProps> = ({
               {description}
             </Text>
           </VStack>
-          <Box w={[3 / 10, null, "full"]} overflow="hidden">
+          <Spacer></Spacer>
+          <Box flexShrink={0} flexGrow={0} w={[1/3, null, "full"]} overflow="hidden">
             <Image
               w="full"
               h="full"
-              maxH={300}
+              maxH="300px"
               transitionProperty="all"
               transition="ease-out"
               transitionDuration="800ms"
@@ -73,7 +74,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
               src={src}
             />
           </Box>
-        </Stack>
+        </Flex>
       </Box>
     </Link>
   );
