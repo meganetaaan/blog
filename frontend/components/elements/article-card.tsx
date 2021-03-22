@@ -40,8 +40,8 @@ const ArticleCard: FC<ArticleCardProps> = ({
         }}
       >
         <Flex w="full" direction={["row", null, "column"]}>
-          <VStack maxW={["66.666%", null, "full"]} flexShrink={1} flexGrow={1} p={4} pb={[4, null, 0]} align="left">
-            <Text color="gray.600" fontSize="sm" whiteSpace="normal" isTruncated noOfLines={3}>
+          <VStack flexShrink={1} maxW={["66.666%", null, "full"]} p={4} pb={[4, null, 0]} align="left">
+            <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
               {formatDate(publishedAt)}
             </Text>
             <Heading color="gray.800" fontSize="xl" fontWeight="bold">
@@ -56,12 +56,12 @@ const ArticleCard: FC<ArticleCardProps> = ({
                 ))}
               </HStack>
             )}
-            <Text color="gray.600" fontSize="sm" whiteSpace="normal" isTruncated noOfLines={3}>
+            <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
               {description}
             </Text>
           </VStack>
           <Spacer></Spacer>
-          <Box flexShrink={0} flexGrow={0} w={["33.333%", null, "full"]} overflow="hidden">
+          <Box flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
             <Image
               w="full"
               h="full"
@@ -70,6 +70,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
               transition="ease-out"
               transitionDuration="800ms"
               _groupHover={hoverStyle}
+              objectPosition="center"
               objectFit="cover"
               src={src}
             />
