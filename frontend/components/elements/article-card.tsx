@@ -40,8 +40,8 @@ const ArticleCard: FC<ArticleCardProps> = ({
         }}
       >
         <Flex w="full" direction={["row", null, "column"]}>
-          <VStack maxW="66.666%" flexShrink={1} flexGrow={1} p={4} pb={[4, null, 0]} align="left">
-            <Text color="gray.600" fontSize="sm" whiteSpace="pre-wrap" isTruncated noOfLines={3}>
+          <VStack maxW={["66.666%", null, "full"]} flexShrink={1} flexGrow={1} p={4} pb={[4, null, 0]} align="left">
+            <Text color="gray.600" fontSize="sm" whiteSpace="normal" isTruncated noOfLines={3}>
               {formatDate(publishedAt)}
             </Text>
             <Heading color="gray.800" fontSize="xl" fontWeight="bold">
@@ -56,7 +56,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
                 ))}
               </HStack>
             )}
-            <Text color="gray.600" fontSize="sm" whiteSpace="pre-wrap" isTruncated noOfLines={3}>
+            <Text color="gray.600" fontSize="sm" whiteSpace="normal" isTruncated noOfLines={3}>
               {description}
             </Text>
           </VStack>
