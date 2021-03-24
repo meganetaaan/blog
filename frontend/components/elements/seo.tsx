@@ -12,7 +12,7 @@ const Seo = ({ article, globalData }: SeoProps) => {
   const title = `${article?.title} | ${siteName}`;
   const imageUrl =
     article.image?.formats?.large != null
-      ? getStrapiMedia(article.image.formats.large.url)
+      ? `https://meganetaaan.jp${getStrapiMedia(article.image.formats.large.url)}`
       : `https://meganetaaan.jp${getStrapiMedia(article?.image?.url)}`;
 
   return (
