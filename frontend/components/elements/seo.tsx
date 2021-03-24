@@ -29,9 +29,9 @@ const Seo = ({ article, globalData }: SeoProps) => {
       )}
       {article?.image && (
         <>
-          <meta property="og:image" content={getStrapiMedia(article.image.url)} />
-          <meta name="twitter:image" content={getStrapiMedia(article.image.url)} />
-          <meta name="image" content={getStrapiMedia(article.image.url)} />
+          <meta property="og:image" content={'https://meganetaaan.jp' + getStrapiMedia(article.image.url)} />
+          <meta name="twitter:image" content={'https://meganetaaan.jp' + getStrapiMedia(article.image.url)} />
+          <meta name="image" content={'https://meganetaaan.jp' + getStrapiMedia(article.image.url)} />
         </>
       )}
       {article && <meta property="og:type" content="article" />}
