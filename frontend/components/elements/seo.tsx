@@ -34,12 +34,14 @@ const Seo = ({ article, globalData }: SeoProps) => {
       {article?.image && (
         <>
           <meta property="og:image" content={imageUrl} />
-          <meta name="twitter:image" content={imageUrl} />
+          <meta name="twitter:image:src" content={imageUrl} />
           <meta name="image" content={imageUrl} />
         </>
       )}
       {article && <meta property="og:type" content="article" />}
       <meta name="twitter:card" content="summary_large_image" />
+      {/* TODO */}
+      <meta name="twitter:site" content="@meganetaaan" />
     </Head>
   );
 };
