@@ -101,7 +101,7 @@ const newTheme = {
             ></LinkIcon>
           </HStack>
         </HStack>
-        {level === 2 && <Divider borderColor="teal.500" mt={-6} mb={4}></Divider>}
+        {level === 2 && <Divider borderColor="teal.500" mt={[-4, null, -5]} mb={4}></Divider>}
       </Fragment>
     );
   }
