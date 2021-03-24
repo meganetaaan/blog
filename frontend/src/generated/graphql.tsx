@@ -1749,7 +1749,7 @@ export type FindArticleBySlugQuery = (
   { __typename?: 'Query' }
   & { articles?: Maybe<Array<Maybe<(
     { __typename?: 'Article' }
-    & Pick<Article, 'id' | 'title' | 'publishedAt' | 'content'>
+    & Pick<Article, 'id' | 'title' | 'description' | 'publishedAt' | 'content'>
     & { image?: Maybe<(
       { __typename?: 'UploadFile' }
       & Pick<UploadFile, 'url' | 'height' | 'width' | 'alternativeText' | 'formats'>
@@ -1822,6 +1822,7 @@ export const FindArticleBySlugDocument = gql`
   articles(where: {slug: $slug}) {
     id
     title
+    description
     publishedAt
     content
     image {

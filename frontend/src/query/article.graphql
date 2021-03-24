@@ -21,6 +21,7 @@ query findArticleBySlug($slug: String!) {
   articles (where: {slug: $slug}) {
     id
     title
+    description
     publishedAt
     content
     image {
