@@ -8,8 +8,12 @@ interface SeoProps {
   globalData: Global;
 }
 const Seo = ({ article, globalData }: SeoProps) => {
-  const siteName = globalData?.siteName
-  const title = `${article?.title} | ${siteName}`
+  const siteName = globalData?.siteName;
+  const title = `${article?.title} | ${siteName}`;
+  const imageUrl =
+    article.image?.formats?.large != null
+      ? getStrapiMedia(article.image.formats.large.url)
+      : `https://meganetaaan.jp${getStrapiMedia(article?.image?.url)}`;
 
   return (
     <Head>
@@ -29,9 +33,9 @@ const Seo = ({ article, globalData }: SeoProps) => {
       )}
       {article?.image && (
         <>
-          <meta property="og:image" content={'https://meganetaaan.jp' + getStrapiMedia(article.image.url)} />
-          <meta name="twitter:image" content={'https://meganetaaan.jp' + getStrapiMedia(article.image.url)} />
-          <meta name="image" content={'https://meganetaaan.jp' + getStrapiMedia(article.image.url)} />
+          <meta property="og:image" content={imageUrl} />
+          <meta name="twitter:image" content={imageUrl} />
+          <meta name="image" content={imageUrl} />
         </>
       )}
       {article && <meta property="og:type" content="article" />}
