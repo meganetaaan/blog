@@ -40,7 +40,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
         }}
       >
         <Flex w="full" direction={["row", null, "column"]}>
-          <VStack flexShrink={1} maxW={["66.666%", null, "full"]} p={4} pb={[4, null, 0]} align="left">
+          <VStack flexShrink={1} maxW={["66.666%", null, "full"]} p={4} pb={[4, null, 2]} align="left">
             <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
               {formatDate(publishedAt)}
             </Text>

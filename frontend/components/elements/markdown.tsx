@@ -1,7 +1,7 @@
 import { LinkIcon } from "@chakra-ui/icons";
-import { Box, BoxProps, Divider, Heading, HStack, Image, Link, OrderedList, Text, UnorderedList, useBreakpointValue } from "@chakra-ui/react";
+import { AspectRatio, AspectRatioProps, Box, BoxProps, Center, Divider, Heading, HStack, Image, Link, OrderedList, Skeleton, Spinner, Text, UnorderedList, useBreakpointValue } from "@chakra-ui/react";
 import ChakraUIRenderer, { defaults } from "chakra-ui-markdown-renderer";
-import React, { Fragment } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { PrismAsync as SyntaxHighlighter } from "react-syntax-highlighter";
 import defaultVscDarkPlus from "react-syntax-highlighter/dist/cjs/styles/prism/vsc-dark-plus";
@@ -14,6 +14,44 @@ interface MarkdownProps extends BoxProps {
 function getCoreProps(props: any): any {
   return props["data-sourcepos"] ? { "data-sourcepos": props["data-sourcepos"] } : {};
 }
+
+interface EmbeddedIframeProps extends BoxProps {
+  url: string
+}
+
+const EmbeddedIframe = ({ url, ...props }: EmbeddedIframeProps) => {
+  const [isLoading, setLoading] = useState(true);
+  const [h, setH] = useState(200);
+  const ref = useRef();
+  const handleIframeLoad = () => {
+    if (ref == null || ref.current == null) {
+      return;
+    }
+    const window = ref?.current?.contentWindow as HTMLIFrameElement;
+    setH(ref.current?.contentWindow?.document?.body?.scrollHeight ?? 200);
+    setLoading(false);
+  }
+  return (
+    <Box mb={2} borderWidth={1} {...props} position="relative">
+      <iframe
+        style={{
+          width: "100%",
+          height: `${h}px`
+        }}
+        ref={ref}
+        onLoad={handleIframeLoad}
+        title="pictogram"
+        src={url}
+        allowFullScreen={false}
+      ></iframe>
+      {isLoading && (
+        <Center position="absolute" bg="blackAlpha.200" top={0} left={0} w="full" h="full">
+          <Spinner color="teal"></Spinner>
+        </Center>
+      )}
+    </Box>
+  );
+};
 
 const newTheme = {
   ...defaults,
@@ -52,7 +90,13 @@ const newTheme = {
       </Text>
     );
   },
-  link: (props: any) => <Link color="teal.500" target="_blank" {...props}></Link>,
+  link: (props: any) => {
+    const href = props.href
+    if (href != null && !href.includes('http') && href.includes('#embed')) {
+      return <EmbeddedIframe url={href} w="full"></EmbeddedIframe>
+    }
+    return <Link color="teal.500" target="_blank" {...props}></Link>
+  },
   img: ({ src, ...props }: any) => <Image py={4} src={getStrapiMedia(src)} {...props}></Image>,
   code: ({ language, value }: any) => (
     <SyntaxHighlighter

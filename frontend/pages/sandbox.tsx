@@ -35,7 +35,6 @@ export interface LinkOverlayProps extends HTMLChakraProps<"a"> {
    */
   isExternal?: boolean;
 }
-
 export const LinkOverlay = forwardRef<LinkOverlayProps, "a">((props, ref) => {
   const { isExternal, target, rel, className, ...rest } = props;
   return (
@@ -212,6 +211,9 @@ const ChakraPage: NextPage<ChakraPageProps> = ({}) => (
           Be Bold
         </Text>
       </Center>
+      <AspectRatio maxW="600px" ratio={16 / 9} shadow="inner">
+        <iframe style={{zIndex: -1}} title="pictogram" src="/sandboxes/pictogram" allowFullScreen></iframe>
+      </AspectRatio>
       <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
         <Box as="time" dateTime="2021-01-15 15:30:00 +0000 UTC">
           13 days ago
