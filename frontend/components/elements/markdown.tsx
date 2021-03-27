@@ -22,13 +22,13 @@ interface EmbeddedIframeProps extends BoxProps {
 const EmbeddedIframe = ({ url, ...props }: EmbeddedIframeProps) => {
   const [isLoading, setLoading] = useState(true);
   const [h, setH] = useState(200);
-  const ref = useRef();
+  const ref = useRef(null);
   const handleIframeLoad = () => {
     if (ref == null || ref.current == null) {
       return;
     }
-    const window = ref?.current?.contentWindow as HTMLIFrameElement;
-    setH(ref.current?.contentWindow?.document?.body?.scrollHeight ?? 200);
+    const iframeElement = ref?.current as any;
+    setH(iframeElement.contentWindow?.document?.body?.scrollHeight ?? 200);
     setLoading(false);
   }
   return (
