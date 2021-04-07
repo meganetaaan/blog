@@ -123,7 +123,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
         </HStack>
         {!isLarge && (
           <VStack position="fixed" bottom={6} right={4}>
-            <SlideFade in={isSharePopupShown}>
+            <SlideFade in={isSharePopupShown} unmountOnExit={true}>
               <VStack>
                 <ShareButtons size="lg" url={currentUrl}></ShareButtons>
               </VStack>
