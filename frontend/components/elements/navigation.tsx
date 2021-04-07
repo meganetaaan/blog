@@ -14,7 +14,6 @@ import {
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import Link from "next/link";
 import React, { Fragment, useState } from "react";
-import { BiBeer } from "react-icons/bi";
 import { FaGithubAlt } from "react-icons/fa";
 import useRouterStatus from "../../src/lib/useRouterStatus";
 
@@ -48,11 +47,8 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
           shadow={navigationShadow}
           transitionProperty="box-shadow"
           transitionDuration="200ms"
-          position="sticky"
-          top="0"
           p={4}
           w="100%"
-          h={20}
           bg={"#ffffffcc"}
           sx={{
             backdropFilter: "blur(4px)"
