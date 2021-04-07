@@ -90,7 +90,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
                   isRound
                   icon={<FaGithubAlt />}
                 ></IconButton>
-                <IconButton
+                {/* <IconButton
                   as="a"
                   href="https://github.com/sponsors/meganetaaan"
                   target="_blank"
@@ -98,7 +98,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
                   colorScheme="teal"
                   isRound
                   icon={<BiBeer />}
-                ></IconButton>
+                ></IconButton> */}
               </ButtonGroup>
             </Flex>
           </Container>
