@@ -2,5 +2,12 @@ query Global {
   global {
     copyrightNotice
     siteName
+    defaultSeo {
+      metaTitle
+      metaDescription
+      shareImage {
+        url
+      }
+    }
   }
 }

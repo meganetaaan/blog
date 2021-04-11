@@ -1768,6 +1768,14 @@ export type GlobalQuery = (
   & { global?: Maybe<(
     { __typename?: 'Global' }
     & Pick<Global, 'copyrightNotice' | 'siteName'>
+    & { defaultSeo?: Maybe<(
+      { __typename?: 'ComponentSharedSeo' }
+      & Pick<ComponentSharedSeo, 'metaTitle' | 'metaDescription'>
+      & { shareImage?: Maybe<(
+        { __typename?: 'UploadFile' }
+        & Pick<UploadFile, 'url'>
+      )> }
+    )> }
   )> }
 );
 
@@ -1870,6 +1878,13 @@ export const GlobalDocument = gql`
   global {
     copyrightNotice
     siteName
+    defaultSeo {
+      metaTitle
+      metaDescription
+      shareImage {
+        url
+      }
+    }
   }
 }
     `;

@@ -4,34 +4,38 @@ import { Article, Global, Maybe, useGlobalQuery } from "../../src/generated/grap
 import { getStrapiMedia } from "../../src/lib/util";
 
 interface SeoProps {
-  article: Article;
+  article?: Article;
   globalData: Global;
 }
 const Seo = ({ article, globalData }: SeoProps) => {
   const siteName = globalData?.siteName;
-  const title = `${article?.title} | ${siteName}`;
+  const title = article == null ? siteName : `${article?.title} | ${siteName}`;
+  const description = article?.description ?? globalData?.defaultSeo?.metaDescription;
+  const defaultImage = `https://meganetaaan.jp/backend${globalData?.defaultSeo?.shareImage?.url}`;
   const imageUrl =
-    article.image?.formats?.large != null
+    article == null
+      ? defaultImage
+      : article.image?.formats?.large != null
       ? `https://meganetaaan.jp/backend${article.image.formats.large.url}`
       : `https://meganetaaan.jp/backend${article?.image?.url}`;
 
   return (
     <Head>
-      {article?.title && (
+      {title && (
         <>
           <title>{title}</title>
           <meta property="og:title" content={title} />
           <meta name="twitter:title" content={title} />
         </>
       )}
-      {article?.description && (
+      {description && (
         <>
-          <meta name="description" content={article.description} />
-          <meta property="og:description" content={article.description} />
-          <meta name="twitter:description" content={article.description} />
+          <meta name="description" content={description} />
+          <meta property="og:description" content={description} />
+          <meta name="twitter:description" content={description} />
         </>
       )}
-      {article?.image && (
+      {imageUrl && (
         <>
           <meta property="og:image" content={imageUrl} />
           <meta name="twitter:image:src" content={imageUrl} />
