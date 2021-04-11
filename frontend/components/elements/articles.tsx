@@ -39,6 +39,8 @@ const ArticleList: FC<Props> = ({ articles }) => {
                 description={a.description}
                 tags={a.tags}
                 imageUrl={thumbnail?.url}
+                  imageHeight={thumbnail?.height}
+                  imageWidth={thumbnail?.width}
                 publishedAt={a.publishedAt}
               />
             </Box>
