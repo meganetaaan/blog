@@ -25,7 +25,6 @@ const ArticleList: FC<Props> = ({ articles }) => {
         {articles
           .slice()
           .sort((a, b) => {
-            console.log(`a: ${a.publishedAt}, b: ${b.publishedAt}`)
             const adate = new Date(a.publishedAt)
             const bdate = new Date(b.publishedAt)
             return bdate.getTime() - adate.getTime();
