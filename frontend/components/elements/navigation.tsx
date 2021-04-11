@@ -58,7 +58,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
           ref={ref}
           {...props}
         >
-          <Container maxW={["5xl", null, "full"]} px={[0, null, 4]} boxSizing="border-box">
+          <Container maxW="5xl" px={[0, null, 4]} boxSizing="border-box">
             <Flex align="center">
               <Link href="/">
                 <Heading

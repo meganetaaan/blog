@@ -6,10 +6,10 @@ import Markdown from "./markdown";
 const Footer = forwardRef<BoxProps, "div">((props, ref) => {
   const { data, error, loading } = useGlobalQuery();
   return (
-    <Box bg="gray.200" {...props} p={4}>
-      <Container maxW="5xl" px={[0, null, 4]} pt={2}>
+    <Box shadow="inner" bg="teal.600" {...props} p={4}>
+      <Container maxW="5xl" px={[0, null, 4]}>
         <HStack>
-          <Text>{data?.global?.copyrightNotice}</Text>
+          <Text color="white">{data?.global?.copyrightNotice}</Text>
         </HStack>
       </Container>
     </Box>

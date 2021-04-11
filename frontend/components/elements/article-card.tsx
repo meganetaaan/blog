@@ -8,8 +8,8 @@ interface ArticleCardProps
   extends Pick<Article, "slug" | "publishedAt" | "title" | "description" | "tags">,
     Omit<BoxProps, "title"> {
   imageUrl?: string;
-  imageHeight: number;
-  imageWidth: number;
+  imageHeight: number | string;
+  imageWidth: number | string;
 }
 const ArticleCard: FC<ArticleCardProps> = ({
   slug,
@@ -67,8 +67,9 @@ const ArticleCard: FC<ArticleCardProps> = ({
           <Spacer></Spacer>
           <Box flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
             <Image
-              w={`${imageWidth}px`}
-              h={`${imageHeight}px`}
+              m="auto"
+              w={imageWidth}
+              h={imageHeight}
               bg="gray.200"
               maxH="300px"
               transitionProperty="all"

@@ -47,8 +47,8 @@ const ArticleList: FC<Props> = ({ articles }) => {
                   description={a.description}
                   tags={a.tags}
                   imageUrl={thumbnail?.url}
-                  imageHeight={thumbnail?.height}
-                  imageWidth={thumbnail?.width}
+                  imageHeight={bp === 1 ? "full" : thumbnail?.height}
+                  imageWidth={bp === 1 ? "full" : thumbnail?.width}
                   publishedAt={a.publishedAt}
                 />
               </Box>
