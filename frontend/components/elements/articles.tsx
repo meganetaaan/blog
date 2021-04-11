@@ -19,36 +19,44 @@ const ArticleList: FC<Props> = ({ articles }) => {
       <Box
         gridGap={0}
         style={{
-          columnCount: bp,
+          columnCount: bp
         }}
       >
-        {articles.map((a) => {
-          const formats = a.image != null ? a.image.formats : {}
-          const thumbnail = formats?.small || a.image
-          return (
-            <Box
-              key={a.slug}
-              p={[1, null, 2]}
-              style={{
-                breakInside: "avoid-column"
-              }}
-            >
-              <ArticleCard
-                slug={a.slug}
-                title={a.title}
-                description={a.description}
-                tags={a.tags}
-                imageUrl={thumbnail?.url}
+        {articles
+          .slice()
+          .sort((a, b) => {
+            console.log(`a: ${a.publishedAt}, b: ${b.publishedAt}`)
+            const adate = new Date(a.publishedAt)
+            const bdate = new Date(b.publishedAt)
+            return bdate.getTime() - adate.getTime();
+          })
+          .map((a) => {
+            const formats = a.image != null ? a.image.formats : {};
+            const thumbnail = formats?.small || a.image;
+            return (
+              <Box
+                key={a.slug}
+                p={[1, null, 2]}
+                style={{
+                  breakInside: "avoid-column"
+                }}
+              >
+                <ArticleCard
+                  slug={a.slug}
+                  title={a.title}
+                  description={a.description}
+                  tags={a.tags}
+                  imageUrl={thumbnail?.url}
                   imageHeight={thumbnail?.height}
                   imageWidth={thumbnail?.width}
-                publishedAt={a.publishedAt}
-              />
-            </Box>
-          )
-        })}
+                  publishedAt={a.publishedAt}
+                />
+              </Box>
+            );
+          })}
       </Box>
     </Container>
-  )
+  );
 };
 
 export default ArticleList;
