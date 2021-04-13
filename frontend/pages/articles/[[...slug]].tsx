@@ -16,7 +16,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { GetStaticPropsContext } from "next";
-import Link from "next/link";
+import NextLink from "next/link";
 import React, { useState } from "react";
 import { GiShare } from "react-icons/gi";
 import Markdown from "../../components/elements/markdown";
@@ -91,14 +91,16 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
                   <Text as="p" fontSize={["sm", null, "md"]} color="gray.600">
                     {formatDate(article.publishedAt)}
                   </Text>
-                  <Link href={`/articles/${slug}`}>
+                  <NextLink href={`/articles/${slug}`}>
                     <Heading as="h1" fontSize={["3xl", null, "5xl"]} fontWeight="bold" cursor="pointer">
                       {article.title}
                     </Heading>
-                  </Link>
+                  </NextLink>
                   <HStack>
                     {article.tags?.map((t) => (
-                      <Tag key={t?.slug}>{t?.name}</Tag>
+                      <NextLink key={t?.slug} href={`/tags/${t?.slug}`} passHref>
+                        <Tag as="a">{t?.name}</Tag>
+                      </NextLink>
                     ))}
                   </HStack>
                 </VStack>

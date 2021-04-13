@@ -212,18 +212,20 @@ const ChakraPage: NextPage<ChakraPageProps> = ({}) => (
         </Text>
       </Center>
       <AspectRatio maxW="600px" ratio={16 / 9} shadow="inner">
-        <iframe style={{zIndex: -1}} title="pictogram" src="/sandboxes/pictogram" allowFullScreen></iframe>
+        <iframe style={{ zIndex: -1 }} title="pictogram" src="/sandboxes/pictogram" allowFullScreen></iframe>
       </AspectRatio>
-      <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" rounded="md">
+      <LinkBox as="article" maxW="sm" p="5" borderWidth="1px" bg="yellow.200" rounded="md">
         <Box as="time" dateTime="2021-01-15 15:30:00 +0000 UTC">
           13 days ago
         </Box>
         <Heading size="md" my="2">
-          <a href="#">hoge</a>
-          <NextLink href="/settings" passHref>
-            <LinkOverlay href="#">New Year, New Beginnings: Smashing Workshops & Audits</LinkOverlay>
+          <NextLink href="#" passHref>
+            <LinkOverlay>New Year, New Beginnings: Smashing Workshops & Audits</LinkOverlay>
           </NextLink>
         </Heading>
+        <NextLink href="#typescript" passHref>
+          <Tag as="a">TypeScript</Tag>
+        </NextLink>
         <Text>
           Catch up on what’s been cookin’ at Smashing and explore some of the most popular community resources.
         </Text>

@@ -1,5 +1,5 @@
-import { Box, BoxProps, Flex, Heading, HStack, Image, Spacer, Stack, Tag, Text, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, BoxProps, Flex, Heading, HStack, Image, LinkBox, LinkOverlay, Spacer, Stack, Tag, Text, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
+import NextLink from "next/link";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
 import { formatDate, getStrapiMedia } from "../../src/lib/util";
@@ -29,7 +29,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
     }
   });
   return (
-    <Link href={`/articles/${slug}`}>
+    <LinkBox>
       <Box
         as="article"
         shadow="sm"
@@ -48,15 +48,21 @@ const ArticleCard: FC<ArticleCardProps> = ({
             <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
               {formatDate(publishedAt)}
             </Text>
-            <Heading color="gray.800" fontSize="xl" fontWeight="bold">
-              {title}
-            </Heading>
+            <NextLink href={`/articles/${slug}`} passHref>
+              <LinkOverlay>
+                <Heading color="gray.800" fontSize="xl" fontWeight="bold">
+                  {title}
+                </Heading>
+              </LinkOverlay>
+            </NextLink>
             {tags != null && tags.length > 0 && (
               <HStack w="full">
-                {tags?.map((m) => (
-                  <Tag key={m?.slug} as="a" href="#" size="sm">
-                    {m?.name}
-                  </Tag>
+                {tags?.map((t) => (
+                  <NextLink key={t?.slug} href={`/tags/${t?.slug}`} passHref>
+                    <Tag key={t?.slug} as="a" size="sm">
+                      {t?.name}
+                    </Tag>
+                  </NextLink>
                 ))}
               </HStack>
             )}
@@ -83,7 +89,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
           </Box>
         </Flex>
       </Box>
-    </Link>
+    </LinkBox>
   );
 };
 export default ArticleCard;

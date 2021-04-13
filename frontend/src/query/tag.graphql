@@ -1,0 +1,31 @@
+query AllTags {
+  tags {
+    name
+    slug
+  }
+}
+
+query findArticleByTag($slug:String!) {
+  tags (where: {slug: $slug}) {
+    slug
+    name
+  }
+  articles (where: {tags: {slug: $slug}}) {
+    id
+    slug
+    title
+    description
+    publishedAt
+    image {
+      url
+      height
+      width
+      alternativeText
+      formats
+    }
+    tags {
+      name
+      slug
+    }
+  }
+}

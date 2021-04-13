@@ -1732,7 +1732,7 @@ export type AllArticlesQuery = (
     & Pick<Article, 'id' | 'slug' | 'publishedAt' | 'title' | 'description'>
     & { image?: Maybe<(
       { __typename?: 'UploadFile' }
-      & Pick<UploadFile, 'url' | 'alternativeText' | 'formats'>
+      & Pick<UploadFile, 'url' | 'height' | 'width' | 'alternativeText' | 'formats'>
     )>, tags?: Maybe<Array<Maybe<(
       { __typename?: 'Tag' }
       & Pick<Tag, 'name' | 'slug'>
@@ -1779,6 +1779,40 @@ export type GlobalQuery = (
   )> }
 );
 
+export type AllTagsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllTagsQuery = (
+  { __typename?: 'Query' }
+  & { tags?: Maybe<Array<Maybe<(
+    { __typename?: 'Tag' }
+    & Pick<Tag, 'name' | 'slug'>
+  )>>> }
+);
+
+export type FindArticleByTagQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type FindArticleByTagQuery = (
+  { __typename?: 'Query' }
+  & { tags?: Maybe<Array<Maybe<(
+    { __typename?: 'Tag' }
+    & Pick<Tag, 'slug' | 'name'>
+  )>>>, articles?: Maybe<Array<Maybe<(
+    { __typename?: 'Article' }
+    & Pick<Article, 'id' | 'slug' | 'title' | 'description' | 'publishedAt'>
+    & { image?: Maybe<(
+      { __typename?: 'UploadFile' }
+      & Pick<UploadFile, 'url' | 'height' | 'width' | 'alternativeText' | 'formats'>
+    )>, tags?: Maybe<Array<Maybe<(
+      { __typename?: 'Tag' }
+      & Pick<Tag, 'name' | 'slug'>
+    )>>> }
+  )>>> }
+);
+
 
 export const AllArticlesDocument = gql`
     query AllArticles {
@@ -1790,6 +1824,8 @@ export const AllArticlesDocument = gql`
     description
     image {
       url
+      height
+      width
       alternativeText
       formats
     }
@@ -1913,3 +1949,88 @@ export function useGlobalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Glo
 export type GlobalQueryHookResult = ReturnType<typeof useGlobalQuery>;
 export type GlobalLazyQueryHookResult = ReturnType<typeof useGlobalLazyQuery>;
 export type GlobalQueryResult = Apollo.QueryResult<GlobalQuery, GlobalQueryVariables>;
+export const AllTagsDocument = gql`
+    query AllTags {
+  tags {
+    name
+    slug
+  }
+}
+    `;
+
+/**
+ * __useAllTagsQuery__
+ *
+ * To run a query within a React component, call `useAllTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllTagsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllTagsQuery(baseOptions?: Apollo.QueryHookOptions<AllTagsQuery, AllTagsQueryVariables>) {
+        return Apollo.useQuery<AllTagsQuery, AllTagsQueryVariables>(AllTagsDocument, baseOptions);
+      }
+export function useAllTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllTagsQuery, AllTagsQueryVariables>) {
+          return Apollo.useLazyQuery<AllTagsQuery, AllTagsQueryVariables>(AllTagsDocument, baseOptions);
+        }
+export type AllTagsQueryHookResult = ReturnType<typeof useAllTagsQuery>;
+export type AllTagsLazyQueryHookResult = ReturnType<typeof useAllTagsLazyQuery>;
+export type AllTagsQueryResult = Apollo.QueryResult<AllTagsQuery, AllTagsQueryVariables>;
+export const FindArticleByTagDocument = gql`
+    query findArticleByTag($slug: String!) {
+  tags(where: {slug: $slug}) {
+    slug
+    name
+  }
+  articles(where: {tags: {slug: $slug}}) {
+    id
+    slug
+    title
+    description
+    publishedAt
+    image {
+      url
+      height
+      width
+      alternativeText
+      formats
+    }
+    tags {
+      name
+      slug
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindArticleByTagQuery__
+ *
+ * To run a query within a React component, call `useFindArticleByTagQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindArticleByTagQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindArticleByTagQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useFindArticleByTagQuery(baseOptions: Apollo.QueryHookOptions<FindArticleByTagQuery, FindArticleByTagQueryVariables>) {
+        return Apollo.useQuery<FindArticleByTagQuery, FindArticleByTagQueryVariables>(FindArticleByTagDocument, baseOptions);
+      }
+export function useFindArticleByTagLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindArticleByTagQuery, FindArticleByTagQueryVariables>) {
+          return Apollo.useLazyQuery<FindArticleByTagQuery, FindArticleByTagQueryVariables>(FindArticleByTagDocument, baseOptions);
+        }
+export type FindArticleByTagQueryHookResult = ReturnType<typeof useFindArticleByTagQuery>;
+export type FindArticleByTagLazyQueryHookResult = ReturnType<typeof useFindArticleByTagLazyQuery>;
+export type FindArticleByTagQueryResult = Apollo.QueryResult<FindArticleByTagQuery, FindArticleByTagQueryVariables>;

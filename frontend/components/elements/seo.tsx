@@ -4,7 +4,7 @@ import { Article, Global, Maybe, useGlobalQuery } from "../../src/generated/grap
 import { getStrapiMedia } from "../../src/lib/util";
 
 interface SeoProps {
-  article?: Article;
+  article?: Pick<Article, "title" | "description" | "image">;
   globalData: Global;
 }
 const Seo = ({ article, globalData }: SeoProps) => {
