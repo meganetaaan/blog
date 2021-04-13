@@ -71,22 +71,24 @@ const ArticleCard: FC<ArticleCardProps> = ({
             </Text>
           </VStack>
           <Spacer></Spacer>
-          <Box flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
-            <Image
-              m="auto"
-              w={imageWidth}
-              h={imageHeight}
-              bg="gray.200"
-              maxH="300px"
-              transitionProperty="all"
-              transition="ease-out"
-              transitionDuration="800ms"
-              _groupHover={hoverStyle}
-              objectPosition="center"
-              objectFit="cover"
-              src={src}
-            />
-          </Box>
+          <NextLink href={`/articles/${slug}`} passHref>
+            <Box as="a" flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
+              <Image
+                m="auto"
+                w={imageWidth}
+                h={imageHeight}
+                bg="gray.200"
+                maxH="300px"
+                transitionProperty="all"
+                transition="ease-out"
+                transitionDuration="800ms"
+                _groupHover={hoverStyle}
+                objectPosition="center"
+                objectFit="cover"
+                src={src}
+              />
+            </Box>
+          </NextLink>
         </Flex>
       </Box>
     </LinkBox>
