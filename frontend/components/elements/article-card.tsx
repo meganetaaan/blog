@@ -7,6 +7,7 @@ import {
   Image,
   LinkBox,
   LinkOverlay,
+  Skeleton,
   Spacer,
   Tag,
   Text,
@@ -15,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { FC } from "react";
+import LazyLoad from "react-lazyload";
 import { Article } from "../../src/generated/graphql";
 import { formatDate, getStrapiMedia } from "../../src/lib/util";
 
@@ -82,20 +84,28 @@ const ArticleCard: FC<ArticleCardProps> = ({
         </VStack>
         <Spacer></Spacer>
         <Box /* as="a" */ flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
-          <Image
-            m="auto"
-            w={imageWidth}
-            h={imageHeight}
-            bg="gray.200"
-            maxH="300px"
-            transitionProperty="all"
-            transition="ease-out"
-            transitionDuration="800ms"
-            _groupHover={hoverStyle}
-            objectPosition="center"
-            objectFit="cover"
-            src={src}
-          />
+          <LazyLoad
+            style={{
+              height: "100%",
+              width: "auto",
+              position: "relative"
+            }}
+          >
+            <Image
+              m="auto"
+              w={imageWidth}
+              h={imageHeight}
+              bg="gray.200"
+              maxH="300px"
+              transitionProperty="all"
+              transition="ease-out"
+              transitionDuration="800ms"
+              _groupHover={hoverStyle}
+              objectPosition="center"
+              objectFit="cover"
+              src={src}
+            />
+          </LazyLoad>
         </Box>
       </Flex>
     </LinkBox>
