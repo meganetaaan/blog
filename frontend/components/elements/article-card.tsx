@@ -1,4 +1,18 @@
-import { Box, BoxProps, Flex, Heading, HStack, Image, LinkBox, LinkOverlay, Spacer, Stack, Tag, Text, useBreakpoint, useBreakpointValue, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  BoxProps,
+  Flex,
+  Heading,
+  HStack,
+  Image,
+  LinkBox,
+  LinkOverlay,
+  Spacer,
+  Tag,
+  Text,
+  useBreakpointValue,
+  VStack
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { FC } from "react";
 import { Article } from "../../src/generated/graphql";
@@ -29,68 +43,61 @@ const ArticleCard: FC<ArticleCardProps> = ({
     }
   });
   return (
-    <LinkBox>
-      <Box
-        as="article"
-        shadow="sm"
-        borderWidth="1px"
-        borderColor="gray.100"
-        overflow="hidden"
-        rounded="md"
-        role="group"
-        bg="white"
-        style={{
-          cursor: "pointer"
-        }}
-      >
-        <Flex w="full" direction={["row", null, "column"]}>
-          <VStack flexShrink={1} maxW={["66.666%", null, "full"]} p={4} pb={[4, null, 2]} align="left">
-            <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
-              {formatDate(publishedAt)}
-            </Text>
-            <NextLink href={`/articles/${slug}`} passHref>
-              <LinkOverlay>
-                <Heading color="gray.800" fontSize="xl" fontWeight="bold">
-                  {title}
-                </Heading>
-              </LinkOverlay>
-            </NextLink>
-            {tags != null && tags.length > 0 && (
-              <HStack w="full">
-                {tags?.map((t) => (
-                  <NextLink key={t?.slug} href={`/tags/${t?.slug}`} passHref>
-                    <Tag key={t?.slug} as="a" size="sm">
-                      {t?.name}
-                    </Tag>
-                  </NextLink>
-                ))}
-              </HStack>
-            )}
-            <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
-              {description}
-            </Text>
-          </VStack>
-          <Spacer></Spacer>
+    <LinkBox
+      as="article"
+      shadow="sm"
+      borderWidth="1px"
+      borderColor="gray.100"
+      overflow="hidden"
+      rounded="md"
+      role="group"
+      bg="white"
+    >
+      <Flex w="full" direction={["row", null, "column"]}>
+        <VStack flexShrink={1} maxW={["66.666%", null, "full"]} p={4} pb={[4, null, 2]} align="left">
+          <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
+            {formatDate(publishedAt)}
+          </Text>
           <NextLink href={`/articles/${slug}`} passHref>
-            <Box as="a" flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
-              <Image
-                m="auto"
-                w={imageWidth}
-                h={imageHeight}
-                bg="gray.200"
-                maxH="300px"
-                transitionProperty="all"
-                transition="ease-out"
-                transitionDuration="800ms"
-                _groupHover={hoverStyle}
-                objectPosition="center"
-                objectFit="cover"
-                src={src}
-              />
-            </Box>
+            <LinkOverlay zIndex={1}>
+              <Heading color="gray.800" fontSize="xl" fontWeight="bold">
+                {title}
+              </Heading>
+            </LinkOverlay>
           </NextLink>
-        </Flex>
-      </Box>
+          {tags != null && tags.length > 0 && (
+            <HStack w="full">
+              {tags?.map((t) => (
+                <NextLink key={t?.slug} href={`/tags/${t?.slug}`} passHref>
+                  <Tag as="a" size="sm">
+                    {t?.name}
+                  </Tag>
+                </NextLink>
+              ))}
+            </HStack>
+          )}
+          <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
+            {description}
+          </Text>
+        </VStack>
+        <Spacer></Spacer>
+        <Box /* as="a" */ flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
+          <Image
+            m="auto"
+            w={imageWidth}
+            h={imageHeight}
+            bg="gray.200"
+            maxH="300px"
+            transitionProperty="all"
+            transition="ease-out"
+            transitionDuration="800ms"
+            _groupHover={hoverStyle}
+            objectPosition="center"
+            objectFit="cover"
+            src={src}
+          />
+        </Box>
+      </Flex>
     </LinkBox>
   );
 };
