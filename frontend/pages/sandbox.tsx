@@ -126,7 +126,7 @@ const AirbnbCard: FC<AirbnbCardProps> = (property) => {
       <Image src={property.imageUrl} alt={property.imageAlt}></Image>
       <Box p="6">
         <Flex align="baseline">
-          <Badge borderRadius="full" px="2" colorScheme="teal">
+          <Badge borderRadius="full" px="2" colorScheme="primary">
             New
           </Badge>
           <Box
@@ -153,7 +153,7 @@ const AirbnbCard: FC<AirbnbCardProps> = (property) => {
           {Array(5)
             .fill("")
             .map((_, i) => (
-              <StarIcon key={i} color={i < property.rating ? "teal.500" : "gray.300"} />
+              <StarIcon key={i} color={i < property.rating ? "primary.500" : "gray.300"} />
             ))}
           <Box as="span" ml="2" color="gray.600" fontSize="sm">
             {property.reviewCount} reviews
@@ -184,10 +184,10 @@ const Header: FC<HeaderProps> = ({ title }) => (
     </Heading>
     <Spacer></Spacer>
     <ButtonGroup spacing="2">
-      <Button leftIcon={<ChatIcon></ChatIcon>} size="sm" colorScheme="teal">
+      <Button leftIcon={<ChatIcon></ChatIcon>} size="sm" colorScheme="primary">
         Sign In
       </Button>
-      <Button rightIcon={<PhoneIcon></PhoneIcon>} size="sm" variant="outline" colorScheme="teal">
+      <Button rightIcon={<PhoneIcon></PhoneIcon>} size="sm" variant="outline" colorScheme="primary">
         Call Demo
       </Button>
     </ButtonGroup>

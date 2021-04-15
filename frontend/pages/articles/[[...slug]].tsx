@@ -99,7 +99,7 @@ export default function ArticlePage({ slug }: ArticlePageProperty) {
                   <HStack>
                     {article.tags?.map((t) => (
                       <NextLink key={t?.slug} href={`/tags/${t?.slug}`} passHref>
-                        <Tag as="a">{t?.name}</Tag>
+                        <Tag as="a" bg="tertiary.50">{t?.name}</Tag>
                       </NextLink>
                     ))}
                   </HStack>

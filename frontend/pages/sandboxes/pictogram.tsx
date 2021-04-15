@@ -14,7 +14,7 @@ const styles: { [key: string]: Pick<PictogramProps, "bg" | "bgGradient"> } = {
     bg: "red.500"
   },
   gradient: {
-    bgGradient: "linear(teal.300, yellow.300)"
+    bgGradient: "linear(primary.300, yellow.300)"
   }
 };
 export default function Home() {

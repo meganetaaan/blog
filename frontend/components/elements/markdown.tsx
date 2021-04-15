@@ -46,7 +46,7 @@ const EmbeddedIframe = ({ url, ...props }: EmbeddedIframeProps) => {
       ></iframe>
       {isLoading && (
         <Center position="absolute" bg="blackAlpha.200" top={0} left={0} w="full" h="full">
-          <Spinner color="teal"></Spinner>
+          <Spinner color="primary"></Spinner>
         </Center>
       )}
     </Box>
@@ -95,7 +95,7 @@ const newTheme = {
     if (href != null && !href.includes('http') && href.includes('#embed')) {
       return <EmbeddedIframe url={href} w="full"></EmbeddedIframe>
     }
-    return <Link color="teal.500" target="_blank" {...props}></Link>
+    return <Link color="primary.500" target="_blank" {...props}></Link>
   },
   img: ({ src, ...props }: any) => <Image py={4} src={getStrapiMedia(src)} {...props}></Image>,
   code: ({ language, value }: any) => (
@@ -145,7 +145,7 @@ const newTheme = {
             ></LinkIcon>
           </HStack>
         </HStack>
-        {level === 2 && <Divider borderColor="teal.500" mt={[-4, null, -5]} mb={4}></Divider>}
+        {level === 2 && <Divider borderColor="primary.500" mt={[-4, null, -5]} mb={4}></Divider>}
       </Fragment>
     );
   }

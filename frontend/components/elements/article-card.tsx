@@ -69,7 +69,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
             <HStack w="full">
               {tags?.map((t) => (
                 <NextLink key={t?.slug} href={`/tags/${t?.slug}`} passHref>
-                  <Tag as="a" size="sm">
+                  <Tag as="a" size="sm" bg="tertiary.50">
                     {t?.name}
                   </Tag>
                 </NextLink>

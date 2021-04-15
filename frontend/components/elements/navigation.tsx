@@ -53,7 +53,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
           sx={{
             backdropFilter: "blur(4px)"
           }}
-          borderTopColor={"#008080"}
+          borderTopColor="primary.500"
           borderTopWidth={6}
           ref={ref}
           {...props}
@@ -91,7 +91,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
                   href="https://github.com/sponsors/meganetaaan"
                   target="_blank"
                   aria-label="be a sponsor"
-                  colorScheme="teal"
+                  colorScheme="primary"
                   isRound
                   icon={<BiBeer />}
                 ></IconButton> */}
@@ -104,12 +104,12 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
         <Progress
           zIndex="10"
           position="fixed"
-          bg="transparent"
+          bg="accent.600"
           colorScheme="whiteAlpha"
           top="0"
           left="0"
           w="full"
-          size="xs"
+          h="5px"
           isIndeterminate
         />
       )}
