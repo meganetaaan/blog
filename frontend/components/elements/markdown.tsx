@@ -1,5 +1,19 @@
 import { LinkIcon } from "@chakra-ui/icons";
-import { AspectRatio, AspectRatioProps, Box, BoxProps, Center, Divider, Heading, HStack, Image, Link, OrderedList, Skeleton, Spinner, Text, UnorderedList, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  BoxProps,
+  Center,
+  Divider,
+  Heading,
+  HStack,
+  Image,
+  Link,
+  OrderedList,
+  Spinner,
+  Text,
+  UnorderedList,
+  useBreakpointValue
+} from "@chakra-ui/react";
 import ChakraUIRenderer, { defaults } from "chakra-ui-markdown-renderer";
 import React, { Fragment, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -16,7 +30,7 @@ function getCoreProps(props: any): any {
 }
 
 interface EmbeddedIframeProps extends BoxProps {
-  url: string
+  url: string;
 }
 
 const EmbeddedIframe = ({ url, ...props }: EmbeddedIframeProps) => {
@@ -30,7 +44,7 @@ const EmbeddedIframe = ({ url, ...props }: EmbeddedIframeProps) => {
     const iframeElement = ref?.current as any;
     setH(iframeElement.contentWindow?.document?.body?.scrollHeight ?? 200);
     setLoading(false);
-  }
+  };
   return (
     <Box mb={2} borderWidth={1} {...props} position="relative">
       <iframe
@@ -77,7 +91,14 @@ const newTheme = {
     }
     if (depth === 1) styleType = "circle";
     return (
-      <Element fontSize={["sm", null, "md"]} spacing={0} as={ordered ? "ol" : "ul"} styleType={styleType} pl={4} {...attrs}>
+      <Element
+        fontSize={["sm", null, "md"]}
+        spacing={0}
+        as={ordered ? "ol" : "ul"}
+        styleType={styleType}
+        pl={4}
+        {...attrs}
+      >
         {children}
       </Element>
     );
@@ -91,11 +112,11 @@ const newTheme = {
     );
   },
   link: (props: any) => {
-    const href = props.href
-    if (href != null && !href.includes('http') && href.includes('#embed')) {
-      return <EmbeddedIframe url={href} w="full"></EmbeddedIframe>
+    const href = props.href;
+    if (href != null && !href.includes("http") && href.includes("#embed")) {
+      return <EmbeddedIframe url={href} w="full"></EmbeddedIframe>;
     }
-    return <Link color="primary.500" target="_blank" {...props}></Link>
+    return <Link color="primary.500" target="_blank" rel="noopener noreferrer" {...props}></Link>;
   },
   img: ({ src, ...props }: any) => <Image py={4} src={getStrapiMedia(src)} {...props}></Image>,
   code: ({ language, value }: any) => (

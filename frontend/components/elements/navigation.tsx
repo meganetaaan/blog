@@ -79,6 +79,7 @@ const Navigation = forwardRef<BoxProps, "div">((props, ref) => {
                 <IconButton
                   as="a"
                   href="https://github.com/meganetaaan"
+                  rel="noopener noreferrer"
                   target="_blank"
                   aria-label="github"
                   colorScheme="blackAlpha"
