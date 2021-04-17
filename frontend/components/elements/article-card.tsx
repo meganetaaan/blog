@@ -85,6 +85,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
         <Spacer></Spacer>
         <Box /* as="a" */ flexShrink={0} flexGrow={1} w={["33.333%", null, "full"]} overflow="hidden">
           <LazyLoad
+            offset={150}
             style={{
               height: "100%",
               width: "auto",
