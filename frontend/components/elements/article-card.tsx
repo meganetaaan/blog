@@ -15,7 +15,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import LazyLoad from "react-lazyload";
 import { Article } from "../../src/generated/graphql";
 import { formatDate, getStrapiMedia } from "../../src/lib/util";
@@ -38,6 +38,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
   imageWidth = 500
 }: ArticleCardProps) => {
   const src = getStrapiMedia(imageUrl) ?? "";
+  const [isPrefetch, setPrefetch] = useState(false);
 
   const hoverStyle = useBreakpointValue({
     md: {
@@ -54,13 +55,16 @@ const ArticleCard: FC<ArticleCardProps> = ({
       rounded="md"
       role="group"
       bg="white"
+      onMouseEnter={() => {
+        setPrefetch(true);
+      }}
     >
       <Flex w="full" direction={["row", null, "column"]}>
         <VStack flexShrink={1} maxW={["66.666%", null, "full"]} p={4} pb={[4, null, 2]} align="left">
           <Text color="gray.600" fontSize="sm" whiteSpace="normal" noOfLines={3}>
             {formatDate(publishedAt)}
           </Text>
-          <NextLink href={`/articles/${slug}`} passHref>
+          <NextLink prefetch={isPrefetch} href={`/articles/${slug}`} passHref>
             <LinkOverlay zIndex={1}>
               <Heading color="gray.800" fontSize="xl" fontWeight="bold">
                 {title}
