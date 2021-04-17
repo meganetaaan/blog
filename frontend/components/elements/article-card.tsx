@@ -93,6 +93,7 @@ const ArticleCard: FC<ArticleCardProps> = ({
           >
             <Image
               m="auto"
+              alt={`cover image of ${title}`}
               w={imageWidth}
               h={imageHeight}
               bg="gray.200"

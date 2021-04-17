@@ -34,6 +34,7 @@ const ProgressiveImage: FC<ProgressiveImageProps> = ({ image, ...props }) => {
     return (
       <Box overflow="hidden" {...props}>
         <ChakraImage
+          alt="placeholder"
           width={image?.width || undefined}
           height={image?.height || undefined}
           objectFit="cover"
@@ -45,6 +46,7 @@ const ProgressiveImage: FC<ProgressiveImageProps> = ({ image, ...props }) => {
         ></ChakraImage>
         <ChakraImage
           position="absolute"
+          alt={image?.name ?? "cover image"}
           top={0}
           left={0}
           opacity={isLoaded ? 1 : 0}
