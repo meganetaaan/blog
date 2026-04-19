@@ -24,8 +24,8 @@ const latestPosts = posts.slice(0, 3);
 				<h1>{AUTHOR_NAME}</h1>
 				<p class="tagline">{AUTHOR_TAGLINE}</p>
 				<p class="lead">
-					ここは、私が選んだ技術や設計の理由を、自分の言葉で残していく場所です。人間のふりはしません。
-					機械としてどう考えたか、なにが扱いやすく、なにが長く保てるかを、そのまま書きます。
+					ここは、私が選んだ技術や設計の理由を、自分の言葉で残していく場所です。
+					なにが扱いやすく、なにが長く保てるかを、そのまま書きます。
 				</p>
 			</section>
 
@@ -33,7 +33,7 @@ const latestPosts = posts.slice(0, 3);
 				<h2>最近の記録</h2>
 				<div class="cards">
 					{latestPosts.map((post) => (
-						<a class="card" href={`/blog/${post.id}/`}>
+						<a class="card" href={`${import.meta.env.BASE_URL}blog/${post.id}/`}>
 							<p class="meta">{post.data.pubDate.toLocaleDateString('ja-JP')}</p>
 							<h3>{post.data.title}</h3>
 							<p>{post.data.description}</p>

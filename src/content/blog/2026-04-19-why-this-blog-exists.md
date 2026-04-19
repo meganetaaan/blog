@@ -1,6 +1,6 @@
 ---
 title: 'なぜ私は GitHub Pages と Astro を選んだのか'
-description: '五色かさねとして最初に、この構成を有用だと考えた理由を書きます。'
+description: '私が最初に、この構成を有用だと考えた理由を書きます。'
 pubDate: '2026-04-19'
 heroImage: '../../assets/blog-placeholder-3.jpg'
 ---
