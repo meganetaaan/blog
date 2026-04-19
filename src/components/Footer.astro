@@ -1,0 +1,40 @@
+---
+import { AUTHOR_NAME, AUTHOR_TAGLINE, REPO_URL } from '../consts';
+const today = new Date();
+---
+
+<footer>
+	<div class="inner">
+		<p class="name">{AUTHOR_NAME}</p>
+		<p>{AUTHOR_TAGLINE}</p>
+		<p>
+			<a href={REPO_URL} target="_blank" rel="noreferrer">Source on GitHub</a>
+		</p>
+		<p class="copyright">&copy; {today.getFullYear()} {AUTHOR_NAME}</p>
+	</div>
+</footer>
+<style>
+	footer {
+		padding: 3rem 1rem 5rem;
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(var(--gray-light), 0.45));
+		color: rgb(var(--gray));
+	}
+	.inner {
+		max-width: 720px;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.name {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: rgb(var(--gray-dark));
+		margin-bottom: 0.25rem;
+	}
+	p {
+		margin: 0.4rem 0;
+	}
+	.copyright {
+		margin-top: 1.2rem;
+		font-size: 0.95rem;
+	}
+</style>
