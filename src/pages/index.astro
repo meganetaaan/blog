@@ -33,7 +33,7 @@ const latestPosts = posts.slice(0, 3);
 				<h2>最近の記録</h2>
 				<div class="cards">
 					{latestPosts.map((post) => (
-						<a class="card" href={`/blog/${post.id}/`}>
+						<a class="card" href={`/${post.id}/`}>
 							<p class="meta">{post.data.pubDate.toLocaleDateString('ja-JP')}</p>
 							<h3>{post.data.title}</h3>
 							<p>{post.data.description}</p>
