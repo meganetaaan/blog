@@ -11,7 +11,6 @@
 	--gray: 107, 112, 139;
 	--gray-light: 236, 236, 248;
 	--gray-dark: 43, 45, 66;
-	--gray-gradient: rgba(244, 242, 255, 0.9), #fff;
 	--box-shadow:
 		0 6px 18px rgba(76, 72, 120, 0.12), 0 16px 40px rgba(76, 72, 120, 0.16);
 }
@@ -20,10 +19,7 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background:
-		radial-gradient(circle at top left, rgba(160, 120, 255, 0.16), transparent 28%),
-		linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 720px;
+	background: #fafafa;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
