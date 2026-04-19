@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
-	site: 'https://meganetaaan.github.io/blog',
+	site: 'https://meganetaaan.github.io',
 	base: '/blog',
 	integrations: [mdx(), sitemap()],
 	fonts: [

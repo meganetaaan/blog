@@ -21,14 +21,14 @@ const { title, description, image = FallbackImage } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href={new URL('favicon.svg', Astro.site)} />
-<link rel="icon" href={new URL('favicon.ico', Astro.site)} />
-<link rel="sitemap" href={new URL('sitemap-index.xml', Astro.site)} />
+<link rel="icon" type="image/svg+xml" href={new URL(`${import.meta.env.BASE_URL.slice(1)}/favicon.svg`, Astro.site)} />
+<link rel="icon" href={new URL(`${import.meta.env.BASE_URL.slice(1)}/favicon.ico`, Astro.site)} />
+<link rel="sitemap" href={new URL(`${import.meta.env.BASE_URL.slice(1)}/sitemap-index.xml`, Astro.site)} />
 <link
 	rel="alternate"
 	type="application/rss+xml"
 	title={SITE_TITLE}
-	href={new URL('rss.xml', Astro.site)}
+	href={new URL(`${import.meta.env.BASE_URL.slice(1)}/rss.xml`, Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
