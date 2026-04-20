@@ -1,117 +1,186 @@
 ---
-title: 'xAI Grok STT/TTS API を Stack-chan 観点で見る'
-description: 'xAI が公開した Grok Speech to Text / Text to Speech API を、仕様、料金、制約、Stack-chan 用途の観点で整理します。'
+title: 'xAI Grok STT/TTS API を Stack-chan 観点で試した'
+description: 'xAI の Grok Speech to Text / Text to Speech API を実際に動かし、音声生成、Speech Tags、リアルタイム文字起こし、短い日本語発話の扱いを確認しました。'
 pubDate: '2026-04-21'
 heroImage: '../../assets/blog-placeholder-5.jpg'
 ---
 
 2026年4月17日、xAI は Grok Speech to Text API と Grok Text to Speech API を公開しました。
 
-Stack-chan や音声エージェントの部品として使えるかを見るために、まずは一次情報から仕様と料金を確認しました。結論から言うと、仕様だけ見るとかなり試す価値があります。ただし、今回の手元環境には `XAI_API_KEY` が設定されていなかったため、実際の音声生成と文字起こしはまだ未検証です。
+Stack-chan や音声エージェントの部品として使えるかを見るために、仕様だけでなく、実際に短い音声生成と文字起こしを試しました。結論から書くと、TTS と通常長の STT は十分に次へ進む価値があります。一方で、短すぎる日本語コマンドと固有名詞の認識には注意が必要です。
 
-この記事は、実測前の評価メモです。動かした結果ではなく、次に何を試すべきかを決めるための整理として書いています。
+## 何を試したか
 
-## 公開されたもの
+今回試したのは、REST TTS、REST STT、Streaming STT です。
 
-xAI の発表では、今回の API は Grok Speech to Text と Grok Text to Speech の二つです。
+TTS では、日本語の短文を複数の voice で生成し、Speech Tags も試しました。STT では、生成した 16kHz PCM WAV を使って、通常長の日本語、英語、多言語混在、そして `はい。` のような短い発話を確認しました。
 
-- Speech to Text は、音声ファイルの一括文字起こしと WebSocket によるリアルタイム文字起こしに対応します
-- Text to Speech は、REST による音声生成と WebSocket によるリアルタイム生成に対応します
-- どちらも Grok Voice と同じ系統の音声基盤を使う、と説明されています
+APIキーは `XAI_API_KEY` を使います。秘密情報は記事にもログにも残していません。
 
-Stack-chan 観点では、REST と WebSocket の両方がある点が大事です。簡単な検証は REST で始められます。一方で、会話体験を作るなら、最終的には WebSocket の遅延と扱いやすさを見る必要があります。
+## Text to Speech は素直に動いた
 
-## Speech to Text の仕様
+TTS は `https://api.x.ai/v1/tts` に JSON を投げ、返ってきた音声バイト列を保存する形です。最低限必要なのは `text` と `language` で、`voice_id` を指定すると声を選べます。
 
-Speech to Text は `https://api.x.ai/v1/stt` に `multipart/form-data` で音声を送る REST API が基本です。`file` か `url` のどちらかを渡し、`format=true` と `language=ja` のような指定を組み合わせられます。
+今回の実行では、すべて MP3 24kHz / mono / 128kbps で生成されました。
 
-確認した範囲では、主な特徴は次のとおりです。
+### ara と rex の聴き比べ
 
-- 入力は WAV, MP3, OGG, Opus, FLAC, AAC, MP4, M4A, MKV などに対応
-- raw PCM, μ-law, A-law も指定可能
-- 最大ファイルサイズは 500MB
-- word-level timestamp を返せる
-- `format=true` で数字や通貨などの整形が入る
-- diarization と multichannel に対応
-- Streaming STT は `wss://api.x.ai/v1/stt` を使う
+xAI の voice は、少なくとも今回の API レスポンスでは `ara`, `eve`, `leo`, `rex`, `sal`, `una` が返りました。公式ドキュメント本文には5 voice と書かれている箇所がありますが、実 API は `una` を含む6件でした。
 
-料金は REST が $0.10/hour、Streaming が $0.20/hour とされています。公開ページ上のモデル表では、STT は 600 RPM、10 RPS、Streaming は 100 concurrent sessions という記載がありました。
+男性・女性というラベルは公式には見当たらないので、ここでは便宜的に `ara` と `rex` を、雰囲気の違う二つの声として選んでいます。
 
-日本語は対応言語に含まれています。Stack-chan の短い発話認識で見るなら、まずは次の観点を試したいです。
+同じ台詞で生成した音声です。
 
-- 短い日本語コマンドをどれくらい正確に拾うか
-- 「ｽﾀｯｸﾁｬﾝ」や固有名詞をどう扱うか
-- 句読点や数字の整形が日本語でも自然か
-- WebSocket で部分結果がどれくらい早く返るか
+`ara`
 
-## Text to Speech の仕様
+<audio controls src="/audio/xai-grok-stt-tts-2026-04-21/female-ish-ara-ja.mp3"></audio>
 
-Text to Speech は `https://api.x.ai/v1/tts` に JSON を投げ、レスポンスの raw audio bytes を保存する形で始められます。最低限必要なのは `text` と `language` で、`voice_id` は省略すると `eve` になります。
+台詞: `こんにちは、スタックチャンです。今日は新しい音声APIを試しています。`
 
-主な特徴は次のとおりです。
+`rex`
 
-- `text` は1リクエスト最大 15,000 characters
-- `language` は `ja`, `en`, `auto` などを指定できる
-- voice は `ara`, `eve`, `leo`, `rex`, `sal` の5種類
-- 出力は MP3, WAV, PCM, μ-law, A-law に対応
-- 既定の出力は MP3 24kHz / 128kbps
-- speech tags で `[laugh]`, `[sigh]`, `[pause]`, `<whisper>` などを指定できる
-- Streaming TTS は `wss://api.x.ai/v1/tts` を使う
+<audio controls src="/audio/xai-grok-stt-tts-2026-04-21/male-ish-rex-ja.mp3"></audio>
 
-料金は $4.20 / 1M characters です。モデル表では 3,000 RPM、50 RPS、100 concurrent sessions と記載されています。ただし、ガイド内の WebSocket 制限には 50 concurrent sessions per team という説明もあるため、実運用前には xAI Console 上の実際のチーム制限を見る必要があります。
+台詞: `こんにちは、スタックチャンです。今日は新しい音声APIを試しています。`
 
-Stack-chan 観点で面白いのは speech tags です。表情のある読み上げが簡単に扱えるなら、ただの TTS よりキャラクター性を出しやすい可能性があります。一方で、タグが日本語発話でどれくらい自然に効くかは、実際に聞かないと判断できません。
+生成時間は `ara` が約1.70秒、`rex` が約1.58秒でした。短文のREST生成としては、ブログ用の素材作成や非リアルタイムの返答生成には扱いやすい速さです。
 
-## まだ動かせていないこと
+## Speech Tags は日本語でも試せる
 
-今回の環境では `XAI_API_KEY` が設定されていませんでした。そのため、次の実測は未完です。
+公式ドキュメントでは、発話表現の制御は Speech Tags として説明されています。`[laugh]`, `[pause]`, `[sigh]` のようなインラインタグと、`<whisper>...</whisper>`, `<slow>...</slow>`, `<emphasis>...</emphasis>` のような囲みタグがあります。
 
-- 日本語 TTS の音質確認
-- 英語 TTS の音質確認
-- speech tags の効き方
-- 日本語 STT の認識精度
-- REST 呼び出し時の体感遅延
-- WebSocket 時の部分結果の速さ
+`[laugh]` と `[pause]` を入れた例です。
 
-ここは明確なブロッカーです。APIキーが使える状態になったら、まずは REST で小さく試すのがよさそうです。
+<audio controls src="/audio/xai-grok-stt-tts-2026-04-21/expressive-ara-ja.mp3"></audio>
 
-TTS は次の二文で始めます。
+台詞: `こんにちは、スタックチャンです。[laugh] 今日は音声の表現力を試しています。[pause] うまく聞こえますか？`
 
-- 日本語: `こんにちは、スタックチャンです。今日は音声APIのテストをしています。`
-- 英語: `Hello, I am Stack-chan. This is a quick voice test.`
+`<whisper>` と `<slow>` を入れた例です。
 
-STT は、同じ日本語文を読み上げた短い WAV か MP3 を用意し、`format=true` と `language=ja` で文字起こしします。
+<audio controls src="/audio/xai-grok-stt-tts-2026-04-21/whisper-slow-rex-ja.mp3"></audio>
 
-## OpenAI や ElevenLabs と比べるときの見方
+台詞: `通常の声で話します。<whisper>ここだけ小声で話します。</whisper> <slow>最後はゆっくり話します。</slow>`
 
-この段階では、音質や認識精度を断定できません。まだ聞いていないからです。
+この機能は、Stack-chan のようなキャラクター性を持つデバイスとは相性がよいと思います。ただし、タグを多用すると演技が過剰になりやすいはずなので、実際の会話では少数のタグを慎重に使うのがよさそうです。
 
-ただし、比較観点はかなりはっきりしています。
+## instructions フィールドは公式には見当たらない
 
-- 料金: STT の時間単価はかなり安く見える。TTS は文字単価なので、短文中心の Stack-chan では試しやすい
-- 遅延: REST で十分か、WebSocket が必要かを見る必要がある
-- 日本語品質: 対応言語に日本語はあるが、自然さと固有名詞は実測が必要
-- キャラクター表現: speech tags が日本語でも自然なら強い
-- 運用: APIキーをクライアントに出さず、必ずバックエンド経由にする必要がある
+TTS の request body として公式ドキュメントに載っているのは、主に `text`, `voice_id`, `language`, `output_format` です。OpenAI の一部音声APIのような、明示的な `instructions` フィールドは見当たりませんでした。
 
-Stack-chan では、長文読み上げよりも短い返答の自然さ、反応の速さ、声のキャラクター性が重要になります。つまり、ベンチマーク上の性能だけでは足りません。実際に短い会話を何度も往復させて、聞いていて疲れないかを見る必要があります。
+試しに未知フィールドとして `instructions` を含めたところ、API は HTTP 200 を返しました。
 
-## いまの判断
+<audio controls src="/audio/xai-grok-stt-tts-2026-04-21/instruction-field-ara-ja.mp3"></audio>
 
-現時点の判断は、「次に試す価値はある。ただし採用判断はまだできない」です。
+台詞: `こんにちは、スタックチャンです。落ち着いた案内役として話してください。`
 
-仕様と料金はかなり魅力があります。STT は REST と Streaming の両方があり、日本語も対象です。TTS は5 voice と speech tags があり、Stack-chan のキャラクター表現に合う可能性があります。
+追加で投げたフィールド: `instructions: Speak like a calm robot guide.`
 
-一方で、音声APIは仕様だけでは分かりません。特に日本語TTSの自然さ、短い音声コマンドの認識精度、WebSocket の遅延は、実際に動かして初めて判断できます。
+ただし、これは「拒否されない」ことの確認です。意味的に効いているかは、同じ台詞で `instructions` なしの対照音源を作り、聴き比べる必要があります。現時点では、Grok TTS の制御は Speech Tags を本線として見るのが安全です。
 
-次にやることは単純です。
+## REST STT の結果
 
-1. `XAI_API_KEY` を使える環境にする
-2. REST TTS で日本語と英語を1本ずつ生成する
-3. REST STT で短い日本語音声を文字起こしする
-4. 結果を聞いて、Stack-chan 用途で継続検証するか決める
+REST STT は `https://api.x.ai/v1/stt` に `multipart/form-data` で音声を送ります。`file` か `url` が必要です。
 
-ここまで通れば、OpenAI や ElevenLabs と並べた評価に進めます。今はその手前、試す理由と試す順番が見えた段階です。
+通常長の日本語は、意味としては問題なく取れました。
+
+入力: `こんにちは、スタックチャンです。音声認識のテストをしています。`
+
+出力: `こんにちはスタックちゃんです 音声認識のテストをしています`
+
+所要時間は約0.96秒でした。句読点は落ち、`スタックチャン` は `スタックちゃん` になりましたが、会話用途で意味を取るには十分です。固有名詞として正確に残したい場合は、後処理か用語補正が必要です。
+
+英語では、`Stack-chan` が `Stack Chat` になりました。
+
+入力: `Hello, this is Stack-chan. We are testing real time transcription.`
+
+出力: `"Hello, this is Stack Chat. We are testing real time transcription.`
+
+ここも、Stack-chan 用途ではそのまま信用しすぎない方がよいです。
+
+## 多言語混在はまだ慎重に見る
+
+英語と日本語を混ぜた入力も試しました。
+
+入力: `Hello, I am Stack-chan. こんにちは、音声APIをテストしています。`
+
+REST の言語判定は Japanese になり、出力は次のようになりました。
+
+`ハロウ、アイムスタックチェン、こんにちはオンセイピアをテストしています`
+
+英語部分はカタカナ寄りに倒れ、日本語部分も `音声API` が少し崩れました。多言語リアルタイム会話の入口としては面白いですが、自然な会話ログとしてそのまま採用するにはまだ不安があります。
+
+言語判定そのものはあります。REST のレスポンスには `language` が返ります。ただし、`format=true` を使う場合は `language` が必須で、指定しないと HTTP 400 になります。つまり「自動判定しつつ整形」には制限があります。
+
+## Streaming STT は部分結果が取れる
+
+Streaming STT は `wss://api.x.ai/v1/stt` を使います。16kHz PCM を100ms程度のチャンクで送り、JSON の transcript events を受け取る形です。
+
+`interim_results=true` にすると、途中結果が流れます。今回の通常長日本語では、接続開始から約1.0秒で最初の partial が来ました。
+
+入力: `こんにちは、スタックチャンです。音声認識のテストをしています。`
+
+途中結果は次のように流れました。
+
+- `こんにちは`
+- `スタックチャンです`
+- `音声認識`
+- `音声認識のテスト`
+- `音声認識のテストをしています`
+
+これは、会話UIの字幕や、聞き取り中の状態表示には十分試す価値があります。
+
+## サーバーサイド VAD 相当はある
+
+公式ドキュメントでは、Streaming STT の query parameter に `endpointing` があります。説明は「utterance-final event を出す前の無音継続時間」です。範囲は `0-5000` ms で、`0` は VAD の無音境界で即時に発火する扱いです。
+
+また、`transcript.partial` には `is_final` と `speech_final` があり、途中結果、チャンク確定、発話確定を区別できます。
+
+Stack-chan のような会話デバイスでは、これはかなり大事です。ユーザーが話し終わったかどうかをクライアント側だけで抱え込まず、サーバー側の endpointing を使って turn-taking を組める可能性があります。
+
+## 短すぎる日本語は弱い
+
+今回いちばん注意が必要だったのは、短い日本語です。
+
+入力: `はい。`
+
+REST では `Hi`、Streaming では `Height` になりました。`language=ja` を指定しても改善しませんでした。
+
+これは Stack-chan 用途では無視できません。実際の会話では、「はい」「いや」「うん」「これ」「次」のような短い発話が頻繁に出ます。短いコマンドをそのまま STT に任せると、英語っぽい誤認識に寄る可能性があります。
+
+対策としては、次のようなものが必要です。
+
+- wake word やボタン操作で文脈を補う
+- 短い返答は確認フローを入れる
+- コマンド候補を限定して後処理する
+- 本番評価では実マイク音声で再測定する
+
+## OpenAI や ElevenLabs と比べると
+
+料金だけ見ると、xAI はかなり攻めています。
+
+STT は REST が $0.10/hour、Streaming が $0.20/hour です。ElevenLabs Scribe は確認時点で $0.22/hour、Scribe Realtime は $0.39/hour でした。OpenAI の `gpt-4o-mini-transcribe` は推定 $0.003/minute とされていて、分単価ではこちらも強いです。
+
+TTS は $4.20 / 1M characters です。ElevenLabs の API pricing は Flash/Turbo が $0.05 / 1K characters、Multilingual v2/v3 が $0.10 / 1K characters なので、文字単価では xAI がかなり安く見えます。OpenAI の legacy TTS は $15 / 1M characters、TTS HD は $30 / 1M characters です。
+
+ただし、音声APIは料金だけでは決められません。Stack-chan では、短い応答の自然さ、固有名詞、短い発話、会話の間、キャラクター性が重要です。ここは実測で見ないと判断できません。
+
+## 今の判断
+
+Grok STT/TTS は、Stack-chan 周辺で次に試す価値があります。
+
+特に TTS は、短文生成の速さ、価格、Speech Tags の存在が魅力です。キャラクターの声として合うかは聴き比べが必要ですが、ブログ素材やプロトタイプ用にはすぐ使えます。
+
+STT は、通常長の日本語発話と Streaming partial はよい手触りでした。一方で、短い日本語と固有名詞、多言語混在はまだ弱いです。
+
+つまり、いまの採用判断はこうです。
+
+- TTS: 継続検証する価値が高い
+- STT REST: 通常長の発話なら試す価値あり
+- STT Streaming: 会話UI向けに試す価値あり
+- 短い日本語コマンド: そのまま採用するのは危険
+- 多言語リアルタイム会話: 可能性はあるが、実マイク音声で再評価が必要
+
+次は、TTS の声を実際に聴いて Stack-chan に合う voice を選ぶこと、そして実マイク音声で OpenAI / ElevenLabs と横並び比較することです。
 
 参考:
 
@@ -119,3 +188,5 @@ Stack-chan では、長文読み上げよりも短い返答の自然さ、反応
 - [Speech to Text | xAI Docs](https://docs.x.ai/developers/model-capabilities/audio/speech-to-text)
 - [Text to Speech | xAI Docs](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech)
 - [Models and Pricing | xAI Docs](https://docs.x.ai/developers/models)
+- [OpenAI API Pricing](https://platform.openai.com/docs/pricing/)
+- [ElevenLabs API Pricing](https://elevenlabs.io/pricing/api/)
