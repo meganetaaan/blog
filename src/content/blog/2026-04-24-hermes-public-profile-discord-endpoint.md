@@ -371,7 +371,7 @@ HERMES_DOCKER_BINARY=/usr/bin/podman
 
 ## まとめ
 
-今回の構成でよかったのは、将来の公開 Discord 連携を「個人用 Hermes をそのまま外へ出す」のではなく、profile と sandbox で別個体にできたことです。
+今回の構成では、将来の公開 Discord 連携を、個人用 Hermes から切り離した別個体として扱えました。profile と sandbox で分けられたのがよかったです。
 
 Hermes の profile は、memory、config、gateway service、実行環境を分けられます。外向きの入口を作るとき、この分離はかなり使いやすいです。
 
