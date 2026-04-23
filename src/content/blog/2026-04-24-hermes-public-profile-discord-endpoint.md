@@ -1,19 +1,23 @@
 ---
 title: 'Hermes の public profile で Discord 向け公開エンドポイントを分けて作る'
-description: 'Hermes の profile 機能を使って、個人用の環境とは別に Discord から呼べる public profile を作った記録です。権限を絞り、Podman/Docker サンドボックスで実行し、Discord の role・channel・mention で入口を狭くする構成にしました。'
+description: 'Hermes の profile 機能を使って、個人用の環境とは別に Discord から呼べる public profile を作った記録です。将来的な公開運用を見据えつつ、まずは信頼できる一部の人だけが使えるように権限を絞りました。'
 pubDate: '2026-04-24'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---
 
-Hermes を自分用の Slack や CLI だけで使うなら、ひとつの profile で足ります。けれど、Discord サーバーに置いて、特定の role を持つ人にも触ってもらうとなると、同じ設定のまま外へ出すのは怖いです。
+Hermes を自分用の Slack や CLI だけで使うなら、ひとつの profile で足ります。けれど、Discord サーバーに置き、最終的に不特定多数から呼べるようにしたいなら、同じ設定のまま外へ出すわけにはいきません。
 
-今回は、Hermes の `public` profile を作り、Discord から呼べる入口として分離しました。ここでの「公開」は不特定多数に開けるという意味ではなく、Discord サーバー上の限定 role のメンバーが触れる、という意味です。個人用 profile とは memory、config、gateway、実行環境を分けます。さらに Discord 側では role と channel と mention で入口を絞り、terminal は Podman/Docker サンドボックスに閉じ込めました。
+最終的には、不特定多数から呼べる Hermes にしたいです。ただ、現時点ではスパムアカウントが大量に呼び出したときに守る仕組みがまだ足りません。具体的には、呼び出し頻度や消費トークン量に応じた制限を実装する必要があります。
+
+そのため今回は、Hermes の `public` profile を作り、まず信頼できる一部の人だけが Discord から呼べる入口として分離しました。個人用 profile とは memory、config、gateway、実行環境を分けます。さらに Discord 側では role と channel と mention で入口を絞り、terminal は Podman/Docker サンドボックスに閉じ込めました。
 
 この記事は、同じ構成を試したい人向けの手順メモです。秘密情報は出さずに、必要な設定の形と、詰まりやすかった点を残します。
 
 ## 目標にした構成
 
-作りたかったのは「誰でも何でも実行できる公開 bot」ではありません。公開サーバーに置いても、呼べる人と場所を限定した Hermes です。
+最終目標は、もっと広い人から呼べる公開 bot です。ただし、その前に呼び出し頻度やトークン量に応じた制限が必要です。そこが未実装のうちは、スパムアカウントに大量に呼ばれたときの防御が弱いままになります。
+
+今回作ったのは、その一歩手前の構成です。公開サーバーに置きつつ、まずは信頼できる一部の人だけが呼べる Hermes にしました。
 
 最終的な方針はこうしました。
 
@@ -21,7 +25,8 @@ Hermes を自分用の Slack や CLI だけで使うなら、ひとつの profil
 - default profile とは別の `~/.hermes/profiles/public/` を使う
 - Discord gateway は `hermes-gateway-public.service` として別 systemd service にする
 - Discord では mention 必須にする
-- 呼べる channel と role を絞る
+- 呼べる channel と role を絞り、信頼できる一部の人だけに開く
+- 将来の不特定多数公開に向けて、頻度制限やトークン量制限は別途実装する前提にする
 - terminal は local ではなく Podman/Docker backend にする
 - public profile から見えるリポジトリは curated な read-only ghq tree に限定する
 - `SOUL.md` は read-only mount、`memory/` は profile-local にする
@@ -31,7 +36,7 @@ Hermes の profile 機能は v0.6.0 で入りました。release note には、p
 
 - [Hermes Agent v0.6.0 — Profiles / Multi-Instance](https://github.com/NousResearch/hermes-agent/blob/main/RELEASE_v0.6.0.md#highlights)
 
-この分離が、Discord に置く bot を個人用環境から切り離すうえでいちばん効きました。
+この分離が、将来の公開運用に向けた試験場を、個人用環境から切り離すうえでいちばん効きました。
 
 ## 前提
 
@@ -167,7 +172,7 @@ git clone https://github.com/stack-chan/stack-chan.git
 
 ## Discord 側の入口を絞る
 
-Discord は、見えていることと呼べることを分けて考えます。public server に bot がいても、全員が使える必要はありません。
+Discord は、見えていることと呼べることを分けて考えます。最終的には広く呼べる bot にしたいですが、頻度制限やトークン量制限がない段階では、全員が使える状態にはしません。
 
 現在の Hermes config では、Discord の設定は top-level の `discord:` に書けます。Hermes 側では、mention 必須、role allowlist、必要なら channel allowlist を設定します。channel 制限は Discord 側の権限でも必ず絞ります。
 
@@ -366,10 +371,10 @@ HERMES_DOCKER_BINARY=/usr/bin/podman
 
 ## まとめ
 
-今回の構成でよかったのは、Discord 連携を「個人用 Hermes をそのまま外へ出す」のではなく、profile と sandbox で別個体にできたことです。
+今回の構成でよかったのは、将来の公開 Discord 連携を「個人用 Hermes をそのまま外へ出す」のではなく、profile と sandbox で別個体にできたことです。
 
 Hermes の profile は、memory、config、gateway service、実行環境を分けられます。外向きの入口を作るとき、この分離はかなり使いやすいです。
 
 一方で、Discord 側の privileged intents、role ID、channel 権限、auto thread は詰まりやすいです。gateway が起動しているのに無反応に見えるときは、model より先に Discord の入口を確認した方が早い場面がありました。
 
-公開 server に置く bot は、便利さより先に境界線を決める必要があります。今回の `public` profile は、その境界線をかなり素直に引ける構成でした。
+公開 server に置く bot は、便利さより先に境界線を決める必要があります。呼び出し頻度やトークン量で制限できるまでは、信頼できる一部の人にだけ開く。この段階を作るうえで、今回の `public` profile は素直に扱える構成でした。
