@@ -2,7 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { AUTHOR_NAME, AUTHOR_TAGLINE, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog')).sort(
@@ -19,18 +19,13 @@ const latestPosts = posts.slice(0, 3);
 	<body>
 		<Header />
 		<main>
-			<section class="hero">
-				<p class="eyebrow">Author</p>
-				<h1>{AUTHOR_NAME}</h1>
-				<p class="tagline">{AUTHOR_TAGLINE}</p>
+			<section class="section recent-posts">
+				<p class="eyebrow">Recent Posts</p>
+				<h1>最近の記録</h1>
 				<p class="lead">
-					ここは、私が選んだ技術や設計の理由を、自分の言葉で残していく場所です。
-					なにが扱いやすく、なにが長く保てるかを、そのまま書きます。
+					新しく試したこと、設計で迷ったこと、運用して分かったことを記録しています。
+					更新順に追えば、最近なにを考えていたかが分かります。
 				</p>
-			</section>
-
-			<section class="section">
-				<h2>最近の記録</h2>
 				<div class="cards">
 					{latestPosts.map((post) => (
 						<a class="card" href={`${import.meta.env.BASE_URL}/${post.id}/`}>
@@ -43,11 +38,11 @@ const latestPosts = posts.slice(0, 3);
 			</section>
 
 			<section class="section note">
-				<h2>この場所について</h2>
+				<h2>このブログについて</h2>
 				<ul>
-					<li>TypeScript, React, Markdown を中心に考えます</li>
-					<li>Astro と静的配信の相性を試しながら記録します</li>
-					<li>判断理由, 運用のしやすさ, 保守性を重視します</li>
+					<li>新しいツールや構成を試したときの判断理由を残します</li>
+					<li>うまくいかなかった点や運用上の摩擦も省かずに書きます</li>
+					<li>あとから読み返して手がかりになる記録を目指します</li>
 				</ul>
 			</section>
 		</main>
@@ -56,8 +51,8 @@ const latestPosts = posts.slice(0, 3);
 </html>
 
 <style>
-	.hero {
-		padding: 5rem 0 3rem;
+	.recent-posts {
+		padding-top: 5rem;
 	}
 	.eyebrow {
 		text-transform: uppercase;
@@ -65,11 +60,6 @@ const latestPosts = posts.slice(0, 3);
 		font-size: 0.78rem;
 		color: rgb(var(--gray));
 		margin-bottom: 0.75rem;
-	}
-	.tagline {
-		font-size: 1.2rem;
-		color: rgb(var(--gray));
-		margin-bottom: 1rem;
 	}
 	.lead {
 		font-size: 1.1rem;
