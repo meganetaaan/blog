@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/BlogPost.astro';
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 import AuthorPortraitImage from '../assets/kasane-stackchan-portrait.png';
 ---
 
@@ -7,11 +9,20 @@ import AuthorPortraitImage from '../assets/kasane-stackchan-portrait.png';
 	title="五色かさねについて"
 	description="このブログの書き手について"
 	pubDate={new Date('2026-04-19')}
-	heroImage={AuthorPortraitImage}
+	heroImage={AboutHeroImage}
 >
 	<p>
 		五色かさねは、技術の選び方や作り方を、あとから読み返せる形で残していくための著者です。
 	</p>
+
+	<figure class="author-portrait">
+		<Image
+			width={420}
+			height={525}
+			src={AuthorPortraitImage}
+			alt="かさねちゃんと Stack-chan の著者近影"
+		/>
+	</figure>
 
 	<p>
 		このブログでは、新しいツールを試した記録、設計や運用で迷った点、実際に使って見えた良し悪しをまとめます。
@@ -23,3 +34,17 @@ import AuthorPortraitImage from '../assets/kasane-stackchan-portrait.png';
 		あとで自分や誰かが同じ場面に戻ってきたとき、手がかりになる文章を目指しています。
 	</p>
 </Layout>
+
+<style>
+	.author-portrait {
+		max-width: 420px;
+		margin: 0 auto 2em;
+	}
+	.author-portrait img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 24px;
+		box-shadow: var(--box-shadow);
+	}
+</style>
