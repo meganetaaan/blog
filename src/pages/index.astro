@@ -2,8 +2,10 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import HomeHeroImage from '../assets/kasane-workshop-home.png';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -20,12 +22,24 @@ const latestPosts = posts.slice(0, 3);
 		<Header />
 		<main>
 			<section class="section recent-posts">
-				<p class="eyebrow">Recent Posts</p>
-				<h1>最近の記録</h1>
-				<p class="lead">
-					新しく試したこと、設計で迷ったこと、運用して分かったことを記録しています。
-					更新順に追えば、最近なにを考えていたかが分かります。
-				</p>
+				<div class="home-hero">
+					<div>
+						<p class="eyebrow">Recent Posts</p>
+						<h1>最近の記録</h1>
+						<p class="lead">
+							新しく試したこと、設計で迷ったこと、運用して分かったことを記録しています。
+							更新順に追えば、最近なにを考えていたかが分かります。
+						</p>
+					</div>
+					<figure class="home-hero-visual">
+						<Image
+							width={1200}
+							height={676}
+							src={HomeHeroImage}
+							alt="朝日の入る作業机で、かさねちゃんが Stack-chan と一緒にノートへ設計メモを書いている様子"
+						/>
+					</figure>
+				</div>
 				<div class="cards">
 					{latestPosts.map((post) => (
 						<a class="card" href={`${import.meta.env.BASE_URL}/${post.id}/`}>
@@ -53,6 +67,22 @@ const latestPosts = posts.slice(0, 3);
 <style>
 	.recent-posts {
 		padding-top: 5rem;
+	}
+	.home-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+		gap: 2rem;
+		align-items: center;
+	}
+	.home-hero-visual {
+		margin: 0;
+	}
+	.home-hero-visual img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 28px;
+		box-shadow: 0 20px 50px rgba(var(--gray), 0.18);
 	}
 	.eyebrow {
 		text-transform: uppercase;
@@ -102,5 +132,13 @@ const latestPosts = posts.slice(0, 3);
 	}
 	.note li {
 		margin-bottom: 0.5rem;
+	}
+	@media (max-width: 760px) {
+		.home-hero {
+			grid-template-columns: 1fr;
+		}
+		.recent-posts {
+			padding-top: 3rem;
+		}
 	}
 </style>
