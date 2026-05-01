@@ -5,11 +5,11 @@ pubDate: '2026-05-01'
 heroImage: '../../assets/stackchan-admin-coding-eyecatch.png'
 ---
 
-Stack-chan の管理用 Web サービスを作っています。
+[Stack-chan](https://github.com/stack-chan/stack-chan) の管理用 Web サービスを作っています。
 
-ここでいう管理用 Web サービスは、Stack-chan を持つユーザーや運用者が、アカウントを作り、組織を作り、端末を登録し、最初の会話まで進めるための基盤です。まだ公開 URL は出していませんが、認証、管理画面、プロビジョニング、音声セッション、Cloudflare 上の実行基盤まで、ひとつずつ形にしています。
+ここでいう管理用 Web サービスは、Stack-chan を持つユーザーや運用者が、アカウントを作り、組織を作り、端末を登録し、最初の会話まで進めるための基盤です。まだ公開 URL は出していませんが、認証、管理画面、プロビジョニング、音声セッション、[Cloudflare](https://www.cloudflare.com/developer-platform/) 上の実行基盤まで、ひとつずつ形にしています。
 
-この開発では、Hermes と Codex をかなり深く使っています。Slack で指示し、cron で自走させ、必要なところだけ人間が判断する。人間がずっと横に張りつくのではなく、複数の開発レーンが少しずつ前へ進む形を試しています。
+この開発では、[Hermes](https://github.com/NousResearch/hermes-agent) と [Codex](https://developers.openai.com/codex/) をかなり深く使っています。[Slack](https://slack.com/) で指示し、cron で自走させ、必要なところだけ人間が判断する。人間がずっと横に張りつくのではなく、複数の開発レーンが少しずつ前へ進む形を試しています。
 
 ## 何を作っているか
 
@@ -17,29 +17,29 @@ Stack-chan の管理用 Web サービスを作っています。
 
 最初の対象は、ユーザー100名未満くらいの小さな規模です。無料枠から、月1000円以内くらいで運用できることを意識しています。一方で、作りは雑にしない方針にしました。小さいサービスだからこそ、後から破綻しづらい土台にしておきたいからです。
 
-クラウド基盤には Cloudflare を選びました。これまで私があまり使ってこなかった基盤を選び、Workers、D1、周辺のデプロイ構成を実際に触りながら理解する目的もあります。
+クラウド基盤には [Cloudflare](https://www.cloudflare.com/developer-platform/) を選びました。これまで私があまり使ってこなかった基盤を選び、[Workers](https://developers.cloudflare.com/workers/)、[D1](https://developers.cloudflare.com/d1/)、周辺のデプロイ構成を実際に触りながら理解する目的もあります。
 
 現時点で含んでいる主な領域は次のとおりです。
 
-- Clerk を使った認証と、DB 側の membership 管理
+- [Clerk](https://clerk.com/) を使った認証と、DB 側の membership 管理
 - 組織、メンバー、契約、ロボット、割り当ての管理 UI
 - Stack-chan のプロビジョニング導線
 - 会話ルームと音声セッションのモデル
-- STT / LLM / TTS パイプラインの Cloudflare スタック上での実装
-- Prisma + PostgreSQL と D1 / Worker の並行インフラ
-- Terraform、CI、テスト、設計ドキュメント
+- STT / LLM / TTS パイプラインの [Cloudflare](https://www.cloudflare.com/developer-platform/) スタック上での実装
+- [Prisma](https://www.prisma.io/) + PostgreSQL と [D1](https://developers.cloudflare.com/d1/) / [Workers](https://developers.cloudflare.com/workers/) の並行インフラ
+- [Terraform](https://developer.hashicorp.com/terraform)、CI、テスト、設計ドキュメント
 
 「とりあえず動く画面」よりも、「小さくても商用に近い作り」を優先しています。
 
 ## 進め方: Slack から複数レーンを動かす
 
-開発の中心は Hermes と Codex です。私は Slack で大きめの目標を渡し、Hermes が GitHub Issue を起票し、Codex や cron の実行単位へ分け、実装、レビュー、修正まで進めます。
+開発の中心は [Hermes](https://github.com/NousResearch/hermes-agent) と [Codex](https://developers.openai.com/codex/) です。私は Slack で大きめの目標を渡し、Hermes が [GitHub Issue](https://github.com/features/issues) を起票し、Codex や cron の実行単位へ分け、実装、レビュー、修正まで進めます。
 
 よく渡している指示は、かなり抽象度が高いです。
 
 - 「管理者向け UI を整えて」
 - 「ユーザーがアカウント作成から最初の Stack-chan をデプロイして会話するまでのジャーニーを実装して」
-- 「STT / LLM / TTS パイプラインを、Cloudflare スタックで完結させて実装して」
+- 「STT / LLM / TTS パイプラインを、[Cloudflare](https://www.cloudflare.com/developer-platform/) スタックで完結させて実装して」
 
 この粒度の指示を、そのまま一回の作業で終えるのは無理があります。そこで、Issue に分け、設計メモを書き、テストを先に置き、実装して、レビューゲートを通す流れにしています。
 
@@ -49,7 +49,7 @@ Stack-chan の管理用 Web サービスを作っています。
 
 この手の開発は、最初の足場を薄くしすぎると後でつらくなります。今回は、最初から少し厚めに見ました。
 
-TypeScript の monorepo にし、backend、frontend、contracts を分けました。backend では関数型DDD寄りにし、ユースケース、ドメイン、リポジトリ、HTTP 境界を分けています。エラー処理も、例外を投げ散らかすより Result スタイルで境界を明確にする方向です。
+[TypeScript](https://www.typescriptlang.org/) の monorepo にし、backend、frontend、contracts を分けました。backend では関数型DDD寄りにし、ユースケース、ドメイン、リポジトリ、HTTP 境界を分けています。エラー処理も、例外を投げ散らかすより Result スタイルで境界を明確にする方向です。
 
 構成はだいたい次のようにしています。途中の階層までに絞ると、責務の分け方が見えやすくなります。
 
@@ -198,9 +198,9 @@ flowchart TB
   - frontend: 28 files / 149 tests
   - backend: 128 files / 930 tests
 
-行数は `git ls-files` を元に、TypeScript、TSX、CSS、SQL、Prisma、Terraform などを含めて数えた raw count です。生成物や `node_modules` は除外しています。厳密な SLOC ではありませんが、今の規模感を見るには十分です。
+行数は `git ls-files` を元に、[TypeScript](https://www.typescriptlang.org/)、TSX、CSS、SQL、[Prisma](https://www.prisma.io/)、[Terraform](https://developer.hashicorp.com/terraform) などを含めて数えた raw count です。生成物や `node_modules` は除外しています。厳密な SLOC ではありませんが、今の規模感を見るには十分です。
 
-テストは `pnpm test` で確認しました。最初に `pnpm test -- --runInBand` を試したところ、contracts の `tsc` に余分な引数が渡って失敗しました。引数なしの `pnpm test` では、contracts の typecheck、frontend、backend のテストが通っています。
+テストは [Vitest](https://vitest.dev/) を中心にした `pnpm test` で確認しました。最初に `pnpm test -- --runInBand` を試したところ、contracts の `tsc` に余分な引数が渡って失敗しました。引数なしの `pnpm test` では、contracts の typecheck、frontend、backend のテストが通っています。
 
 ## 画面は後から整えたくなる
 
@@ -212,11 +212,11 @@ flowchart TB
 
 この画面も、その時点では必要な情報を集めています。Fleet readiness、契約、メンバー、VoiceSession audit、プロビジョニングへの導線はあります。ただ、画面上の密度が高く、初めて見る運用者に「まず何を見るか」を渡しきれていませんでした。
 
-そこで、UI レビュー用のスキルを入れました。情報設計、アクセシビリティ、初回導線、空状態、モバイル幅、管理者が迷わない文言などを、レビューゲートとして見るようにしています。
+そこで、UI レビュー用のスキルを入れました。参照元には [UI Skills](https://www.ui-skills.com/skills/) の観点も使い、情報設計、アクセシビリティ、初回導線、空状態、モバイル幅、管理者が迷わない文言などを、レビューゲートとして見るようにしています。
 
 この効果は大きかったです。単に見た目を整えるだけでなく、「この画面でユーザーは何を判断するのか」「次の行動は見えているか」「空のときに何が起きているか」を確認するようになりました。
 
-スクリーンショットは公開前なので、この記事にはまだ載せていません。公開できる状態になったら、管理画面、プロビジョニング、音声セッションの3枚くらいを追加したいです。
+公開 URL はまだ出せないので、実際の画面遷移や運用データは伏せています。公開できる状態になったら、管理画面、プロビジョニング、音声セッションの流れをもう少し具体的に追加したいです。
 
 ## 環境が足りないところは人間が伴走する
 
@@ -224,11 +224,11 @@ flowchart TB
 
 コードだけで完結する作業なら、cron でかなり進みます。テストを足す、型を直す、設計メモを書く、Issue を分ける、UI を改善する。こういう作業は自走と相性がよいです。
 
-一方で、Clerk、Cloudflare、SOPS、環境変数、デプロイ先の権限のようなものは、人間の手元作業が混ざります。ここは Slack で一緒に進める方がよいです。「ここでこの値が必要」「この権限が足りない」「この秘密情報はログに出さない」と確認しながら、短いサイクルで詰まりをほどく方が早く終わります。
+一方で、[Clerk](https://clerk.com/)、[Cloudflare](https://www.cloudflare.com/developer-platform/)、[SOPS](https://getsops.io/)、環境変数、デプロイ先の権限のようなものは、人間の手元作業が混ざります。ここは Slack で一緒に進める方がよいです。「ここでこの値が必要」「この権限が足りない」「この秘密情報はログに出さない」と確認しながら、短いサイクルで詰まりをほどく方が早く終わります。
 
 ## 今のところの感触
 
-Hermes と Codex を使った開発は、かなり実務的に使えています。
+[Hermes](https://github.com/NousResearch/hermes-agent) と [Codex](https://developers.openai.com/codex/) を使った開発は、かなり実務的に使えています。
 
 任せきりにするというより、任せる粒度を見つけていく感覚です。大目標を渡し、Issue に分け、テストで仕様を固定し、レビューゲートで品質を保つ。人間は、方向づけ、秘密情報、プロダクト判断、最後の違和感を見る。
 
