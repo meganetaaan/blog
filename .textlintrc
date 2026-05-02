@@ -1,0 +1,32 @@
+{
+  "filters": {
+    "comments": true
+  },
+  "rules": {
+    "preset-ja-technical-writing": {
+      "sentence-length": false,
+      "max-comma": false,
+      "max-ten": false,
+      "max-kanji-continuous-len": false,
+      "arabic-kanji-numbers": false,
+      "no-doubled-joshi": false,
+      "no-mix-dearu-desumasu": false,
+      "ja-no-weak-phrase": false,
+      "ja-no-mixed-period": false,
+      "no-dropping-the-ra": true,
+      "no-doubled-conjunction": true,
+      "no-doubled-conjunctive-particle-ga": true,
+      "no-double-negative-ja": true,
+      "no-nfd": true,
+      "no-exclamation-question-mark": false,
+      "no-hankaku-kana": true,
+      "no-invalid-control-character": true,
+      "ja-no-successive-word": true,
+      "ja-no-abusage": true,
+      "ja-no-redundant-expression": true,
+      "ja-unnatural-alphabet": true,
+      "no-unmatched-pair": true,
+      "no-zero-width-spaces": true
+    }
+  }
+}
