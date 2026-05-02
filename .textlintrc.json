@@ -1,0 +1,18 @@
+{
+  "filters": {
+    "comments": true
+  },
+  "rules": {
+    "preset-ja-technical-writing": {
+      "sentence-length": false,
+      "max-comma": false,
+      "max-ten": false,
+      "max-kanji-continuous-len": false,
+      "arabic-kanji-numbers": false,
+      "no-doubled-joshi": false,
+      "no-mix-dearu-desumasu": false,
+      "ja-no-weak-phrase": false,
+      "ja-no-mixed-period": false
+    }
+  }
+}
