@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
-import test from 'node:test';
-import { mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import test from 'node:test';
 import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
@@ -21,7 +21,7 @@ async function runTextlint(markdown) {
       ['--config', path.join(rootDir, '.textlintrc.json'), '--rulesdir', path.join(rootDir, 'textlint-rules'), file],
       { cwd: rootDir },
     );
-    return { ok: true, stdout: result.stdout, stderr: result.stderr };
+    return { ok: true, stdout: result.stdout, stderr: result.stderr, message: '' };
   } catch (error) {
     return {
       ok: false,
@@ -29,14 +29,30 @@ async function runTextlint(markdown) {
       stderr: error.stderr ?? '',
       message: error.message,
     };
+  } finally {
+    await rm(dir, { recursive: true, force: true });
   }
 }
+
+test('AIらしい定型的な導入句を検出する', async () => {
+  const result = await runTextlint(`---\ntitle: sample\n---\n\nこの記事では、Stack-chan の管理画面について解説します。\n`);
+
+  assert.equal(result.ok, false);
+  assert.match(result.stdout + result.stderr, /この記事では/);
+  assert.match(result.stdout + result.stderr, /本文の主語や視点が弱くなりやすい/);
+});
 
 test('AIっぽい意味の薄い強調構文を検出する', async () => {
   const result = await runTextlint(`---\ntitle: テスト\n---\n\nここで良かったのは、単にファイルがコピーされたという話ではありません。認証情報や接続設定まで引き継がれたことです。\n\n重要なのは、運用で迷わないことです。\n\nこの結果は便利と言えるでしょう。\n`);
 
   assert.equal(result.ok, false);
   assert.match(result.stdout + result.stderr, /単純な肯定文|必要な対比|普通に言い切/);
+});
+
+test('具体的な観察に寄せた表現は通す', async () => {
+  const result = await runTextlint(`---\ntitle: sample\n---\n\nStack-chan の管理画面を作りながら、最初に詰まったのは設定項目の置き場所でした。\n`);
+
+  assert.equal(result.ok, true, result.stdout + result.stderr + result.message);
 });
 
 test('具体的に言い切る本文は通す', async () => {
