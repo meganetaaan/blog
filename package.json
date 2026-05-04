@@ -10,7 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint:text": "textlint --rulesdir textlint-rules \"README.md\" \"src/content/**/*.md\"",
+    "lint:text": "textlint --config .textlintrc.json --rulesdir textlint-rules \"README.md\" \"src/content/**/*.md\"",
     "test": "node --test"
   },
   "dependencies": {

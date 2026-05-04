@@ -1,30 +1,33 @@
 import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { test } from 'node:test';
-import { fileURLToPath } from 'node:url';
-import { execFile } from 'node:child_process';
+import path from 'node:path';
+import test from 'node:test';
 import { promisify } from 'node:util';
 
 const execFileAsync = promisify(execFile);
-const repoRoot = fileURLToPath(new URL('..', import.meta.url));
-const textlintArgs = ['--rulesdir', join(repoRoot, 'textlint-rules'), '--config', join(repoRoot, '.textlintrc')];
+const rootDir = path.resolve(import.meta.dirname, '..');
+const textlintBin = path.join(rootDir, 'node_modules', '.bin', 'textlint');
 
 async function runTextlint(markdown) {
-  const dir = await mkdtemp(join(tmpdir(), 'blog-textlint-'));
-  const file = join(dir, 'post.md');
-  await writeFile(file, markdown);
+  const dir = await mkdtemp(path.join(tmpdir(), 'blog-textlint-ai-style-'));
+  const file = path.join(dir, 'article.md');
+  await writeFile(file, markdown, 'utf8');
 
   try {
-    await execFileAsync('npx', ['textlint', ...textlintArgs, file], {
-      cwd: repoRoot,
-    });
-    return { exitCode: 0, output: '' };
+    const result = await execFileAsync(
+      textlintBin,
+      ['--config', path.join(rootDir, '.textlintrc.json'), '--rulesdir', path.join(rootDir, 'textlint-rules'), file],
+      { cwd: rootDir },
+    );
+    return { ok: true, stdout: result.stdout, stderr: result.stderr, message: '' };
   } catch (error) {
     return {
-      exitCode: error.code,
-      output: `${error.stdout ?? ''}${error.stderr ?? ''}`,
+      ok: false,
+      stdout: error.stdout ?? '',
+      stderr: error.stderr ?? '',
+      message: error.message,
     };
   } finally {
     await rm(dir, { recursive: true, force: true });
@@ -34,13 +37,26 @@ async function runTextlint(markdown) {
 test('AIらしい定型的な導入句を検出する', async () => {
   const result = await runTextlint(`---\ntitle: sample\n---\n\nこの記事では、Stack-chan の管理画面について解説します。\n`);
 
-  assert.notEqual(result.exitCode, 0);
-  assert.match(result.output, /この記事では/);
-  assert.match(result.output, /本文の主語や視点が弱くなりやすい/);
+  assert.equal(result.ok, false);
+  assert.match(result.stdout + result.stderr, /この記事では/);
+  assert.match(result.stdout + result.stderr, /本文の主語や視点が弱くなりやすい/);
+});
+
+test('AIっぽい意味の薄い強調構文を検出する', async () => {
+  const result = await runTextlint(`---\ntitle: テスト\n---\n\nここで良かったのは、単にファイルがコピーされたという話ではありません。認証情報や接続設定まで引き継がれたことです。\n\n重要なのは、運用で迷わないことです。\n\nこの結果は便利と言えるでしょう。\n`);
+
+  assert.equal(result.ok, false);
+  assert.match(result.stdout + result.stderr, /単純な肯定文|必要な対比|普通に言い切/);
 });
 
 test('具体的な観察に寄せた表現は通す', async () => {
   const result = await runTextlint(`---\ntitle: sample\n---\n\nStack-chan の管理画面を作りながら、最初に詰まったのは設定項目の置き場所でした。\n`);
 
-  assert.equal(result.exitCode, 0, result.output);
+  assert.equal(result.ok, true, result.stdout + result.stderr + result.message);
+});
+
+test('具体的に言い切る本文は通す', async () => {
+  const result = await runTextlint(`---\ntitle: テスト\n---\n\n認証情報や接続設定まで引き継がれたので、日常運用の土台をすぐ使えました。\n\n設定ファイルを確認し、Slack 連携の動作もその場で確かめました。\n`);
+
+  assert.equal(result.ok, true, result.stdout + result.stderr + result.message);
 });

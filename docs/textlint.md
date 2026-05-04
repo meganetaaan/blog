@@ -8,8 +8,9 @@ npm run lint:text
 
 ## ルール構成
 
-- `textlint-rule-preset-ja-technical-writing`
-  - 導入直後に既存記事へ大量の指摘が出ないよう、句読点数・文長・助詞重複・常体敬体混在など、ブログの文体と衝突しやすいルールは無効化しています。
+- `.textlintrc.json`
+  - `textlint-rule-preset-ja-technical-writing` を低ノイズに調整しています。
+  - 句読点数・文長・常体敬体混在など、ブログの文体と衝突しやすいルールは無効化しています。
   - 誤用、不自然な表現、制御文字、ゼロ幅スペース、括弧対応など、レビュー負荷を下げやすいルールを中心に有効化しています。
 - `textlint-rules/no-ai-like-expressions.js`
   - `この記事では` や `詳しく見ていきましょう` など、AI 生成文で目立ちやすい定型句を検出します。
@@ -17,7 +18,8 @@ npm run lint:text
 
 ## 独自ルールを増やすとき
 
-`textlint-rules/no-ai-like-expressions.js` の `DEFAULT_PATTERNS` に次の形で追加します。
+まず `tests/textlint-ai-style.test.mjs` に、検出したい文例と通したい文例を追加して RED を確認します。
+そのうえで `textlint-rules/no-ai-like-expressions.js` の `DEFAULT_PATTERNS` に次の形で追加します。
 
 ```js
 {
