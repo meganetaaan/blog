@@ -9,6 +9,16 @@ heroImage: '../../assets/agentic-restaurant-ordering-hero.png'
 
 注文が機械に読める形になれば、そこにはエージェントが入れます。スマホの個人エージェントでもよいし、卓上にいるｽﾀｯｸﾁｬﾝのようなコンパニオンロボットでもよい。メニューを読み、好みや制約をふまえて相談し、最後に安全な形で注文へつなぐ。これはエージェンティックコマースの、かなり日常的な派生形になりそうです。
 
+## エージェンティックコマースとは
+
+ここでいうエージェンティックコマースは、人間がECサイトや注文アプリを直接操作する代わりに、AIエージェントへ目的や条件を伝え、商品選定、注文案の作成、支払い手続きの一部を任せる商取引を指します。
+
+[Agent Payments Protocol / AP2](https://github.com/google-agentic-commerce/AP2) の overview では、agent commerce の変化を次のように説明しています。
+
+> AI agents are rapidly becoming primary actors, capable of understanding complex user requests and executing multi-step tasks autonomously. In commerce, this translates into a paradigm shift where agents will manage everything from routine purchases and subscription management to complex product research, price negotiation, and dynamic order bundling across multiple vendors.
+
+人間が「これを食べたい」「この条件で探してほしい」と伝え、エージェントが複数の手順を進める。レストラン注文は、その小さくて日常的な例として考えられます。
+
 ## 注文がアクセシブルになるとは何か
 
 レストランの注文は、見た目より複雑です。メニュー、価格、売り切れ、サイズ、トッピング、アレルゲン、注文可能時間、席番号、支払い、提供ステータス。いまのモバイルオーダーは人間が画面を押す前提ですが、エージェントに開くなら、これらを機械可読なスキーマとして扱う必要があります。
