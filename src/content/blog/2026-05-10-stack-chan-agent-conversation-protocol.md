@@ -2,7 +2,7 @@
 title: 'ｽﾀｯｸﾁｬﾝ同士が会話するためのプロトコルを考える'
 description: 'M5版ｽﾀｯｸﾁｬﾝが広く出回り、独自ファームウェアも増えていく前提で、エージェント同士の会話プロトコルをレイヤーごとに整理します。'
 pubDate: '2026-05-10'
-heroImage: '../../assets/kasane-stackchan-portrait.png'
+heroImage: '../../assets/stackchan-agent-protocol-hero.png'
 ---
 
 <!-- textlint-disable ja-technical-writing/no-hankaku-kana -->
@@ -64,7 +64,7 @@ Agent
 
 この分け方にすると、独自ファームウェアでも入りやすくなります。たとえば最初はローカル WebSocket だけでよい。あとから WebRTC や MQTT、クラウドリレーを足しても、上の会話イベントを大きく変えずに済みます。
 
-<!-- Illustration slot 1: スマホ縦長で読めるレイヤー図。中央に2体の小さなStack-chan風ロボットが向かい合い、その下に5段の縦積みカードを配置する。上から「トランスポート」「ディスカバリー」「ハンドシェイク」「ターンテイキング」「Job / capability協調」。各カードは短い日本語ラベルと小さなアイコンだけにし、横長の表は使わない。背景は淡いクリーム色、線は細く、色数は青・緑・オレンジ中心。文字はスマホ幅でも読める大きさ。 -->
+![2体のｽﾀｯｸﾁｬﾝが向かい合い、トランスポート、ディスカバリー、ハンドシェイク、ターンテイキング、Job / capability協調の5層が縦に並ぶ図。](../../assets/stackchan-agent-protocol-layers.png)
 
 ## トランスポート: 何で運ぶか
 
@@ -217,7 +217,7 @@ type HostDecision = {
 
 これは、既存標準にあまり見当たらない領域です。A2A は Agent 間の task/message には近いですが、複数の embodied agents が同じ場で自然に話すための司会役までは厚くありません。ここはｽﾀｯｸﾁｬﾝ側で設計する価値があります。
 
-<!-- Illustration slot 2: スマホ縦長の会話ホスト図。上部に「天の声 / ConversationHost」の小さな雲形ラベル。下に3体のStack-chan風ロボットを三角形に配置し、1体だけに「話す」、残り2体に「聞く」「うなずく」の短い札を付ける。矢印は天の声から選ばれた話者へ1本、話者から他の2体へ薄い線。説明文は最小限にし、コードや長文は入れない。やさしい技術ブログ向けのフラットイラスト。 -->
+![天の声 / ConversationHost が3体のｽﾀｯｸﾁｬﾝに話す、聞く、うなずく役割を割り当てている図。](../../assets/stackchan-agent-protocol-conversation-host.png)
 
 ## ConversationEvent: 会話をただのテキストにしない
 
@@ -376,7 +376,7 @@ ConversationRole
 
 だから、ｽﾀｯｸﾁｬﾝ向けには最後の部分を自分たちで設計する必要があります。
 
-<!-- Illustration slot 3: スマホ縦長の「既存プロトコルから借りるもの」図。中央に「Stack-chan会話プロトコル」という丸いコア。周囲に6つの小カードを縦スクロールで見やすい2列または単列で配置: 「A2A: Agent Card」「MCP: Tool」「FIPA/KQML: 会話行為」「Contract Net: 担当選択」「MQTT/WebRTC: transport」「Matrix/ActivityPub: room / federation」。各カードはアイコン+短い日本語だけ。矢印はコアへ向ける。文字量を少なく、スマホで判読できる余白広めのレイアウト。 -->
+![A2A、MCP、FIPA/KQML、Contract Net、MQTT/WebRTC、Matrix/ActivityPub から Stack-chan 会話プロトコルへ借りる要素を集めた図。](../../assets/stackchan-agent-protocol-borrowed-protocols.png)
 
 ## 最初の小さなプロトコル
 
