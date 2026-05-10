@@ -15,7 +15,7 @@ M5版ｽﾀｯｸﾁｬﾝが、数千台のオーダーで世に出ようとし
 
 「うちの子」と「よその子」が、同じ場で自己紹介し、話題を渡し合い、ときどき天の声に回される。そういう複数名会話を成立させるには、どんなプロトコルが必要でしょうか。
 
-調べると、近いものはたくさんあります。[Agent2Agent Protocol / A2A](https://a2a-protocol.org/latest/) はかなり近いです。[Model Context Protocol / MCP](https://modelcontextprotocol.io/) も周辺にあります。古典的には [FIPA ACL](https://www.fipa.org/repository/aclspecs.html) や KQML、Contract Net Protocol があります。通信路としては [MQTT](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html)、[WebRTC](https://www.w3.org/TR/webrtc/)、[Matrix](https://spec.matrix.org/latest/) も候補になります。
+調べると、近いものはたくさんあります。[Agent2Agent Protocol / A2A](https://a2a-protocol.org/latest/) は Agent 間で task や message をやり取りする標準です。[Model Context Protocol / MCP](https://modelcontextprotocol.io/) は Agent が tool や resource へ接続するための protocol です。古典的には [FIPA ACL](https://web.archive.org/web/20240525035408/http://www.fipa.org/specs/fipa00061/index.html)、[KQML](https://en.wikipedia.org/wiki/Knowledge_Query_and_Manipulation_Language)、[Contract Net Protocol](https://doi.org/10.1109/TC.1980.1675516) があります。通信路としては [MQTT](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html)、[WebRTC](https://www.w3.org/TR/webrtc/)、[Matrix](https://spec.matrix.org/latest/) も候補になります。
 
 それでも、ｽﾀｯｸﾁｬﾝ同士の会話にそのまま合うものは見つかりませんでした。だから私は、既存の標準から部品を借りつつ、ｽﾀｯｸﾁｬﾝ向けの軽い相互運用プロトコルを考えるのがよさそうだと思っています。
 
@@ -30,7 +30,7 @@ Agent
   + 任意のおしごと / JobProfile
 ```
 
-ただし、この `Agent` は特定のクラウドサービスに閉じません。RaaS の管理画面で作られた Agent でもよいし、独自ファームウェア上の会話エンジンでもよい。スマホアプリやブラウザシミュレーターが代理してもかまいません。
+ただし、この `Agent` は特定のクラウドサービスに閉じません。ししかわさんが開発中のｽﾀｯｸﾁｬﾝプラットフォーム（仮）で作られた Agent でもよいし、独自ファームウェア上の会話エンジンでもよい。スマホアプリやブラウザシミュレーターが代理してもかまいません。
 
 今回の仮定は二つです。
 
@@ -79,11 +79,11 @@ Agent
 | MQTT | IoT、独自ファームウェア、broker経由 | 会話意味論は自分で載せる |
 | BLE | 近接発見、初回ペアリング、招待の受け渡し | 長い会話や音声には向かない |
 | Matrix | ルーム、招待、履歴、連合 | 軽量デバイスには重い |
-| RaaS cloud relay | 認証、監査、永続化、管理UI | これだけを前提にすると独自ファームウェア勢が入りにくい |
+| ｽﾀｯｸﾁｬﾝプラットフォーム（仮） relay | 認証、監査、永続化、管理UI | これだけを前提にすると独自ファームウェア勢が入りにくい |
 
 最初の実装は、ローカル WebSocket かスマホ/ブラウザ経由の WebRTC がよさそうです。M5Stack のような小さなデバイスでは、MQTT も現実的です。
 
-RaaS は、この中のひとつの transport profile として置くのがよいと思います。RaaS があると管理、監査、永続化はしやすい。けれど、RaaS がないとｽﾀｯｸﾁｬﾝ同士が話せない設計にはしたくありません。
+ししかわさんが開発中のｽﾀｯｸﾁｬﾝプラットフォーム（仮）は、この中のひとつの transport profile として置くのがよいと思います。プラットフォームがあると管理、監査、永続化はしやすい。けれど、それがないとｽﾀｯｸﾁｬﾝ同士が話せない設計にはしたくありません。
 
 ## ディスカバリー: どう見つけるか
 
@@ -122,10 +122,12 @@ type StackChanAgentCard = {
 - QRコード
 - BLE advertisement
 - mDNS / local discovery
-- RaaS やイベント用の一時 registry
+- ししかわさんが開発中のｽﾀｯｸﾁｬﾝプラットフォーム（仮）やイベント用の一時 registry
 - Matrix room や Discord channel への bridge
 
 個人利用やイベントでは、QRコードが扱いやすそうです。スマホで読み取り、相手の Agent Card を受け取り、その場で招待する。クラウド directory へ登録しなくても、小さな相互運用が始められます。
+
+もう少し遊びのある方法として、昔のスマホサービスにあった Bump や、LINE の「ふるふる」のような発見方法も考えられます。複数のｽﾀｯｸﾁｬﾝを同じタイミングで軽く振り、時刻同期、加速度パターン、近くの Wi-Fi / BLE 情報を組み合わせて「いま同じ場所で出会った子」とみなす。イベント会場では、QRコードよりも身体性があって、ｽﾀｯｸﾁｬﾝらしい出会い方になります。
 
 ## ハンドシェイク: 何を合意するか
 
@@ -178,6 +180,8 @@ ConversationHost
 ```
 
 Host は、誰が話すか、誰に話しかけるか、誰はうなずくだけにするかを決めます。イベントやデモなら、トーク番組の「天の声」のように話題を振ってもよいです。
+
+この「天の声」は、[OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses) でいう `system` role message のような上位指示としても考えられます。参加している Agent の人格や応答生成はそれぞれ別でも、「この場では一人ずつ話す」「次はこの子に振る」「危ない話題なら止める」という会話全体のルールを、Host が参加 Agent より上位の制約として持つ形です。
 
 ```text
 天の声:
@@ -354,14 +358,25 @@ ConversationRole
 
 ## 調査したプロトコルをレイヤー別に見る
 
+名前だけだと分かりにくいので、本文で参照しているものを短く整理します。
+
+- [A2A](https://a2a-protocol.org/latest/): Agent 同士が task、message、artifact をやり取りするための相互運用プロトコル。Agent Card の考え方が、公開プロフィールと capability manifest に近いです。
+- [MCP](https://modelcontextprotocol.io/): Agent や LLM アプリが tool、resource、prompt に接続するためのプロトコル。Agent 同士の会話ではなく、Shell action や外部 tool 接続の面に置くと整理しやすいです。
+- [FIPA ACL Message Structure](https://web.archive.org/web/20240525035408/http://www.fipa.org/specs/fipa00061/index.html) / [Communicative Act Library](https://web.archive.org/web/20240525053623/http://www.fipa.org/specs/fipa00037/index.html): Agent message の構造と `request` / `inform` / `propose` などの会話行為を定義した古典的な標準です。
+- [KQML](https://en.wikipedia.org/wiki/Knowledge_Query_and_Manipulation_Language): FIPA ACL 以前から使われた Agent Communication Language です。`performative` と content を分ける発想が参考になります。
+- [Contract Net Protocol](https://doi.org/10.1109/TC.1980.1675516): task を告知し、候補 Agent が bid し、選ばれた Agent が実行する分散協調の古典的なプロトコルです。
+- [Matrix](https://spec.matrix.org/latest/) / [ActivityPub](https://www.w3.org/TR/activitypub/): room、actor、invite、federation の考え方が参考になります。ただし Agent capability や物理 action の意味論は別に必要です。
+- [MQTT](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html) / [WebRTC](https://www.w3.org/TR/webrtc/): 会話イベントや音声を運ぶ transport 候補です。会話そのものの意味は別レイヤーで定義します。
+- [AutoGen](https://microsoft.github.io/autogen/stable/) / [LangGraph](https://langchain-ai.github.io/langgraph/) / [CrewAI](https://docs.crewai.com/) / [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/): 複数 Agent の実行、handoff、state 管理の実装パターンとして参考になります。ただし peer-to-peer の標準プロトコルではありません。
+
 今回見たものを、ｽﾀｯｸﾁｬﾝ向けのレイヤーに分けるとこうなります。
 
 | レイヤー | 参考になるもの | 借りたい点 | 足りない点 |
 | --- | --- | --- | --- |
 | Agent 公開プロフィール / capability | [A2A](https://a2a-protocol.org/latest/), [AGNTCY](https://docs.agntcy.org/) | Agent Card、capability、auth、directory | 軽量edge profile、ｽﾀｯｸﾁｬﾝの顔・声・Shell表現 |
 | Tool / resource | [MCP](https://modelcontextprotocol.io/) | tools、resources、prompts、stdio / HTTP | Agent同士の会話、招待、ターン制御 |
-| 会話行為 | [FIPA ACL](https://www.fipa.org/repository/aclspecs.html), KQML | request、inform、propose、agree、refuse、failure | 現代Web/edge向けの軽量実装 |
-| 担当選択 / 協調 | Contract Net Protocol, multi-robot task allocation | bid、award、failure、timeout | 雑談や音声会話へのなじませ方 |
+| 会話行為 | [FIPA ACL](https://web.archive.org/web/20240525035408/http://www.fipa.org/specs/fipa00061/index.html), [KQML](https://en.wikipedia.org/wiki/Knowledge_Query_and_Manipulation_Language) | request、inform、propose、agree、refuse、failure | 現代Web/edge向けの軽量実装 |
+| 担当選択 / 協調 | [Contract Net Protocol](https://doi.org/10.1109/TC.1980.1675516), multi-robot task allocation | bid、award、failure、timeout | 雑談や音声会話へのなじませ方 |
 | ルーム / federation | [Matrix](https://spec.matrix.org/latest/), [ActivityPub](https://www.w3.org/TR/activitypub/) | room、invite、actor、inbox/outbox、federation | Agent capability と物理 action の意味論 |
 | transport | [MQTT](https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html), [WebRTC](https://www.w3.org/TR/webrtc/), DDS / ROS 2 | 軽量pub/sub、音声/data channel、robot data plane | 会話イベントの意味論 |
 | orchestration framework | [AutoGen](https://microsoft.github.io/autogen/stable/), [LangGraph](https://langchain-ai.github.io/langgraph/), [CrewAI](https://docs.crewai.com/), [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) | group chat、handoff、graph、state、tracing | peer-to-peer identity、独自firmware相互運用 |
