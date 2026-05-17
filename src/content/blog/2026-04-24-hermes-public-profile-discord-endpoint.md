@@ -307,7 +307,7 @@ Discord bot が gateway に接続していても、mention に反応しないこ
 8. `discord.require_mention: true` の場合、実際に bot を mention しているか
 9. `discord.auto_thread: true` の場合、返信が親 channel ではなく thread に出ていないか
 
-特に `auto_thread` は見落としやすいです。親 channel に何も出ていないように見えて、実際には作成された thread 側に返答が出ることがあります。
+特に `auto_thread` は見落としがちな設定です。親 channel に何も出ていないように見えて、実際には作成された thread 側に返答が出ることがあります。
 
 ## 最小構成のまとめ
 

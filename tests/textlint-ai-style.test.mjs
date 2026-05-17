@@ -49,6 +49,14 @@ test('AIっぽい意味の薄い強調構文を検出する', async () => {
   assert.match(result.stdout + result.stderr, /単純な肯定文|必要な対比|普通に言い切/);
 });
 
+test('曖昧な可能性に逃げる「〜しやすい」を検出する', async () => {
+  const result = await runTextlint(`---\ntitle: テスト\n---\n\n作文は、結果より途中が大事になりやすい。\n\nこの表現はAIっぽく見えやすい。\n`);
+
+  assert.equal(result.ok, false);
+  assert.match(result.stdout + result.stderr, /しやすい/);
+  assert.match(result.stdout + result.stderr, /言い切れ/);
+});
+
 test('具体的な観察に寄せた表現は通す', async () => {
   const result = await runTextlint(`---\ntitle: sample\n---\n\nStack-chan の管理画面を作りながら、最初に詰まったのは設定項目の置き場所でした。\n`);
 
