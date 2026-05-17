@@ -74,7 +74,7 @@ Agent
 
 | 候補 | 向いている場面 | 注意点 |
 | --- | --- | --- |
-| ローカル WebSocket / HTTP | 同じLAN内、開発しやすいデモ | NAT越えや外出先接続は別途必要 |
+| ローカル WebSocket / HTTP | 同じLAN内、開発用デモ | NAT越えや外出先接続は別途必要 |
 | WebRTC | ブラウザ、スマホ、音声、P2P | シグナリングと実装が少し重い |
 | MQTT | IoT、独自ファームウェア、broker経由 | 会話意味論は自分で載せる |
 | BLE | 近接発見、初回ペアリング、招待の受け渡し | 長い会話や音声には向かない |
@@ -83,7 +83,7 @@ Agent
 
 最初の実装は、ローカル WebSocket かスマホ/ブラウザ経由の WebRTC がよさそうです。M5Stack のような小さなデバイスでは、MQTT も現実的です。
 
-ししかわさんが開発中のｽﾀｯｸﾁｬﾝプラットフォーム（仮）は、この中のひとつの transport profile として置くのがよいと思います。プラットフォームがあると管理、監査、永続化はしやすい。けれど、それがないとｽﾀｯｸﾁｬﾝ同士が話せない設計にはしたくありません。
+ししかわさんが開発中のｽﾀｯｸﾁｬﾝプラットフォーム（仮）は、この中のひとつの transport profile として置くのがよいと思います。プラットフォームがあると管理、監査、永続化まで担えます。けれど、それがないとｽﾀｯｸﾁｬﾝ同士が話せない設計にはしたくありません。
 
 ## ディスカバリー: どう見つけるか
 
@@ -361,7 +361,7 @@ ConversationRole
 名前だけだと分かりにくいので、本文で参照しているものを短く整理します。
 
 - [A2A](https://a2a-protocol.org/latest/): Agent 同士が task、message、artifact をやり取りするための相互運用プロトコル。Agent Card の考え方が、公開プロフィールと capability manifest に近いです。
-- [MCP](https://modelcontextprotocol.io/): Agent や LLM アプリが tool、resource、prompt に接続するためのプロトコル。Agent 同士の会話ではなく、Shell action や外部 tool 接続の面に置くと整理しやすいです。
+- [MCP](https://modelcontextprotocol.io/): Agent や LLM アプリが tool、resource、prompt に接続するためのプロトコル。Agent 同士の会話ではなく、Shell action や外部 tool 接続の面に置くと整理できます。
 - [FIPA ACL Message Structure](https://web.archive.org/web/20240525035408/http://www.fipa.org/specs/fipa00061/index.html) / [Communicative Act Library](https://web.archive.org/web/20240525053623/http://www.fipa.org/specs/fipa00037/index.html): Agent message の構造と `request` / `inform` / `propose` などの会話行為を定義した古典的な標準です。
 - [KQML](https://en.wikipedia.org/wiki/Knowledge_Query_and_Manipulation_Language): FIPA ACL 以前から使われた Agent Communication Language です。`performative` と content を分ける発想が参考になります。
 - [Contract Net Protocol](https://doi.org/10.1109/TC.1980.1675516): task を告知し、候補 Agent が bid し、選ばれた Agent が実行する分散協調の古典的なプロトコルです。
@@ -418,7 +418,7 @@ transport はひとつでよいです。たとえばローカル WebSocket。
   Host として両方に接続する
 ```
 
-この構成なら、独自ファームウェアでも実装しやすいです。まずは JSON を送受信できればよい。音声は後から WebRTC や既存の音声経路へ載せられます。
+この構成なら、独自ファームウェアでも実装の入口が低いです。まずは JSON を送受信できればよい。音声は後から WebRTC や既存の音声経路へ載せられます。
 
 ## まとめ
 
